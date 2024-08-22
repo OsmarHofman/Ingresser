@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ShipmentBaseTag } from './xml-base-tags/shipment';
 import { Tab } from './components/tab/tab';
 import { ShipmentHeaderInput } from './components/shipment/shipment-header/shipment-header-input';
+import { Refnum } from './shared/entities/refnum';
 
 
 @Component({
@@ -24,10 +25,13 @@ import { ShipmentHeaderInput } from './components/shipment/shipment-header/shipm
 })
 
 export class AppComponent {
-
   title = 'Ingresser';
 
   public shipmentTags: AccordionItem[] = [];
+
+  public shipmentRefnums: Refnum[] = [
+    new Refnum('EMBDEV', "XID", 'ABC')
+  ];
 
   showShipmentAccordion: boolean = false;
 
