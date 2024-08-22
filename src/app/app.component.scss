@@ -95,7 +95,7 @@ hr {
 }
 
 button {
-  margin: 20px 10px 20px 1px;
+  margin: 20px 10px 2px 1px;
 }
 
 /* Layout */
@@ -107,106 +107,8 @@ button {
     gap: 1rem;
   }
 
-  .bd-header {
-    position: fixed;
-    top: 0;
-    /* rtl:begin:ignore */
-    right: 0;
-    left: 0;
-    /* rtl:end:ignore */
-    z-index: 1030;
-    grid-column: 1 / span 3;
-  }
-
-  .bd-aside,
-  .bd-main {
-    padding-top: 5rem;
-  }
-
   header {
     padding-bottom: 5rem;
-  }
-
-  /**
-     * 1. Too bad only Firefox supports subgrids ATM
-     */
-  .bd-cheatsheet,
-  .bd-cheatsheet section,
-  .bd-cheatsheet article {
-    display: inherit; /* 1 */
-    grid-template-rows: auto;
-    grid-template-columns: 1fr 4fr;
-    grid-column: 1 / span 2;
-    gap: inherit; /* 1 */
-  }
-
-  .bd-aside {
-    grid-area: 1 / 3;
-    scroll-margin-top: 4rem;
-  }
-
-  .bd-cheatsheet section,
-  .bd-cheatsheet section > h2 {
-    top: 2rem;
-    scroll-margin-top: 2rem;
-  }
-
-  .bd-cheatsheet section > h2::before {
-    position: absolute;
-    /* rtl:begin:ignore */
-    top: 0;
-    right: 0;
-    bottom: -2rem;
-    left: 0;
-    /* rtl:end:ignore */
-    z-index: -1;
-    content: "";
-  }
-
-  .bd-cheatsheet article,
-  .bd-cheatsheet .bd-heading {
-    top: 8rem;
-    scroll-margin-top: 8rem;
-  }
-
-  .bd-cheatsheet .bd-heading {
-    z-index: 1;
-  }
-
-  .bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
-
-  @media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-      font-size: 3.5rem;
-    }
-  }
-
-  .b-example-divider {
-    width: 100%;
-    height: 3rem;
-    background-color: rgba(0, 0, 0, 0.1);
-    border: solid rgba(0, 0, 0, 0.15);
-    border-width: 1px 0;
-    box-shadow:
-      inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
-      inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
-  }
-
-  .b-example-vr {
-    flex-shrink: 0;
-    width: 1.5rem;
-    height: 100vh;
-  }
-
-  .bi {
-    vertical-align: -0.125em;
-    fill: currentColor;
   }
 
   .nav-scroller {
@@ -244,11 +146,4 @@ button {
     --bs-btn-active-border-color: #5a23c8;
   }
 
-  .bd-mode-toggle {
-    z-index: 1500;
-  }
-
-  .bd-mode-toggle .dropdown-menu .active .bi {
-    display: block !important;
-  }
 }

@@ -1,17 +1,26 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { Accordion } from '../app/components/accordion/accordion';
-import { CommonModule } from '@angular/common';
 import { AccordionItem } from './components/accordion/accordion-item';
+import { CommonModule } from '@angular/common';
 import { ShipmentBaseTag } from './xml-base-tags/shipment';
+import { Tab } from './components/tab/tab';
+import { ShipmentHeaderInput } from './components/shipment/shipment-header/shipment-header-input';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CdkAccordionModule, Accordion, CommonModule],
+  imports: [
+    RouterOutlet,
+    Accordion,
+    CommonModule,
+    Tab,
+    ShipmentHeaderInput
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  schemas: []
 })
 
 export class AppComponent {

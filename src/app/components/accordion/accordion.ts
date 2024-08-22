@@ -5,7 +5,7 @@ import { AccordionItem } from './accordion-item';
 @Component({
     selector: 'accordion',
     templateUrl: 'accordion.html',
-    styleUrl: 'accordion.css',
+    styleUrl: 'accordion.scss',
     standalone: true,
     imports: [CdkAccordionModule],
 })

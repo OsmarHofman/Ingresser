@@ -14,12 +14,7 @@
     <button type="button" class="btn btn-primary" (click)="deleteShipment()">Remover embarque</button>
 
     <div *ngIf="showShipmentAccordion">
-      
-      <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="floatingInput" placeholder="EMBDEV">
-        <label for="floatingInput">DomainName</label>
-      </div>
-
+      <tab></tab>
       <accordion [items]="shipmentTags"></accordion>
     </div>
 
