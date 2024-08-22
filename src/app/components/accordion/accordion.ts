@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { AccordionItem } from './accordion-item';
 
 @Component({
     selector: 'accordion',
@@ -10,6 +11,8 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
 })
 
 export class Accordion {
-    items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+    @Input() items: AccordionItem[] = [];
+
     expandedIndex = 0;
+
 }

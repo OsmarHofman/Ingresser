@@ -89,6 +89,15 @@ body {
   margin: 0 1rem 1rem 0;
 }
 
+hr {
+  margin: 2rem 0;
+  color: white;
+}
+
+button {
+  margin: 20px 10px 20px 1px;
+}
+
 /* Layout */
 @media (min-width: 1200px) {
   body {
@@ -114,7 +123,7 @@ body {
     padding-top: 5rem;
   }
 
-  header{
+  header {
     padding-bottom: 5rem;
   }
 
