@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ShipmentHeaderInput } from '../shipment/shipment-header/shipment-header-input';
 
@@ -14,7 +14,7 @@ import { ShipmentHeaderInput } from '../shipment/shipment-header/shipment-header
 })
 
 export class Tab {
+    @Input() xmlContent: string = '';
 
     expandedIndex = 0;
-
 }

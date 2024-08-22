@@ -11,8 +11,7 @@
     </div>
     <div class="accordion-item-body" role="region" [style.display]="accordionItem.expanded ? '' : 'none'"
       [attr.id]="'accordion-body-' + index" [attr.aria-labelledby]="'accordion-header-' + index">
-      <textarea>{{ item.content }}</textarea>
-
+      <tab [xmlContent]="item.content"></tab>
     </div>
   </cdk-accordion-item>
   }
