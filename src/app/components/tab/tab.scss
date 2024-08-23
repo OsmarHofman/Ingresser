@@ -11,5 +11,19 @@ textarea {
   width: 500px;
   height: 500px;
   border: solid rgb(13, 110, 253) 1px;
-  scrollbar-color: rgb(64, 125, 216) rgb(212, 223, 239);
+}
+
+textarea::-webkit-scrollbar {
+  width: 10px;
+
+}
+
+textarea::-webkit-scrollbar-track {
+  background: rgb(194, 218, 255);        /* color of the tracking area */
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: rgb(64, 125, 216);
+  border-radius: 3px;
+  cursor: default;
 }
