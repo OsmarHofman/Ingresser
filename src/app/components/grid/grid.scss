@@ -1,11 +1,16 @@
-p {
-    font-family: Lato;
-}
+
 table {
     width: 90%;
     margin: auto;
     margin-top: 25px;
 }
+
+button {
+    border-radius: 4px;
+    padding: 10px;
+    border: 0px;
+}
+
 .btn-edit {
     text-align: right;
 }
@@ -28,12 +33,21 @@ h2 {
 .button-add-row {
     background: #1b9e1b;
     color: #ffffff;
+    margin-right: 5px;
+}
+
+.button-add-row:hover {
+    background: #116811;
 }
 
 .button-remove-rows {
     background: red;
     color: #ffffff;
     margin-right: 5px;
+}
+
+.button-remove-rows:hover {
+    background: rgb(191, 2, 2);
 }
 
 .button-remove {
