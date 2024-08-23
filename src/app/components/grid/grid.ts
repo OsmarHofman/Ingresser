@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Refnum, RefnumGridColumns } from '../../model/refnum'
 
-
 @Component({
   selector: 'grid',
   templateUrl: './grid.html',
@@ -21,7 +20,7 @@ import { Refnum, RefnumGridColumns } from '../../model/refnum'
     MatLabel,
     MatInputModule,
     CommonModule,
-    FormsModule,
+    FormsModule
   ],
 })
 export class GridComponent {
@@ -37,11 +36,7 @@ export class GridComponent {
   }
 
   public editRow(row: Refnum) {
-    // if (row.id === 0) {
     row.isEdit = false;
-    // } else {
-    //   this.userService.updateUser(row).subscribe(() => (row.isEdit = false))
-    // }
   }
 
   public addRow() {
@@ -56,7 +51,7 @@ export class GridComponent {
   }
 
   public removeSelectedRows() {
-    if (confirm('Deseja realmente remover esse refnum?')) {
+    if (confirm('Deseja realmente remover os itens selecionados?')) {
       this.dataSource.data = this.dataSource.data.filter(
         (r: Refnum) => !r.isSelected,
       )

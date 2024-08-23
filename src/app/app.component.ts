@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { AccordionComponent } from '../app/components/accordion/accordion';
 import { AccordionItem } from './components/accordion/accordion-item';
 import { CommonModule } from '@angular/common';
-import { ShipmentBaseTag } from './xml-base-tags/shipment';
+import { ShipmentBaseTag } from './model/xml-base-tags/shipment';
 import { Refnum } from './model/refnum';
 
 @Component({

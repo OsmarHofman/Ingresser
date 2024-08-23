@@ -23,7 +23,7 @@
           <mat-checkbox (change)="element.isSelected = $event.checked" [checked]="element.isSelected"></mat-checkbox>
         </ng-container>
         <div class="btn-edit" *ngSwitchCase="'isEdit'">
-          <button mat-button (click)="element.isEdit = !element.isEdit">
+          <button mat-button class="btn-edit-row" (click)="element.isEdit = !element.isEdit">
             Editar
           </button>
           <button mat-button class="button-remove" (click)="removeRow(element.xid)">
@@ -32,12 +32,12 @@
         </div>
         <span *ngSwitchDefault>
           {{ element[col.key] }}
-        </span> 
+        </span>
       </div>
       <div [ngSwitch]="col.type" *ngIf="element.isEdit">
         <div *ngSwitchCase="'isSelected'"></div>
         <div class="btn-edit" *ngSwitchCase="'isEdit'">
-          <button mat-button (click)="editRow(element)" [disabled]="disableSubmit(element.xid)">
+          <button mat-button class="btn-done" (click)="editRow(element)" [disabled]="disableSubmit(element.xid)">
             Concluir
           </button>
         </div>
