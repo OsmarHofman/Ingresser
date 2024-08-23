@@ -1,23 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Accordion } from '../app/components/accordion/accordion';
+import { AccordionComponent } from '../app/components/accordion/accordion';
 import { AccordionItem } from './components/accordion/accordion-item';
 import { CommonModule } from '@angular/common';
 import { ShipmentBaseTag } from './xml-base-tags/shipment';
-import { Tab } from './components/tab/tab';
-import { ShipmentHeaderInput } from './components/shipment/shipment-header/shipment-header-input';
-import { Refnum } from './shared/entities/refnum';
-
+import { Refnum } from './model/refnum';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    Accordion,
+    AccordionComponent,
     CommonModule,
-    Tab,
-    ShipmentHeaderInput
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

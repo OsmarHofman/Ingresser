@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { AccordionItem } from './accordion-item';
-import { Tab } from '../tab/tab';
+import { TabComponent } from '../tab/tab';
 
 @Component({
     selector: 'accordion',
@@ -10,11 +10,11 @@ import { Tab } from '../tab/tab';
     standalone: true,
     imports: [
         CdkAccordionModule,
-        Tab
+        TabComponent
     ],
 })
 
-export class Accordion {
+export class AccordionComponent {
     @Input() items: AccordionItem[] = [];
 
     expandedIndex = 0;
