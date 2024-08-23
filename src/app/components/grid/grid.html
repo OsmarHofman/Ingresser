@@ -1,10 +1,11 @@
 <div>
-  <button class="button-remove-rows" mat-button (click)="removeSelectedRows()">
-    Remove Rows
-  </button>
   <button class="button-add-row" mat-button (click)="addRow()">
-    Add Row
+    Adicionar nova linha
   </button>
+  <button class="button-remove-rows" mat-button (click)="removeSelectedRows()">
+    Remover linhas selecionadas
+  </button>
+
 </div>
 
 <table mat-table [dataSource]="dataSource">
