@@ -1,0 +1,20 @@
+.input-container {
+    border: 2px;
+    border-color: rgb(13, 110, 253);
+    border-style: solid;
+    border-radius: 4px;
+    margin: 10px;
+    width: 16%;
+}
+
+mat-card-header {
+    font-size: large;
+    align-content: flex-start;
+    padding: 8px;
+    margin-bottom: 5px;
+}
+
+.mat-mdc-card-content{
+    padding-bottom: 0px !important;
+}
+
