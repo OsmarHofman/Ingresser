@@ -2,6 +2,10 @@ body {
   scroll-behavior: smooth;
 }
 
+// .btn-primary {
+//   margin-bottom: 10px;
+// }
+
 [id="modal"] .bd-example .btn,
 [id="buttons"] .bd-example .btn,
 [id="tooltips"] .bd-example .btn,
@@ -15,12 +19,12 @@ body {
 }
 
 hr {
-  margin: 2rem 0;
+  margin: 20px 0;
   color: white;
 }
 
 button {
-  margin: 20px 10px 2px 1px;
+  margin: 20px 10px 10px 1px;
 }
 
 /* Layout */
