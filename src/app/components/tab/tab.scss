@@ -6,7 +6,8 @@
 }
 
 textarea {
-  margin: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
   resize: both;
   width: 500px;
   height: 500px;
@@ -18,7 +19,7 @@ textarea::-webkit-scrollbar {
 }
 
 textarea::-webkit-scrollbar-track {
-  background: rgb(194, 218, 255);        /* color of the tracking area */
+  background: rgb(194, 218, 255); /* color of the tracking area */
 }
 
 textarea::-webkit-scrollbar-thumb {

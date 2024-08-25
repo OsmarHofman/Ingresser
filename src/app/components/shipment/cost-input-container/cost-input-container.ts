@@ -3,16 +3,14 @@ import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
-    selector: 'input-container',
-    templateUrl: 'input-container.html',
-    styleUrl: 'input-container.scss',
+    selector: 'cost-input-container',
+    templateUrl: 'cost-input-container.html',
+    styleUrl: 'cost-input-container.scss',
     standalone: true,
     imports: [
         MatCardModule
     ],
 })
 
-export class InputContainerComponent {
-    expandedIndex = 0;
-
+export class CostInputContainerComponent {
 }

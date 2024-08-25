@@ -14,7 +14,7 @@
     <button type="button" class="btn btn-primary" (click)="deleteShipment()">Remover embarque</button>
 
     <div *ngIf="showShipmentAccordion">
-      <accordion [items]="shipmentTags"></accordion>
+      <accordion-with-tab [items]="shipmentTags"></accordion-with-tab>
     </div>
 
     <hr>

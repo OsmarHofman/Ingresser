@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AccordionComponent } from '../app/components/accordion/accordion';
-import { AccordionItem } from './components/accordion/accordion-item';
+import { AccordionItem } from './components/accordion/model/accordion-item';
 import { CommonModule } from '@angular/common';
 import { ShipmentBaseTag } from './model/xml-base-tags/shipment';
-import { Refnum } from './model/refnum';
+import { AccordionWithTabComponent } from './components/accordion/accordion-with-tab';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    AccordionComponent,
+    AccordionWithTabComponent,
     CommonModule,
   ],
   templateUrl: './app.component.html',
@@ -23,10 +22,6 @@ export class AppComponent {
   title = 'Ingresser';
 
   public shipmentTags: AccordionItem[] = [];
-
-  public shipmentRefnums: Refnum[] = [
-    new Refnum('EMBDEV', "XID", 'ABC')
-  ];
 
   showShipmentAccordion: boolean = false;
 
@@ -40,8 +35,17 @@ export class AppComponent {
   }
 
   private createBaseShipmentTags() {
-    const shipmentHeader = new AccordionItem('ShipmentHeader', ShipmentBaseTag.ShipmentHeader);
-    this.shipmentTags.push(shipmentHeader);
+
+    this.shipmentTags.push(new AccordionItem(
+      'ShipmentHeaderInputComponent',
+      'ShipmentHeader',
+      ShipmentBaseTag.ShipmentHeader)
+    );
+
+    this.shipmentTags.push(new AccordionItem('CostInputContainerComponent',
+      'Custos',
+      '')
+    );
   }
 
   public deleteShipment() {
