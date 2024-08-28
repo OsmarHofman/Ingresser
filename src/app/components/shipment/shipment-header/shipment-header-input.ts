@@ -32,7 +32,8 @@ export class ShipmentHeaderInputComponent {
             travelStatus: [''],
             emissionStatus: [''],
             shipmentTaker: [''],
-            shipmentCarrier: ['']
+            shipmentCarrier: [''],
+            shipmentRefnums: ['']
         });
     }
 

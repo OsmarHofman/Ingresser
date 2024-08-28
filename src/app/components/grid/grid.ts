@@ -1,12 +1,13 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, OnDestroy } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { MatTableDataSource, MatTableModule } from '@angular/material/table'
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Refnum, RefnumGridColumns } from '../../model/refnum'
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'grid',
@@ -20,26 +21,52 @@ import { Refnum, RefnumGridColumns } from '../../model/refnum'
     MatLabel,
     MatInputModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: GridComponent
+    }
+  ]
 })
-export class GridComponent {
+export class GridComponent implements ControlValueAccessor, OnDestroy {
   @Input() headerLabel: string = '';
 
+  //#region Grid properties
 
   displayedColumns: string[] = RefnumGridColumns.map((col) => col.key)
   columnsSchema: any = RefnumGridColumns;
   dataSource = new MatTableDataSource<Refnum>()
   valid: any = {}
 
-  constructor(public dialog: MatDialog) { }
+  //#endregion
+
+  //#region Form properties
+
+  gridForm: FormGroup = this.formBuilder.group({
+    rowValue: [''],
+  });
+
+  onTouched: Function = () => { };
+
+  onChangeSubs: Subscription[] = [];
+
+  //#endregion
+
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder) { }
 
   public ngOnInit() {
 
   }
 
+  //#region Grid methods
+
   public editRow(row: Refnum) {
     row.isEdit = false;
+    this.gridForm.controls['rowValue'].setValue(row);
   }
 
   public addRow() {
@@ -61,11 +88,17 @@ export class GridComponent {
     }
   }
 
-  public inputHandler(e: any, xid: string, key: string) {
-    if (!this.valid[xid]) {
-      this.valid[xid] = {}
+  public inputHandler(e: any, element: any, key: string) {
+    if (element && key) {
+      const property = element[key];
+
+      if (!this.valid[property]) {
+        this.valid[property] = {}
+      }
+
+      this.valid[property][key] = e.target.validity.valid
     }
-    this.valid[xid][key] = e.target.validity.valid
+
   }
 
   public disableSubmit(xid: string) {
@@ -89,4 +122,38 @@ export class GridComponent {
       isSelected: event.checked,
     }))
   }
+
+  //#endregion
+
+  //#region Form methods
+
+  ngOnDestroy(): void {
+    this.onChangeSubs.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
+
+  registerOnChange(onChange: any): void {
+    const sub = this.gridForm.valueChanges.subscribe(onChange);
+    this.onChangeSubs.push(sub);
+  }
+
+  registerOnTouched(onTouched: any): void {
+    this.onTouched = onTouched;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    if (isDisabled)
+      this.gridForm.disable();
+    else
+      this.gridForm.enable();
+  }
+
+  writeValue(value: any): void {
+    if (value)
+      this.gridForm.setValue(value, { emitEvent: false });
+  }
+
+  //#endregion
+
 }

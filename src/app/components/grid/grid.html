@@ -1,6 +1,6 @@
 <fieldset class="input-container">
   <legend>{{headerLabel}}</legend>
-  
+
   <div>
     <button class="button-add-row" mat-button (click)="addRow()">
       Adicionar nova linha
@@ -11,7 +11,7 @@
 
   </div>
 
-  <table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="dataSource" [formGroup]="gridForm">
     <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
       <th mat-header-cell *matHeaderCellDef [ngSwitch]="col.key">
         <span *ngSwitchCase="'isSelected'">
@@ -46,10 +46,11 @@
           </div>
           <mat-form-field class="form-input" *ngSwitchDefault>
             <input matInput [required]="col.required" [pattern]="col.pattern" [type]="col.type"
-              [(ngModel)]="element[col.key]" (change)="inputHandler($event, element.xid, col.key)" />
+              [(ngModel)]="element[col.key]" formControlName="rowValue"/>
           </mat-form-field>
         </div>
       </td>
+      <!-- (change)="inputHandler($event, element, col.key)" -->
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
