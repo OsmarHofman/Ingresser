@@ -1,6 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,6 +12,9 @@ import { Subscription } from 'rxjs';
     standalone: true,
     imports: [
         MatCardModule,
+        MatFormField,
+        MatLabel,
+        MatInputModule,
         ReactiveFormsModule
     ],
     providers: [

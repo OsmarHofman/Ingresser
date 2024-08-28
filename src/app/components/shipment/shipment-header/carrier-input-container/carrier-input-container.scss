@@ -4,16 +4,15 @@
     border-style: solid;
     border-radius: 4px;
     margin: 10px;
-    width: 70%;
 }
 
-mat-card-header {
-    font-size: large;
-    align-content: flex-start;
+legend {
     padding: 8px;
-    margin-bottom: 5px;
+    margin: 5px 0px;
+    float:none;
+    width: auto;
 }
 
-.mat-mdc-card-content {
-    padding-bottom: 0px !important;
+mat-form-field {
+    margin-left: 15px;
 }
