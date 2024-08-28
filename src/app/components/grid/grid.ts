@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { MatTableDataSource, MatTableModule } from '@angular/material/table'
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -24,6 +24,9 @@ import { Refnum, RefnumGridColumns } from '../../model/refnum'
   ],
 })
 export class GridComponent {
+  @Input() headerLabel: string = '';
+
+
   displayedColumns: string[] = RefnumGridColumns.map((col) => col.key)
   columnsSchema: any = RefnumGridColumns;
   dataSource = new MatTableDataSource<Refnum>()

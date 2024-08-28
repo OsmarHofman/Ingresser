@@ -1,3 +1,19 @@
+.input-container {
+    border: 2px;
+    border-color: rgb(13, 110, 253);
+    border-style: solid;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+legend {
+    font-size: x-large;
+    padding: 2px;
+    margin-left: 5px;
+    float: none;
+    width: auto;
+}
+
 table {
     width: 90%;
     margin: auto;
