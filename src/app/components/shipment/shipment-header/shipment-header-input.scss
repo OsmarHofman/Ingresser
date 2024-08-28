@@ -1,13 +1,13 @@
 .inputs {
-    margin-top: 20px;
-    margin-left: 0px;
-}
-
-.refnum-description {
-    font-size: large;
-    margin: 0px 10px;
+    margin: 20px 0px;
 }
 
 hr {
     height: 6px;
+    opacity: 0.5;
+    margin: 10px;
+}
+
+mat-form-field {
+    height: fit-content;
 }

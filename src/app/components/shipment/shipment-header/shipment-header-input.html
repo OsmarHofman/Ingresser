@@ -1,41 +1,44 @@
 <form [formGroup]="shipmentHeaderForm" (ngSubmit)="submitForm()">
 
   <div class="row inputs">
-    <mat-form-field appearance="outline" fxFill id="domainName" class="col-md-1">
+    <mat-form-field appearance="outline" fxFill id="domainName" class="col-md-2" subscriptSizing="dynamic">
       <mat-label>DomainName</mat-label>
       <input matInput #input placeholder="EMBDEV" formControlName="shipmentDomainName" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" fxFill class="col-md-1">
+    <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
       <mat-label>Xid</mat-label>
       <input matInput #input placeholder="XID" formControlName="shipmentXid" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" fxFill class="col-md-2">
+    <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
       <mat-label>Status da Viagem</mat-label>
       <input matInput #input placeholder="PLANEJADO" formControlName="travelStatus" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" fxFill class="col-md-2">
+    <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
       <mat-label>Status da Emissão</mat-label>
       <input matInput #input placeholder="PRE_EMISSAO_ENVIADA" formControlName="emissionStatus" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" fxFill class="col-md-2">
+    <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
       <mat-label>Xid do Tomador</mat-label>
       <input matInput #input placeholder="ORG-8027-30018" formControlName="shipmentTaker" />
     </mat-form-field>
 
-
   </div>
+
+  <hr>
+
   <div class="row g-3">
     <div class="col-md-4">
       <carrier-input-container formControlName="shipmentCarrier" />
     </div>
   </div>
 
-  <button type="submit" class="btn btn-primary">Submit de teste</button>
+  <button style="margin: 20px;" type="submit" class="btn btn-primary">Submit de teste</button>
 
   <hr>
+
   <grid [headerLabel]="'Refnums'"></grid>
 </form>

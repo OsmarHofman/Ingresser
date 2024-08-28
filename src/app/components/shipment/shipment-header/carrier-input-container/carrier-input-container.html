@@ -3,16 +3,15 @@
   <fieldset class="input-container">
     <legend>Transportador</legend>
 
-    <mat-form-field appearance="outline" fxFill>
+    <mat-form-field appearance="outline" fxFill subscriptSizing="dynamic">
       <mat-label>DomainName</mat-label>
       <input matInput #input id="carrierDomainName" placeholder="EMBDEV" formControlName="domainName"
         (blur)="onTouched()" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" fxFill>
+    <mat-form-field appearance="outline" fxFill subscriptSizing="dynamic">
       <mat-label>Xid</mat-label>
       <input matInput #input id="carrierXid" placeholder="XID" formControlName="xid" (blur)="onTouched()" />
     </mat-form-field>
-
   </fieldset>
 </div>
