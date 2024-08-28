@@ -1,47 +1,54 @@
-<div class="row g-3">
+<form [formGroup]="shipmentHeaderForm" (ngSubmit)="submitForm()">
 
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="floatingInput" placeholder="EMBDEV">
-      <label for="floatingInput">DomainName</label>
+  <div class="row g-3">
+
+    <div class="col-md-2">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control input-sm" id="domainName" placeholder="EMBDEV"
+          formControlName="shipmentDomainName">
+        <label for="domainName">DomainName</label>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control input-sm" id="xid" placeholder="Xid">
+        <label for="xid">Xid</label>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control input-sm" id="travelStatus" placeholder="Planejado">
+        <label for="travelStatus">Status da Viagem</label>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control input-sm" id="emissionStatus" placeholder="Pre_emissao_enviada">
+        <label for="emissionStatus">Status da Emissão</label>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control input-sm" id="shipmentTaker" placeholder="Pre_emissao_enviada">
+        <label for="shipmentTaker">Xid do Tomador</label>
+      </div>
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <carrier-input-container formControlName="shipmentCarrier"/>
     </div>
   </div>
 
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="floatingInput" placeholder="Xid">
-      <label for="floatingInput">Xid</label>
-    </div>
-  </div>
+  <button type="submit" class="btn btn-primary">Submit de teste</button>
 
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="floatingInput" placeholder="Planejado">
-      <label for="floatingInput">Status da Viagem</label>
-    </div>
+  <div class="refnum-description">
+    <hr>
+    Refnums
   </div>
-
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="floatingInput" placeholder="Pre_emissao_enviada">
-      <label for="floatingInput">Status da Emissão</label>
-    </div>
-  </div>
-
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="floatingInput" placeholder="Pre_emissao_enviada">
-      <label for="floatingInput">Xid do Tomador</label>
-    </div>
-  </div>
-</div>
-<div class="row g-3">
-  <div class="col-md-4">
-    <carrier-input-container/>
-  </div>
-</div>
-<div class="refnum-description">
-  <hr>
-  Refnums
-</div>
-<grid></grid>
+  <grid></grid>
+</form>
