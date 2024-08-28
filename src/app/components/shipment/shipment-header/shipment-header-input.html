@@ -1,46 +1,36 @@
 <form [formGroup]="shipmentHeaderForm" (ngSubmit)="submitForm()">
 
-  <div class="row g-3">
+  <div class="row inputs">
+    <mat-form-field appearance="outline" fxFill id="domainName" class="col-md-1">
+      <mat-label>DomainName</mat-label>
+      <input matInput #input placeholder="EMBDEV" formControlName="shipmentDomainName" />
+    </mat-form-field>
 
-    <div class="col-md-2">
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control input-sm" id="domainName" placeholder="EMBDEV"
-          formControlName="shipmentDomainName">
-        <label for="domainName">DomainName</label>
-      </div>
-    </div>
+    <mat-form-field appearance="outline" fxFill class="col-md-1">
+      <mat-label>Xid</mat-label>
+      <input matInput #input placeholder="XID" formControlName="shipmentXid" />
+    </mat-form-field>
 
-    <div class="col-md-2">
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control input-sm" id="xid" placeholder="Xid">
-        <label for="xid">Xid</label>
-      </div>
-    </div>
+    <mat-form-field appearance="outline" fxFill class="col-md-2">
+      <mat-label>Status da Viagem</mat-label>
+      <input matInput #input placeholder="PLANEJADO" formControlName="travelStatus" />
+    </mat-form-field>
 
-    <div class="col-md-2">
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control input-sm" id="travelStatus" placeholder="Planejado">
-        <label for="travelStatus">Status da Viagem</label>
-      </div>
-    </div>
+    <mat-form-field appearance="outline" fxFill class="col-md-2">
+      <mat-label>Status da Emissão</mat-label>
+      <input matInput #input placeholder="PRE_EMISSAO_ENVIADA" formControlName="emissionStatus" />
+    </mat-form-field>
 
-    <div class="col-md-2">
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control input-sm" id="emissionStatus" placeholder="Pre_emissao_enviada">
-        <label for="emissionStatus">Status da Emissão</label>
-      </div>
-    </div>
+    <mat-form-field appearance="outline" fxFill class="col-md-2">
+      <mat-label>Xid do Tomador</mat-label>
+      <input matInput #input placeholder="ORG-8027-30018" formControlName="shipmentTaker" />
+    </mat-form-field>
 
-    <div class="col-md-2">
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control input-sm" id="shipmentTaker" placeholder="Pre_emissao_enviada">
-        <label for="shipmentTaker">Xid do Tomador</label>
-      </div>
-    </div>
+
   </div>
   <div class="row g-3">
     <div class="col-md-4">
-      <carrier-input-container formControlName="shipmentCarrier"/>
+      <carrier-input-container formControlName="shipmentCarrier" />
     </div>
   </div>
 
