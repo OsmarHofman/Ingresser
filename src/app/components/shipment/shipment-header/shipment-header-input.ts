@@ -3,7 +3,7 @@ import { CarrierInputContainerComponent } from "./carrier-input-container/carrie
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { RefnumGridComponent } from '../../grid/refnum-grid/refnum-grid';
+import { RefnumTableComponent } from '../../collections/refnum-table/refnum-table';
 
 @Component({
     selector: 'shipment-header-input',
@@ -11,7 +11,7 @@ import { RefnumGridComponent } from '../../grid/refnum-grid/refnum-grid';
     styleUrl: 'shipment-header-input.scss',
     standalone: true,
     imports: [
-        RefnumGridComponent,
+        RefnumTableComponent,
         CarrierInputContainerComponent,
         ReactiveFormsModule,
         MatInputModule,

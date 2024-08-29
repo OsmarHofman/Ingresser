@@ -8,9 +8,9 @@ import { Refnum } from '../../../model/refnum';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-    selector: 'refnum-grid',
-    templateUrl: './refnum-grid.html',
-    styleUrls: ['./refnum-grid.scss'],
+    selector: 'refnum-table',
+    templateUrl: './refnum-table.html',
+    styleUrls: ['./refnum-table.scss'],
     standalone: true,
     imports: [
         FormsModule,
@@ -25,12 +25,12 @@ import { MatCheckbox } from '@angular/material/checkbox';
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: RefnumGridComponent
+            useExisting: RefnumTableComponent
         }
     ]
 })
 
-export class RefnumGridComponent implements OnInit, ControlValueAccessor, OnDestroy {
+export class RefnumTableComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 
