@@ -1,22 +1,24 @@
-<div class="row g-3">
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="baseCost" placeholder="EMBDEV">
-      <label for="baseCost">Custo base</label>
+<div [formGroup]="costInputForm" class="inputs">
+  <br>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" fxFill id="baseCost" class="col-md-2" subscriptSizing="dynamic">
+        <mat-label>Custo Base</mat-label>
+        <input matInput #input placeholder="14.32" formControlName="baseCost" />
+      </mat-form-field>
     </div>
   </div>
-
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="acessorialCosts" placeholder="EMBDEV">
-      <label for="acessorialCosts">Custos acessórios</label>
+  <div class="row g-3">
+    <div class="col-md-8">
+      <cost-table></cost-table>
     </div>
   </div>
-
-  <div class="col-md-2">
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control input-sm" id="totalCost" placeholder="EMBDEV">
-      <label for="totalCost">Custo Total</label>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" fxFill id="totalCost" class="col-md-2" subscriptSizing="dynamic">
+        <mat-label>Custo Total</mat-label>
+        <input matInput #input placeholder="14.32" formControlName="totalCost" />
+      </mat-form-field>
     </div>
   </div>
 </div>

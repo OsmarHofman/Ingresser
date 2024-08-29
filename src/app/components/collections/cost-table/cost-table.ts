@@ -4,13 +4,12 @@ import { FormBuilder, FormControl, FormGroup, FormArray, FormsModule, ReactiveFo
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
-import { Refnum } from '../../../model/refnum';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-    selector: 'refnum-table',
-    templateUrl: './refnum-table.html',
-    styleUrls: ['./refnum-table.scss'],
+    selector: 'cost-table',
+    templateUrl: './cost-table.html',
+    styleUrls: ['./cost-table.scss'],
     standalone: true,
     imports: [
         FormsModule,
@@ -25,12 +24,12 @@ import { MatCheckbox } from '@angular/material/checkbox';
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: RefnumTableComponent
+            useExisting: CostTableComponent
         }
     ]
 })
 
-export class RefnumTableComponent implements OnInit, ControlValueAccessor, OnDestroy {
+export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 
@@ -40,22 +39,21 @@ export class RefnumTableComponent implements OnInit, ControlValueAccessor, OnDes
 
     selectedRows: number[] = [];
 
-    get refnums() {
-        return this.tableForm.get('Refnums') as FormArray;
+    get costs() {
+        return this.tableForm.get('Costs') as FormArray;
     }
 
     ngOnInit() {
         this.tableForm = this.formBuilder.group({
-            Refnums: this.formBuilder.array([]),
+            Costs: this.formBuilder.array([]),
         });
     }
 
     addRow() {
-        this.refnums.push(
+        this.costs.push(
             this.formBuilder.group({
-                domainName: new FormControl(),
                 xid: new FormControl(),
-                refnumValue: new FormControl(),
+                costValue: new FormControl(),
             })
         );
     }
@@ -63,7 +61,7 @@ export class RefnumTableComponent implements OnInit, ControlValueAccessor, OnDes
     removeRow() {
         this.selectedRows.sort((a, b) => b - a)
             .forEach(rowIndex => {
-                this.refnums.removeAt(rowIndex);
+                this.costs.removeAt(rowIndex);
             });
 
         this.selectedRows = [];

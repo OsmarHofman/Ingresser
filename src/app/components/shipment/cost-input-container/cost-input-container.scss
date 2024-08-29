@@ -1,28 +1,14 @@
-.input-container {
-    border: 2px;
-    border-color: rgb(13, 110, 253);
-    border-style: solid;
-    border-radius: 4px;
+.inputs {
+    margin: 0px 0px 20px 0px;
+}
+
+hr {
+    height: 6px;
+    opacity: 0.5;
     margin: 10px;
-    width: 80%;
 }
 
-mat-card-header {
-    font-size: large;
-    align-content: flex-start;
-    padding: 8px;
-    margin-bottom: 5px;
-}
-
-.mat-mdc-card-content {
-    padding-bottom: 0px !important;
-}
-
-.mb-3 {
-    margin-top: 20px;
-    margin-left: 10px;
-}
-
-.input-sm {
-    border-color: rgb(13, 110, 253);
+mat-form-field {
+    margin: 15px 0px 15px 10px;
+    height: fit-content;
 }

@@ -1,13 +1,13 @@
 <div class="row">
-  <fieldset class="input-container col-md-6" >
-    <legend>Refnums</legend>
+  <fieldset class="input-container col-md-6">
+    <legend>Custos Acessórios</legend>
 
     <form [formGroup]="tableForm">
       <table>
         <tbody>
-          <ng-container formArrayName="Refnums">
+          <ng-container formArrayName="Costs">
             <ng-container *ngFor="
-              let control of refnums.controls;
+              let control of costs.controls;
               let i = index
             ">
 
@@ -15,22 +15,16 @@
                 <td class="col-md-1">
                   <mat-checkbox class="checkbox" (change)="markRowAsSelected(i)"></mat-checkbox>
                 </td>
-                <td class="col-md-4">
-                  <mat-form-field appearance="outline" fxFill id="domainName" subscriptSizing="dynamic">
-                    <mat-label>DomainName</mat-label>
-                    <input matInput #input placeholder="EMBDEV" formControlName="domainName" />
-                  </mat-form-field>
-                </td>
-                <td class="col-md-4">
+                <td class="col-md-5">
                   <mat-form-field appearance="outline" fxFill id="xid" subscriptSizing="dynamic">
                     <mat-label>Xid</mat-label>
-                    <input matInput #input placeholder="XID" formControlName="xid" />
+                    <input matInput #input placeholder="DIARIA" formControlName="xid" />
                   </mat-form-field>
                 </td>
-                <td class="col-md-3">
-                  <mat-form-field appearance="outline" fxFill id="refnumValue" subscriptSizing="dynamic">
+                <td class="col-md-5">
+                  <mat-form-field appearance="outline" fxFill id="costValue" subscriptSizing="dynamic">
                     <mat-label>Valor</mat-label>
-                    <input matInput #input placeholder="CLL_..." formControlName="refnumValue" />
+                    <input matInput #input placeholder="14.23" formControlName="costValue"/>
                   </mat-form-field>
                 </td>
               </tr>
