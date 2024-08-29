@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { GridComponent } from '../../grid/grid';
 import { CarrierInputContainerComponent } from "./carrier-input-container/carrier-input-container";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { RefnumGridComponent } from '../../grid/refnum-grid/refnum-grid';
 
 @Component({
     selector: 'shipment-header-input',
@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
     styleUrl: 'shipment-header-input.scss',
     standalone: true,
     imports: [
-        GridComponent,
+        RefnumGridComponent,
         CarrierInputContainerComponent,
         ReactiveFormsModule,
         MatInputModule,

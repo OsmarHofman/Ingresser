@@ -1,0 +1,45 @@
+<fieldset class="input-container">
+  <legend>Refnums</legend>
+
+  <form [formGroup]="tableForm" class="form-group">
+    <table>
+      <tbody>
+        <ng-container formArrayName="Refnums">
+          <ng-container *ngFor="
+              let control of Refnums.controls;
+              let i = index
+            ">
+
+            <tr [formGroupName]="i" class="row">
+              <td class="col-md-1">
+                <mat-checkbox class="checkbox" (change)="markRowAsSelected(i)"></mat-checkbox>
+              </td>
+              <td class="col-md-4">
+                <mat-form-field appearance="outline" fxFill id="domainName" subscriptSizing="dynamic">
+                  <mat-label>DomainName</mat-label>
+                  <input matInput #input placeholder="EMBDEV" formControlName="domainName" />
+                </mat-form-field>
+              </td>
+              <td class="col-md-4">
+                <mat-form-field appearance="outline" fxFill id="xid" subscriptSizing="dynamic">
+                  <mat-label>Xid</mat-label>
+                  <input matInput #input placeholder="XID" formControlName="xid" />
+                </mat-form-field>
+              </td>
+              <td class="col-md-3">
+                <mat-form-field appearance="outline" fxFill id="refnumValue" subscriptSizing="dynamic">
+                  <mat-label>Valor</mat-label>
+                  <input matInput #input placeholder="CLL_..." formControlName="refnumValue" />
+                </mat-form-field>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+    <button class="btn btn-primary btn-addRow" (click)="addRow()">Adicionar nova linha</button>
+    <button class="btn btn-primary btn-removeRow" (click)="removeRow()">Remover linhas selecionadas</button>
+
+  </form>
+
+</fieldset>

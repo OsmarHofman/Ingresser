@@ -1,0 +1,28 @@
+.input-container {
+  border: 2px;
+  border-color: rgb(13, 110, 253);
+  border-style: solid;
+  border-radius: 4px;
+  margin: 0px 10px;
+}
+
+legend {
+  font-size: x-large;
+  padding: 2px;
+  margin-left: 5px;
+  float: none;
+  width: auto;
+}
+
+.form-group {
+  margin-left: 15px;
+}
+
+.btn-addRow,
+.btn-removeRow {
+  margin: 10px 5px;
+}
+
+mat-form-field {
+  margin-bottom: 15px;
+}
