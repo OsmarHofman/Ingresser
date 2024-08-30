@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { ControlValueAccessor, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,9 +8,9 @@ import { CostTableComponent } from './cost-table/cost-table';
 
 
 @Component({
-    selector: 'cost-input-container',
-    templateUrl: 'cost-input-container.html',
-    styleUrl: 'cost-input-container.scss',
+    selector: 'cost-input',
+    templateUrl: 'cost-input.html',
+    styleUrl: 'cost-input.scss',
     standalone: true,
     imports: [
         MatCardModule,
@@ -20,9 +20,16 @@ import { CostTableComponent } from './cost-table/cost-table';
         MatFormField,
         MatLabel,
     ],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: CostInputComponent
+        }
+    ]
 })
 
-export class CostInputContainerComponent implements ControlValueAccessor, OnDestroy {
+export class CostInputComponent implements ControlValueAccessor, OnDestroy {
 
     costInputForm: FormGroup = this.formBuilder.group({
         baseCost: [''],

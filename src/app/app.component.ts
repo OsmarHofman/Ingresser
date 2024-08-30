@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ShipmentBaseTag } from './model/xml-base-tags/shipment';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ShipmentHeaderAccordionComponent } from './components/segments/shipment-header/shipment-header-accordion';
-import { AccordionItem } from './components/segments/shipment-header/model/accordion-item';
+import { CostAccordionComponent } from './components/segments/cost/cost-accordion';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +12,9 @@ import { AccordionItem } from './components/segments/shipment-header/model/accor
     RouterOutlet,
     ShipmentHeaderAccordionComponent,
     CommonModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    CostAccordionComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -27,6 +27,7 @@ export class AppComponent {
 
   form: FormGroup = this.formBuilder.group({
     shipment: [''],
+    cost: ['']
   });
 
   submitForm(): void {
@@ -37,36 +38,16 @@ export class AppComponent {
 
   title = 'Ingresser';
 
-  public shipmentTags: AccordionItem[] = [];
-
   showShipmentAccordion: boolean = false;
 
   public createShipment() {
 
-    this.shipmentTags = [];
-
-    this.createBaseShipmentTags();
 
     this.showShipmentAccordion = true;
   }
 
-  private createBaseShipmentTags() {
-
-    this.shipmentTags.push(new AccordionItem(
-      'ShipmentHeaderInputComponent',
-      'ShipmentHeader',
-      ShipmentBaseTag.ShipmentHeader)
-    );
-
-    this.shipmentTags.push(new AccordionItem('CostInputContainerComponent',
-      'Custos',
-      '')
-    );
-  }
-
   public deleteShipment() {
     if (confirm('Tem certeza que deseja remover esse embarque?')) {
-      this.shipmentTags = [];
       this.showShipmentAccordion = false;
     }
   }

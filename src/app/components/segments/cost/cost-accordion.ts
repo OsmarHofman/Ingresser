@@ -2,28 +2,28 @@ import { Component, OnDestroy } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ShipmentHeaderTabComponent } from './tab/shipment-header-tab';
+import { CostTabComponent } from './tab/cost-tab';
 
 @Component({
-    selector: 'shipment-header-accordion',
-    templateUrl: 'shipment-header-accordion.html',
-    styleUrl: 'shipment-header-accordion.scss',
+    selector: 'cost-accordion',
+    templateUrl: 'cost-accordion.html',
+    styleUrl: 'cost-accordion.scss',
     standalone: true,
     imports: [
         CdkAccordionModule,
-        ShipmentHeaderTabComponent,
+        CostTabComponent,
         ReactiveFormsModule
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: ShipmentHeaderAccordionComponent
+            useExisting: CostAccordionComponent
         }
     ]
 })
 
-export class ShipmentHeaderAccordionComponent implements ControlValueAccessor, OnDestroy {
+export class CostAccordionComponent implements ControlValueAccessor, OnDestroy {
 
     accordionForm: FormGroup = this.formBuilder.group({
         tab: ['']

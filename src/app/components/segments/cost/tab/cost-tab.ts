@@ -6,41 +6,37 @@ import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ShipmentBaseTag } from '../../../../model/xml-base-tags/shipment';
-import { ShipmentHeaderInputComponent } from './input/shipment-header-input';
+import { CostInputComponent } from "./cost-input/cost-input";
 
 @Component({
-    selector: 'shipment-header-tab',
-    templateUrl: 'shipment-header-tab.html',
-    styleUrl: 'shipment-header-tab.scss',
+    selector: 'cost-tab',
+    templateUrl: 'cost-tab.html',
+    styleUrl: 'cost-tab.scss',
     standalone: true,
     imports: [
         CommonModule,
         MatTabsModule,
-        ShipmentHeaderInputComponent,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CostInputComponent
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: ShipmentHeaderTabComponent
+            useExisting: CostTabComponent
         }
     ]
 })
 
-export class ShipmentHeaderTabComponent implements ControlValueAccessor, OnDestroy {
+export class CostTabComponent implements ControlValueAccessor, OnDestroy {
 
     //#region Form
 
     tabForm: FormGroup = this.formBuilder.group({
         inputContent: [''],
-        xmlContent: [''],
     });
 
-    constructor(private formBuilder: FormBuilder) { 
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentHeader);
-    }
+    constructor(private formBuilder: FormBuilder) { }
 
     onTouched: Function = () => { };
 
