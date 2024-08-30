@@ -26,8 +26,6 @@ import { ShipmentHeaderTabComponent } from './tab/shipment-header-tab';
 
 export class ShipmentHeaderAccordionComponent implements ControlValueAccessor, OnDestroy {
 
-    @Input() items: AccordionItem[] = [];
-
     accordionForm: FormGroup = this.formBuilder.group({
         tab: ['']
     });

@@ -1,15 +1,13 @@
 import {
     Component,
-    Input,
     OnDestroy,
-    inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { InputComponentsService } from '../../../../service/input-components-service';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ShipmentHeaderInputComponent } from './shipment-header-input/shipment-header-input';
+import { ShipmentBaseTag } from '../../../../model/xml-base-tags/shipment';
 
 @Component({
     selector: 'shipment-header-tab',
@@ -40,7 +38,9 @@ export class ShipmentHeaderTabComponent implements ControlValueAccessor, OnDestr
         xmlContent: [''],
     });
 
-    constructor(private formBuilder: FormBuilder) { }
+    constructor(private formBuilder: FormBuilder) { 
+        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentHeader);
+    }
 
     onTouched: Function = () => { };
 
@@ -74,22 +74,4 @@ export class ShipmentHeaderTabComponent implements ControlValueAccessor, OnDestr
     }
 
     //#endregion
-
-    @Input() inputComponent: string = '';
-    @Input() xmlContent: string = '';
-
-    public hasXmlContent(): boolean {
-        return (this.xmlContent) ? true : false;
-    }
-
-    private componentList = inject(InputComponentsService).getComponents();
-
-    get currentInputComponent() {
-        const currentComponent = this.componentList.find(component => component.component.name.includes(this.inputComponent));
-
-        if (currentComponent)
-            return currentComponent;
-
-        return this.componentList[0];
-    }
 }
