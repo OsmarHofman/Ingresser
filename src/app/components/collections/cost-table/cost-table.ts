@@ -40,12 +40,12 @@ export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestr
     selectedRows: number[] = [];
 
     get costs() {
-        return this.tableForm.get('Costs') as FormArray;
+        return this.tableForm.get('costs') as FormArray;
     }
 
     ngOnInit() {
         this.tableForm = this.formBuilder.group({
-            Costs: this.formBuilder.array([]),
+            costs: this.formBuilder.array([]),
         });
     }
 

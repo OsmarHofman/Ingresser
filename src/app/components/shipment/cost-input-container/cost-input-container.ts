@@ -27,16 +27,14 @@ export class CostInputContainerComponent implements ControlValueAccessor, OnDest
     costInputForm: FormGroup = this.formBuilder.group({
         baseCost: [''],
         acessorialCost: [''],
-        totalCost: ['']
+        totalCost: [''],
     });
 
     onTouched: Function = () => { };
 
     onChangeSubs: Subscription[] = [];
 
-
     constructor(private formBuilder: FormBuilder) { }
-
 
     ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
@@ -64,5 +62,4 @@ export class CostInputContainerComponent implements ControlValueAccessor, OnDest
         if (value)
             this.costInputForm.setValue(value, { emitEvent: false });
     }
-
 }

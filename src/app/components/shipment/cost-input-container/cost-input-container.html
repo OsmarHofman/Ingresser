@@ -4,20 +4,20 @@
     <div class="col-md-6">
       <mat-form-field appearance="outline" fxFill id="baseCost" class="col-md-2" subscriptSizing="dynamic">
         <mat-label>Custo Base</mat-label>
-        <input matInput #input placeholder="14.32" formControlName="baseCost" />
+        <input matInput type="number" class="base-cost" placeholder="14.32" formControlName="baseCost" />
       </mat-form-field>
     </div>
   </div>
   <div class="row g-3">
     <div class="col-md-8">
-      <cost-table></cost-table>
+      <cost-table formControlName="acessorialCost"></cost-table>
     </div>
   </div>
   <div class="row g-3">
     <div class="col-md-6">
       <mat-form-field appearance="outline" fxFill id="totalCost" class="col-md-2" subscriptSizing="dynamic">
         <mat-label>Custo Total</mat-label>
-        <input matInput #input placeholder="14.32" formControlName="totalCost" />
+        <input matInput type="number" class="base-cost" placeholder="14.32" formControlName="totalCost" />
       </mat-form-field>
     </div>
   </div>

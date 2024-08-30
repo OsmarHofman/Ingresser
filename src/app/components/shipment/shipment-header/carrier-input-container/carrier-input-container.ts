@@ -68,4 +68,8 @@ export class CarrierInputContainerComponent implements ControlValueAccessor, OnD
             this.carrierInputForm.setValue(value, { emitEvent: false });
     }
 
+
+    submitForm(): void {
+        console.log('Formulario:', this.carrierInputForm.value);
+    }
 }

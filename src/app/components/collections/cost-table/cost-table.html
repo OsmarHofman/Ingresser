@@ -5,7 +5,7 @@
     <form [formGroup]="tableForm">
       <table>
         <tbody>
-          <ng-container formArrayName="Costs">
+          <ng-container formArrayName="costs">
             <ng-container *ngFor="
               let control of costs.controls;
               let i = index
@@ -24,7 +24,7 @@
                 <td class="col-md-5">
                   <mat-form-field appearance="outline" fxFill id="costValue" subscriptSizing="dynamic">
                     <mat-label>Valor</mat-label>
-                    <input matInput #input placeholder="14.23" formControlName="costValue"/>
+                    <input matInput #input placeholder="14.23" formControlName="costValue" />
                   </mat-form-field>
                 </td>
               </tr>

@@ -4,7 +4,6 @@ import { FormBuilder, FormControl, FormGroup, FormArray, FormsModule, ReactiveFo
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
-import { Refnum } from '../../../model/refnum';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
