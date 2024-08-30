@@ -1,4 +1,4 @@
-<form [formGroup]="shipmentHeaderForm" (ngSubmit)="submitForm()">
+<form [formGroup]="shipmentHeaderForm">
   <br>
   <div class="row inputs">
     <mat-form-field appearance="outline" fxFill id="domainName" class="col-md-2" subscriptSizing="dynamic">
@@ -35,8 +35,6 @@
       <carrier-input-container formControlName="shipmentCarrier" />
     </div>
   </div>
-
-  <button style="margin: 20px;" type="submit" class="btn btn-primary">Submit de teste</button>
 
   <hr>
 

@@ -4,6 +4,7 @@ import { AccordionItem } from './components/accordion/model/accordion-item';
 import { CommonModule } from '@angular/common';
 import { ShipmentBaseTag } from './model/xml-base-tags/shipment';
 import { AccordionWithTabComponent } from './components/accordion/accordion-with-tab';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +13,28 @@ import { AccordionWithTabComponent } from './components/accordion/accordion-with
     RouterOutlet,
     AccordionWithTabComponent,
     CommonModule,
+    ReactiveFormsModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  schemas: []
 })
 
 export class AppComponent {
+
+  constructor(private formBuilder: FormBuilder) { }
+
+  //#region Form
+
+  form: FormGroup = this.formBuilder.group({
+    shipment: [''],
+  });
+
+  submitForm(): void {
+    console.log('Formulario:', this.form.value);
+  }
+
+  //#endregion
+
   title = 'Ingresser';
 
   public shipmentTags: AccordionItem[] = [];
