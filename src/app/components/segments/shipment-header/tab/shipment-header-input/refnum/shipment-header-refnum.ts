@@ -8,8 +8,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
     selector: 'refnum-table',
-    templateUrl: './refnum-table.html',
-    styleUrls: ['./refnum-table.scss'],
+    templateUrl: './shipment-header-refnum.html',
+    styleUrls: ['./shipment-header-refnum.scss'],
     standalone: true,
     imports: [
         FormsModule,
@@ -24,12 +24,12 @@ import { MatCheckbox } from '@angular/material/checkbox';
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: RefnumTableComponent
+            useExisting: ShipmentHeaderRefnumComponent
         }
     ]
 })
 
-export class RefnumTableComponent implements OnInit, ControlValueAccessor, OnDestroy {
+export class ShipmentHeaderRefnumComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 

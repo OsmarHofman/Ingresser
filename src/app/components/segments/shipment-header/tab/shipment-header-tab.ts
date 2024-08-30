@@ -6,15 +6,15 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ShipmentHeaderInputComponent } from '../shipment/shipment-header/shipment-header-input';
-import { InputComponentsService } from '../../service/input-components-service';
+import { InputComponentsService } from '../../../../service/input-components-service';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ShipmentHeaderInputComponent } from './shipment-header-input/shipment-header-input';
 
 @Component({
-    selector: 'tab',
-    templateUrl: 'tab.html',
-    styleUrl: 'tab.scss',
+    selector: 'shipment-header-tab',
+    templateUrl: 'shipment-header-tab.html',
+    styleUrl: 'shipment-header-tab.scss',
     standalone: true,
     imports: [
         CommonModule,
@@ -26,12 +26,12 @@ import { Subscription } from 'rxjs';
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: TabComponent
+            useExisting: ShipmentHeaderTabComponent
         }
     ]
 })
 
-export class TabComponent implements ControlValueAccessor, OnDestroy {
+export class ShipmentHeaderTabComponent implements ControlValueAccessor, OnDestroy {
 
     //#region Form
 

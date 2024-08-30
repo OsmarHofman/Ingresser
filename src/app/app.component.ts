@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AccordionItem } from './components/accordion/model/accordion-item';
 import { CommonModule } from '@angular/common';
 import { ShipmentBaseTag } from './model/xml-base-tags/shipment';
-import { AccordionWithTabComponent } from './components/accordion/accordion-with-tab';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ShipmentHeaderAccordionComponent } from './components/segments/shipment-header/shipment-header-accordion';
+import { AccordionItem } from './components/segments/shipment-header/model/accordion-item';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    AccordionWithTabComponent,
+    ShipmentHeaderAccordionComponent,
     CommonModule,
     ReactiveFormsModule
   ],

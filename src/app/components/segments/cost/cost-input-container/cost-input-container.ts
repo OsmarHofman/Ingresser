@@ -1,45 +1,40 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { ControlValueAccessor, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription } from 'rxjs';
+import { CostTableComponent } from './cost-table/cost-table';
+
 
 @Component({
-    selector: 'carrier-input-container',
-    templateUrl: 'carrier-input-container.html',
-    styleUrl: 'carrier-input-container.scss',
+    selector: 'cost-input-container',
+    templateUrl: 'cost-input-container.html',
+    styleUrl: 'cost-input-container.scss',
     standalone: true,
     imports: [
         MatCardModule,
+        CostTableComponent,
+        ReactiveFormsModule,
+        MatInputModule,
         MatFormField,
         MatLabel,
-        MatInputModule,
-        ReactiveFormsModule
     ],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            multi: true,
-            useExisting: CarrierInputContainerComponent
-        }
-    ]
 })
 
-export class CarrierInputContainerComponent implements ControlValueAccessor, OnDestroy {
+export class CostInputContainerComponent implements ControlValueAccessor, OnDestroy {
 
-    carrierInputForm: FormGroup = this.formBuilder.group({
-        domainName: [''],
-        xid: ['']
+    costInputForm: FormGroup = this.formBuilder.group({
+        baseCost: [''],
+        acessorialCost: [''],
+        totalCost: [''],
     });
 
     onTouched: Function = () => { };
 
     onChangeSubs: Subscription[] = [];
 
-
     constructor(private formBuilder: FormBuilder) { }
-
 
     ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
@@ -48,7 +43,7 @@ export class CarrierInputContainerComponent implements ControlValueAccessor, OnD
     }
 
     registerOnChange(onChange: any): void {
-        const sub = this.carrierInputForm.valueChanges.subscribe(onChange);
+        const sub = this.costInputForm.valueChanges.subscribe(onChange);
         this.onChangeSubs.push(sub);
     }
 
@@ -58,14 +53,13 @@ export class CarrierInputContainerComponent implements ControlValueAccessor, OnD
 
     setDisabledState?(isDisabled: boolean): void {
         if (isDisabled)
-            this.carrierInputForm.disable();
+            this.costInputForm.disable();
         else
-            this.carrierInputForm.enable();
+            this.costInputForm.enable();
     }
 
     writeValue(value: any): void {
         if (value)
-            this.carrierInputForm.setValue(value, { emitEvent: false });
+            this.costInputForm.setValue(value, { emitEvent: false });
     }
-
 }

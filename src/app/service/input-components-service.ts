@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
-import { ShipmentHeaderInputComponent } from '../components/shipment/shipment-header/shipment-header-input';
-import { CostInputContainerComponent } from '../components/shipment/cost-input-container/cost-input-container';
 import { SelectionErrorComponent } from '../components/selection-error/selection-error';
+import { ShipmentHeaderInputComponent } from '../components/segments/shipment-header/tab/shipment-header-input/shipment-header-input';
+import { CostInputContainerComponent } from '../components/segments/cost/cost-input-container/cost-input-container';
 
 
 @Injectable({ providedIn: 'root' })

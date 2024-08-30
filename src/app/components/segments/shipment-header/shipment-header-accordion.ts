@@ -1,30 +1,30 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { AccordionItem } from './model/accordion-item';
-import { TabComponent } from '../tab/tab';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ShipmentHeaderTabComponent } from './tab/shipment-header-tab';
 
 @Component({
-    selector: 'accordion-with-tab',
-    templateUrl: 'accordion-with-tab.html',
-    styleUrl: 'accordion-with-tab.scss',
+    selector: 'shipment-header-accordion',
+    templateUrl: 'shipment-header-accordion.html',
+    styleUrl: 'shipment-header-accordion.scss',
     standalone: true,
     imports: [
         CdkAccordionModule,
-        TabComponent,
+        ShipmentHeaderTabComponent,
         ReactiveFormsModule
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: AccordionWithTabComponent
+            useExisting: ShipmentHeaderAccordionComponent
         }
     ]
 })
 
-export class AccordionWithTabComponent implements ControlValueAccessor, OnDestroy {
+export class ShipmentHeaderAccordionComponent implements ControlValueAccessor, OnDestroy {
 
     @Input() items: AccordionItem[] = [];
 

@@ -1,10 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CarrierInputContainerComponent } from "./carrier-input-container/carrier-input-container";
+import { CarrierInputContainerComponent } from "./carrier/shipment-header-carrier";
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { RefnumTableComponent } from '../../collections/refnum-table/refnum-table';
 import { Subscription } from 'rxjs';
+import { ShipmentHeaderRefnumComponent } from './refnum/shipment-header-refnum';
 
 @Component({
     selector: 'shipment-header-input',
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
     styleUrl: 'shipment-header-input.scss',
     standalone: true,
     imports: [
-        RefnumTableComponent,
+        ShipmentHeaderRefnumComponent,
         CarrierInputContainerComponent,
         ReactiveFormsModule,
         MatInputModule,
