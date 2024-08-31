@@ -7,7 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ShipmentBaseTag } from '../../../../model/xml-base-tags/shipment';
-import { LocationInputComponent } from './input/location-input';
+import { LocationManagerComponent } from './manager/location-manager';
 
 @Component({
     selector: 'location-tab',
@@ -17,7 +17,7 @@ import { LocationInputComponent } from './input/location-input';
     imports: [
         CommonModule,
         MatTabsModule,
-        LocationInputComponent,
+        LocationManagerComponent,
         ReactiveFormsModule
     ],
     providers: [
@@ -39,6 +39,7 @@ export class LocationTabComponent implements ControlValueAccessor, OnDestroy {
     });
 
     constructor(private formBuilder: FormBuilder) { 
+        //TODO: Alterar xml
         this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentHeader);
     }
 

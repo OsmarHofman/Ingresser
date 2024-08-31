@@ -3,7 +3,7 @@ import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Reacti
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
-import { RefnumComponent } from '../../../shipment-header/tab/input/refnum/refnum';
+import { RefnumComponent } from '../../../../shipment-header/tab/input/refnum/refnum';
 
 @Component({
     selector: 'location-input',

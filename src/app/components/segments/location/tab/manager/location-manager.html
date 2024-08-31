@@ -1,0 +1,33 @@
+<div class="row">
+
+    <button class="btn btn-primary btn-addRow col-md-2" (click)="addRow()">Adicionar nova location</button>
+    <button class="btn btn-primary btn-removeRow col-md-2" (click)="removeRow()">Remover location selecionadas</button>
+
+</div>
+<div class="row">
+
+    <form [formGroup]="locationForm">
+        <table>
+            <tbody>
+                <ng-container formArrayName="Locations">
+                    <ng-container *ngFor="
+                let control of locations.controls;
+                let i = index
+              ">
+
+                        <tr [formGroupName]="i" class="row locations">
+                            <td class="col-md-1">
+                                <mat-checkbox class="checkbox" (change)="markRowAsSelected(i)"></mat-checkbox>
+                            </td>
+                            <td class="col-md-11">
+                                <location-input formControlName="location" />
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </tbody>
+        </table>
+
+    </form>
+
+</div>

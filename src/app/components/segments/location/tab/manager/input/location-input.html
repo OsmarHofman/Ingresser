@@ -1,0 +1,35 @@
+<fieldset class="input-container col-md-11">
+  <legend>Location</legend>
+
+  <form [formGroup]="locationForm">
+    <br>
+    <div class="row inputs">
+      <mat-form-field appearance="outline" fxFill id="domainName" class="col-md-3" subscriptSizing="dynamic">
+        <mat-label>DomainName</mat-label>
+        <input matInput #input placeholder="EMBDEV" formControlName="locationDomainName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFill class="col-md-3" subscriptSizing="dynamic">
+        <mat-label>Xid</mat-label>
+        <input matInput #input placeholder="XID" formControlName="locationXid" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFill class="col-md-3" subscriptSizing="dynamic">
+        <mat-label>Cidade</mat-label>
+        <input matInput #input placeholder="Lages" formControlName="city" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
+        <mat-label>Estado</mat-label>
+        <input matInput #input placeholder="SC" formControlName="uf" />
+      </mat-form-field>
+
+    </div>
+
+    <hr>
+
+    <div class="refnum">
+      <refnum formControlName="refnums" />
+    </div>
+  </form>
+</fieldset>
