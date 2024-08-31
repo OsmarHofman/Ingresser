@@ -4,15 +4,17 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ShipmentHeaderAccordionComponent } from './components/segments/shipment-header/shipment-header-accordion';
 import { CostAccordionComponent } from './components/segments/cost/cost-accordion';
+import { ShipmentHeader2AccordionComponent } from './components/segments/shipment-header2/shipment-header2-accordion';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    ShipmentHeaderAccordionComponent,
     CommonModule,
     ReactiveFormsModule,
+    ShipmentHeaderAccordionComponent,
+    ShipmentHeader2AccordionComponent,
     CostAccordionComponent
 ],
   templateUrl: './app.component.html',
@@ -26,7 +28,8 @@ export class AppComponent {
   //#region Form
 
   form: FormGroup = this.formBuilder.group({
-    shipment: [''],
+    shipmentHeader: [''],
+    shipmentHeader2: [''],
     cost: ['']
   });
 

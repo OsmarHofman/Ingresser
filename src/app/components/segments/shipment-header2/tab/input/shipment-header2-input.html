@@ -1,0 +1,14 @@
+<form [formGroup]="shipmentHeader2Form">
+  <br>
+  <div class="row inputs">
+    <mat-form-field appearance="outline" fxFill id="perspective" class="col-md-2" subscriptSizing="dynamic">
+      <mat-label>Perspectiva</mat-label>
+
+      <mat-select formControlName="perspective">
+        @for (perspective of perspectives; track perspective) {
+        <mat-option [value]="perspective">{{perspective}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

@@ -5,4 +5,8 @@ export class ShipmentBaseTag {
         { collapseContent: true }
     );
 
+    public static ShipmentHeader2: string = xmlFormat(`<ShipmentHeader2><Perspective>B</Perspective></ShipmentHeader2>`,
+        { collapseContent: true }
+    );
+
 }
