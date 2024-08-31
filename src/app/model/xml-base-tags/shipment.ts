@@ -9,4 +9,8 @@ export class ShipmentBaseTag {
         { collapseContent: true }
     );
 
+    public static ShipmentStop: string = xmlFormat(`<Stops><ShipmentStop><StopSequence>1</StopSequence><LocationRef><LocationGid><Gid><DomainName>EMBDEV</DomainName><Xid>76515</Xid></Gid></LocationGid></LocationRef><StopType>P</StopType></ShipmentStop><ShipmentStop><StopSequence>2</StopSequence><LocationRef><LocationGid><Gid><DomainName>IPIRANGA</DomainName><Xid>ORG-8027-30018</Xid></Gid></LocationGid></LocationRef><StopType>D</StopType></ShipmentStop></Stops>`,
+        { collapseContent: true }
+    ).replace(`<Stops>`, '').replace(`</Stops>`, '');
+
 }

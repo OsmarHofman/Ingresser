@@ -39,7 +39,7 @@ export class ShipmentStopTabComponent implements ControlValueAccessor, OnDestroy
     });
 
     constructor(private formBuilder: FormBuilder) {
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentHeader2);
+        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentStop);
     }
 
     onTouched: Function = () => { };
