@@ -1,26 +1,26 @@
 <div class="row buttons">
 
-    <button class="btn btn-primary btn-addRow col-md-3" (click)="addRow()">Adicionar nova location</button>
-    <button class="btn btn-primary btn-removeRow col-md-3" (click)="removeRow()">Remover locations selecionadas</button>
+    <button class="btn btn-primary btn-addRow col-md-3" (click)="addRow()">Adicionar nova Release</button>
+    <button class="btn btn-primary btn-removeRow col-md-3" (click)="removeRow()">Remover releases selecionadas</button>
 
 </div>
 <div class="row">
 
-    <form [formGroup]="locationForm">
+    <form [formGroup]="releaseForm">
         <table>
             <tbody>
-                <ng-container formArrayName="Locations">
+                <ng-container formArrayName="Releases">
                     <ng-container *ngFor="
-                let control of locations.controls;
+                let control of releases.controls;
                 let i = index
               ">
 
-                        <tr [formGroupName]="i" class="row locations">
+                        <tr [formGroupName]="i" class="row releases">
                             <td class="col-md-1">
                                 <mat-checkbox class="checkbox" (change)="markRowAsSelected(i)"></mat-checkbox>
                             </td>
                             <td class="col-md-11">
-                                <location-input formControlName="location" />
+                                <release-input formControlName="release" />
                             </td>
                         </tr>
                     </ng-container>

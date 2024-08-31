@@ -7,6 +7,7 @@ import { CostAccordionComponent } from './components/segments/cost/cost-accordio
 import { ShipmentHeader2AccordionComponent } from './components/segments/shipment-header2/shipment-header2-accordion';
 import { ShipmentStopAccordionComponent } from './components/segments/shipment-stop/shipment-stop-accordion';
 import { LocationAccordionComponent } from './components/segments/location/location-accordion';
+import { ReleaseAccordionComponent } from './components/segments/release/release-accordion';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { LocationAccordionComponent } from './components/segments/location/locat
     ShipmentHeader2AccordionComponent,
     ShipmentStopAccordionComponent,
     LocationAccordionComponent,
+    ReleaseAccordionComponent,
     CostAccordionComponent
 ],
   templateUrl: './app.component.html',
@@ -36,6 +38,7 @@ export class AppComponent {
     shipmentHeader2: [''],
     shipmentStop: [''],
     location: [''],
+    release: [''],
     cost: ['']
   });
 
