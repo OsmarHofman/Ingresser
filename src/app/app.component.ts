@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ShipmentHeaderAccordionComponent } from './components/segments/shipment-header/shipment-header-accordion';
 import { CostAccordionComponent } from './components/segments/cost/cost-accordion';
 import { ShipmentHeader2AccordionComponent } from './components/segments/shipment-header2/shipment-header2-accordion';
+import { ShipmentStopAccordionComponent } from './components/segments/shipment-stop/shipment-stop-accordion';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { ShipmentHeader2AccordionComponent } from './components/segments/shipmen
     ReactiveFormsModule,
     ShipmentHeaderAccordionComponent,
     ShipmentHeader2AccordionComponent,
+    ShipmentStopAccordionComponent,
     CostAccordionComponent
 ],
   templateUrl: './app.component.html',
@@ -30,6 +32,7 @@ export class AppComponent {
   form: FormGroup = this.formBuilder.group({
     shipmentHeader: [''],
     shipmentHeader2: [''],
+    shipmentStop: [''],
     cost: ['']
   });
 

@@ -1,15 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, FormsModule, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
+import { ControlValueAccessor, FormArray, FormControl, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
 
+
 @Component({
-    selector: 'refnum-table',
-    templateUrl: './shipment-header-refnum.html',
-    styleUrls: ['./shipment-header-refnum.scss'],
+    selector: 'shipment-stop-input',
+    templateUrl: 'shipment-stop-input.html',
+    styleUrl: 'shipment-stop-input.scss',
     standalone: true,
     imports: [
         FormsModule,
@@ -18,20 +20,23 @@ import { MatCheckbox } from '@angular/material/checkbox';
         MatInputModule,
         MatFormField,
         MatLabel,
+        MatSelectModule,
         MatCheckbox
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: ShipmentHeaderRefnumComponent
+            useExisting: ShipmentStopInputComponent
         }
     ]
 })
 
-export class ShipmentHeaderRefnumComponent implements OnInit, ControlValueAccessor, OnDestroy {
-    
-    tableForm: FormGroup = this.formBuilder.group('');
+export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestroy {
+
+    shipmentStopForm: FormGroup = this.formBuilder.group('');
+
+    stopTypes = ['Coleta', 'Entrega'];
 
     constructor(private formBuilder: FormBuilder) { }
 
@@ -39,22 +44,26 @@ export class ShipmentHeaderRefnumComponent implements OnInit, ControlValueAccess
 
     selectedRows: number[] = [];
 
-    get refnums() {
-        return this.tableForm.get('Refnums') as FormArray;
+    get shipmentStops() {
+        return this.shipmentStopForm.get('stops') as FormArray;
     }
 
     ngOnInit() {
-        this.tableForm = this.formBuilder.group({
-            Refnums: this.formBuilder.array([]),
+        this.shipmentStopForm = this.formBuilder.group({
+            stops: this.formBuilder.array([]),
         });
     }
 
     addRow() {
-        this.refnums.push(
+        const defaultStopType: string = this.shipmentStops.controls.length % 2 == 0 ? 'Coleta' : 'Entrega';
+
+        this.shipmentStops.push(
+
             this.formBuilder.group({
-                domainName: new FormControl(),
-                xid: new FormControl(),
-                refnumValue: new FormControl(),
+                stopSequence: new FormControl(this.shipmentStops.controls.length + 1),
+                locationDomainName: new FormControl(),
+                locationXid: new FormControl(),
+                stopType: new FormControl(defaultStopType),
             })
         );
     }
@@ -62,7 +71,7 @@ export class ShipmentHeaderRefnumComponent implements OnInit, ControlValueAccess
     removeRow() {
         this.selectedRows.sort((a, b) => b - a)
             .forEach(rowIndex => {
-                this.refnums.removeAt(rowIndex);
+                this.shipmentStops.removeAt(rowIndex);
             });
 
         this.selectedRows = [];
@@ -90,7 +99,7 @@ export class ShipmentHeaderRefnumComponent implements OnInit, ControlValueAccess
     }
 
     registerOnChange(onChange: any): void {
-        const sub = this.tableForm.valueChanges.subscribe(onChange);
+        const sub = this.shipmentStopForm.valueChanges.subscribe(onChange);
         this.onChangeSubs.push(sub);
     }
 
@@ -100,14 +109,14 @@ export class ShipmentHeaderRefnumComponent implements OnInit, ControlValueAccess
 
     setDisabledState?(isDisabled: boolean): void {
         if (isDisabled)
-            this.tableForm.disable();
+            this.shipmentStopForm.disable();
         else
-            this.tableForm.enable();
+            this.shipmentStopForm.enable();
     }
 
     writeValue(value: any): void {
         if (value)
-            this.tableForm.setValue(value, { emitEvent: false });
+            this.shipmentStopForm.setValue(value, { emitEvent: false });
     }
 
     //#endregion

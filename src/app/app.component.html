@@ -16,9 +16,10 @@
       <button type="button" class="btn btn-primary" (click)="deleteShipment()">Remover embarque</button>
 
       <div *ngIf="showShipmentAccordion">
-        <shipment-header-accordion formControlName="shipmentHeader"/>
-        <shipment-header2-accordion formControlName="shipmentHeader2"/>
-        <cost-accordion formControlName="cost"/>
+        <shipment-header-accordion formControlName="shipmentHeader" />
+        <shipment-header2-accordion formControlName="shipmentHeader2" />
+        <shipment-stop-accordion formControlName="shipmentStop" />
+        <cost-accordion formControlName="cost" />
       </div>
 
       <hr>

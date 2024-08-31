@@ -1,0 +1,60 @@
+<br>
+<div class="row">
+  <fieldset class="input-container col-md-9" >
+    <legend>Paradas do Embarque</legend>
+
+    <form [formGroup]="shipmentStopForm">
+      <table>
+        <tbody>
+          <ng-container formArrayName="stops">
+            <ng-container *ngFor="
+              let control of shipmentStops.controls;
+              let i = index
+            ">
+
+              <tr [formGroupName]="i" class="row">
+                <td class="col-md-1">
+                  <mat-checkbox class="checkbox" (change)="markRowAsSelected(i)"></mat-checkbox>
+                </td>
+                <td class="col-md-3">
+                  <mat-form-field appearance="outline" fxFill id="stopSequence" subscriptSizing="dynamic">
+                    <mat-label>Número de Sequencia</mat-label>
+                    <input matInput #input placeholder="1" formControlName="stopSequence" />
+                  </mat-form-field>
+                </td>
+                <td class="col-md-3">
+                  <mat-form-field appearance="outline" fxFill id="locationDomainName" subscriptSizing="dynamic">
+                    <mat-label>DomainName da Location</mat-label>
+                    <input matInput #input placeholder="EMBDEV" formControlName="locationDomainName" />
+                  </mat-form-field>
+                </td>
+                <td class="col-md-3">
+                  <mat-form-field appearance="outline" fxFill id="locationXid" subscriptSizing="dynamic">
+                    <mat-label>Xid da Location</mat-label>
+                    <input matInput #input placeholder="XID" formControlName="locationXid" />
+                  </mat-form-field>
+                </td>
+                <td class="col-md-2">
+                  <mat-form-field appearance="outline" fxFill id="stopType" subscriptSizing="dynamic">
+                    <mat-label>Tipo da Stop</mat-label>
+                    <mat-select formControlName="stopType">
+                      @for (stopType of stopTypes; track stopType) {
+                      <mat-option [value]="stopType">{{stopType}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+      <button class="btn btn-primary btn-addRow" (click)="addRow()">Adicionar nova linha</button>
+      <button class="btn btn-primary btn-removeRow" (click)="removeRow()">Remover linhas selecionadas</button>
+
+    </form>
+
+  </fieldset>
+</div>
+<br>
