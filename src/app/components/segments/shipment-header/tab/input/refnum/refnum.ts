@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, FormsModule, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -30,8 +30,10 @@ import { MatCheckbox } from '@angular/material/checkbox';
 })
 
 export class RefnumComponent implements OnInit, ControlValueAccessor, OnDestroy {
-    
+
     tableForm: FormGroup = this.formBuilder.group('');
+
+    @Input() shouldClassBeSix: boolean = true;
 
     constructor(private formBuilder: FormBuilder) { }
 

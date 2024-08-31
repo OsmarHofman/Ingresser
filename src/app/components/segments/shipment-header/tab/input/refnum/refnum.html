@@ -1,5 +1,5 @@
 <div class="row">
-  <fieldset class="input-container col-md-6">
+  <fieldset class="input-container" [ngClass]="shouldClassBeSix === true ? 'col-md-6' : 'col-md-11'">
     <legend>Referenciadores</legend>
 
     <form [formGroup]="tableForm">
