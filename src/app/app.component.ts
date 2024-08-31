@@ -6,6 +6,7 @@ import { ShipmentHeaderAccordionComponent } from './components/segments/shipment
 import { CostAccordionComponent } from './components/segments/cost/cost-accordion';
 import { ShipmentHeader2AccordionComponent } from './components/segments/shipment-header2/shipment-header2-accordion';
 import { ShipmentStopAccordionComponent } from './components/segments/shipment-stop/shipment-stop-accordion';
+import { LocationAccordionComponent } from './components/segments/location/location-accordion';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { ShipmentStopAccordionComponent } from './components/segments/shipment-s
     ShipmentHeaderAccordionComponent,
     ShipmentHeader2AccordionComponent,
     ShipmentStopAccordionComponent,
+    LocationAccordionComponent,
     CostAccordionComponent
 ],
   templateUrl: './app.component.html',
@@ -33,6 +35,7 @@ export class AppComponent {
     shipmentHeader: [''],
     shipmentHeader2: [''],
     shipmentStop: [''],
+    location: [''],
     cost: ['']
   });
 

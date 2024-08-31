@@ -1,19 +1,17 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CarrierInputContainerComponent } from "./carrier/shipment-header-carrier";
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
-import { RefnumComponent } from './refnum/refnum';
+import { RefnumComponent } from '../../../shipment-header/tab/input/refnum/refnum';
 
 @Component({
-    selector: 'shipment-header-input',
-    templateUrl: 'shipment-header-input.html',
-    styleUrl: 'shipment-header-input.scss',
+    selector: 'location-input',
+    templateUrl: 'location-input.html',
+    styleUrl: 'location-input.scss',
     standalone: true,
     imports: [
         RefnumComponent,
-        CarrierInputContainerComponent,
         ReactiveFormsModule,
         MatInputModule,
         MatFormField,
@@ -23,21 +21,19 @@ import { RefnumComponent } from './refnum/refnum';
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: ShipmentHeaderInputComponent
+            useExisting: LocationInputComponent
         }
     ]
 })
 
-export class ShipmentHeaderInputComponent implements ControlValueAccessor, OnDestroy {
+export class LocationInputComponent implements ControlValueAccessor, OnDestroy {
 
-    shipmentHeaderForm: FormGroup = this.formBuilder.group({
-        shipmentDomainName: [''],
-        shipmentXid: [''],
-        travelStatus: [''],
-        emissionStatus: [''],
-        shipmentTaker: [''],
-        shipmentCarrier: [''],
-        shipmentRefnums: ['']
+    locationForm: FormGroup = this.formBuilder.group({
+        locationDomainName: [''],
+        locationXid: [''],
+        city: [''],
+        uf: [''],
+        refnums: ['']
     });
 
     constructor(private formBuilder: FormBuilder) { }
@@ -53,7 +49,7 @@ export class ShipmentHeaderInputComponent implements ControlValueAccessor, OnDes
     }
 
     registerOnChange(onChange: any): void {
-        const sub = this.shipmentHeaderForm.valueChanges.subscribe(onChange);
+        const sub = this.locationForm.valueChanges.subscribe(onChange);
         this.onChangeSubs.push(sub);
     }
 
@@ -63,14 +59,14 @@ export class ShipmentHeaderInputComponent implements ControlValueAccessor, OnDes
 
     setDisabledState?(isDisabled: boolean): void {
         if (isDisabled)
-            this.shipmentHeaderForm.disable();
+            this.locationForm.disable();
         else
-            this.shipmentHeaderForm.enable();
+            this.locationForm.enable();
     }
 
     writeValue(value: any): void {
         if (value)
-            this.shipmentHeaderForm.setValue(value, { emitEvent: false });
+            this.locationForm.setValue(value, { emitEvent: false });
     }
 
 }
