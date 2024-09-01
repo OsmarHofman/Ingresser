@@ -1,13 +1,13 @@
 <div class="row">
-  <fieldset class="input-container" [ngClass]="shouldClassBeSix === true ? 'col-md-6' : 'col-md-11'">
+  <fieldset class="input-container col-md-5">
     <legend>Movimentações</legend>
 
     <form [formGroup]="tableForm">
       <table>
         <tbody>
-          <ng-container formArrayName="Refnums">
+          <ng-container formArrayName="Movements">
             <ng-container *ngFor="
-              let control of refnums.controls;
+              let control of movements.controls;
               let i = index
             ">
 
@@ -15,22 +15,16 @@
                 <td class="col-md-1">
                   <mat-checkbox class="checkbox" (change)="markRowAsSelected(i)"></mat-checkbox>
                 </td>
-                <td class="col-md-4">
-                  <mat-form-field appearance="outline" fxFill id="domainName" subscriptSizing="dynamic">
-                    <mat-label>DomainName</mat-label>
-                    <input matInput #input placeholder="EMBDEV" formControlName="domainName" />
-                  </mat-form-field>
-                </td>
-                <td class="col-md-4">
-                  <mat-form-field appearance="outline" fxFill id="xid" subscriptSizing="dynamic">
-                    <mat-label>Xid</mat-label>
-                    <input matInput #input placeholder="XID" formControlName="xid" />
+                <td class="col-md-6">
+                  <mat-form-field appearance="outline" fxFill subscriptSizing="dynamic">
+                    <mat-label>Xid da Location de Origem</mat-label>
+                    <input matInput #input placeholder="ORG-8027-30018" formControlName="shipFrom" />
                   </mat-form-field>
                 </td>
                 <td class="col-md-3">
-                  <mat-form-field appearance="outline" fxFill id="refnumValue" subscriptSizing="dynamic">
-                    <mat-label>Valor</mat-label>
-                    <input matInput #input placeholder="CLL_..." formControlName="refnumValue" />
+                  <mat-form-field appearance="outline" fxFill subscriptSizing="dynamic">
+                    <mat-label>Xid da Location de Destino</mat-label>
+                    <input matInput #input placeholder="ORG-8027-30018" formControlName="shipTo" />
                   </mat-form-field>
                 </td>
               </tr>

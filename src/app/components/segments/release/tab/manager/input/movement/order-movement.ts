@@ -33,30 +33,27 @@ export class OrderMovementComponent implements OnInit, ControlValueAccessor, OnD
 
     tableForm: FormGroup = this.formBuilder.group('');
 
-    @Input() shouldClassBeSix: boolean = true;
-
     constructor(private formBuilder: FormBuilder) { }
 
     //#region Grid
 
     selectedRows: number[] = [];
 
-    get refnums() {
-        return this.tableForm.get('Refnums') as FormArray;
+    get movements() {
+        return this.tableForm.get('Movements') as FormArray;
     }
 
     ngOnInit() {
         this.tableForm = this.formBuilder.group({
-            Refnums: this.formBuilder.array([]),
+            Movements: this.formBuilder.array([]),
         });
     }
 
     addRow() {
-        this.refnums.push(
+        this.movements.push(
             this.formBuilder.group({
-                domainName: new FormControl(),
-                xid: new FormControl(),
-                refnumValue: new FormControl(),
+                shipFrom: new FormControl(),
+                shipTo: new FormControl(),
             })
         );
     }
@@ -64,7 +61,7 @@ export class OrderMovementComponent implements OnInit, ControlValueAccessor, OnD
     removeRow() {
         this.selectedRows.sort((a, b) => b - a)
             .forEach(rowIndex => {
-                this.refnums.removeAt(rowIndex);
+                this.movements.removeAt(rowIndex);
             });
 
         this.selectedRows = [];

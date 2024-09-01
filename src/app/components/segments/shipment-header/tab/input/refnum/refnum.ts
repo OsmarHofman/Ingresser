@@ -33,7 +33,7 @@ export class RefnumComponent implements OnInit, ControlValueAccessor, OnDestroy 
 
     tableForm: FormGroup = this.formBuilder.group('');
 
-    @Input() shouldClassBeSix: boolean = true;
+    @Input() colClass: string = 'col-md-6';
 
     constructor(private formBuilder: FormBuilder) { }
 

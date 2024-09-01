@@ -4,22 +4,22 @@
   <form [formGroup]="releaseForm">
     <br>
     <div class="row inputs">
-      <mat-form-field appearance="outline" fxFill id="domainName" class="col-md-3" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" fxFill id="domainName" class="col-md-2" subscriptSizing="dynamic">
         <mat-label>DomainName</mat-label>
         <input matInput #input placeholder="EMBDEV" formControlName="releaseDomainName" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" fxFill class="col-md-3" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
         <mat-label>Xid</mat-label>
         <input matInput #input placeholder="XID" formControlName="releaseXid" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" fxFill class="col-md-3" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
         <mat-label>Xid da Location de Origem</mat-label>
         <input matInput #input placeholder="ORG-8027-30018" formControlName="shipFrom" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" fxFill class="col-md-3" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" fxFill class="col-md-2" subscriptSizing="dynamic">
         <mat-label>Xid da Location de Destino</mat-label>
         <input matInput #input placeholder="ORG-8027-30018" formControlName="shipTo" />
       </mat-form-field>
@@ -29,8 +29,12 @@
     <hr>
 
     <div class="refnum">
-      <refnum formControlName="refnums" [shouldClassBeSix]="false"/>
-      <order-movement formControlName="orderMovement"/>
+      <refnum formControlName="refnums" [colClass]="'col-md-7'" />
+
+      <hr>
+
+      <order-movement formControlName="orderMovement" />
     </div>
+
   </form>
 </fieldset>
