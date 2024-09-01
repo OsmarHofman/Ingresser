@@ -3,7 +3,7 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CostInputComponent } from "./cost-input/cost-input";
