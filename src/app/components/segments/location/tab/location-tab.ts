@@ -39,8 +39,7 @@ export class LocationTabComponent implements ControlValueAccessor, OnDestroy {
     });
 
     constructor(private formBuilder: FormBuilder) { 
-        //TODO: Alterar xml
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentHeader);
+        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.Location);
     }
 
     onTouched: Function = () => { };

@@ -40,7 +40,7 @@ export class ReleaseTabComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { 
         //TODO: Alterar xml
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentHeader);
+        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.Release);
     }
 
     onTouched: Function = () => { };
