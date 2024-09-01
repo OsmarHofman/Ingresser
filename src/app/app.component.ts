@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ShipmentHeaderAccordionComponent } from './components/segments/shipment-header/shipment-header-accordion';
-import { CostAccordionComponent } from './components/segments/cost/cost-accordion';
-import { ShipmentHeader2AccordionComponent } from './components/segments/shipment-header2/shipment-header2-accordion';
-import { ShipmentStopAccordionComponent } from './components/segments/shipment-stop/shipment-stop-accordion';
-import { LocationAccordionComponent } from './components/segments/location/location-accordion';
-import { ReleaseAccordionComponent } from './components/segments/release/release-accordion';
+import { ShipmentHeaderAccordionComponent } from './features/segments/shipment-header/shipment-header-accordion.component';
+import { CostAccordionComponent } from './features/segments/cost/cost-accordion.component';
+import { ShipmentHeader2AccordionComponent } from './features/segments/shipment-header2/shipment-header2-accordion.component';
+import { ShipmentStopAccordionComponent } from './features/segments/shipment-stop/shipment-stop-accordion.component';
+import { LocationAccordionComponent } from './features/segments/location/location-accordion.component';
+import { ReleaseAccordionComponent } from './features/segments/release/release-accordion.component';
+import { AppService } from './features/service/app.service';
 
 @Component({
   selector: 'app-root',
@@ -22,14 +23,17 @@ import { ReleaseAccordionComponent } from './components/segments/release/release
     LocationAccordionComponent,
     ReleaseAccordionComponent,
     CostAccordionComponent
-],
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 
 export class AppComponent {
 
-  constructor(private formBuilder: FormBuilder) { }
+  private appService: AppService = new AppService();
+
+  constructor(private formBuilder: FormBuilder) {
+  }
 
   //#region Form
 
@@ -42,9 +46,23 @@ export class AppComponent {
     cost: ['']
   });
 
-  submitForm(): void {
+  public submitForm(): void {
     console.log('Formulario:', this.form.value);
+
+    if (this.validateForm())
+      this.appService.convertFormToXml(this.form);
   }
+
+  private validateForm(): boolean {
+
+    if (!this.form.controls['shipmentHeader'].value) {
+
+      return false;
+    }
+
+    return true;
+  }
+
 
   //#endregion
 
@@ -53,8 +71,6 @@ export class AppComponent {
   showShipmentAccordion: boolean = false;
 
   public createShipment() {
-
-
     this.showShipmentAccordion = true;
   }
 
