@@ -49,10 +49,10 @@ export class AppComponent {
   public submitForm(): void {
     console.log('Formulario:', this.form.value);
 
-    if (this.validateForm())
+    // if (this.validateForm())
       this.appService.convertFormToXml(this.form);
-    else
-      alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
+    // else
+    //   alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
   }
 
   private validateForm(): boolean {

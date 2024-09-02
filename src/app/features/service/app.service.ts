@@ -1,9 +1,65 @@
-import { HttpClient } from "@angular/common/http";
 import { FormGroup } from "@angular/forms";
+import { Cost, Location, Release, Shipment, ShipmentHeader, ShipmentHeader2, ShipmentStop } from "../../model/shipment";
 
 export class AppService {
 
     public convertFormToXml(form: FormGroup): string {
+
+        const shipmentHeaderTab = form.controls['shipmentHeader'].value.tab;
+
+        const shipmentHeader: ShipmentHeader = new ShipmentHeader(shipmentHeaderTab);
+
+        const shipmentHeader2Tab = form.controls['shipmentHeader2'].value.tab;
+
+        const shipmentHeader2: ShipmentHeader2 = new ShipmentHeader2(shipmentHeader2Tab);
+
+        const shipmentStops: ShipmentStop[] = [];
+
+        if (form.controls['shipmentStop'].value.tab.tabSelected === 0) {
+
+            const formStops = form.controls['shipmentStop'].value.tab.inputContent.stops;
+
+            for (let index = 0; index < formStops.length; index++) {
+                const shipmentStop = formStops[index] as ShipmentStop;
+
+                shipmentStops.push(shipmentStop);
+            }
+
+        }
+
+        const locations: Location[] = [];
+
+        if (form.controls['location'].value.tab.tabSelected === 0) {
+
+            const formLocations = form.controls['location'].value.tab.inputContent.Locations;
+
+            for (let index = 0; index < formLocations.length; index++) {
+                const location = new Location(formLocations[index].location);
+
+                locations.push(location);
+            }
+
+        }
+
+        const releases: Release[] = [];
+
+        if (form.controls['release'].value.tab.tabSelected === 0) {
+
+            const formReleases = form.controls['release'].value.tab.inputContent.Releases;
+
+            for (let index = 0; index < formReleases.length; index++) {
+                const release = new Release(formReleases[index].release);
+
+                releases.push(release);
+            }
+
+        }
+
+        const costTab = form.controls['cost'].value.tab;
+
+        const cost: Cost = new Cost(costTab);
+
+        const shipment: Shipment = new Shipment(shipmentHeader, shipmentHeader2, shipmentStops, locations, releases, cost);
 
         const currentTime = new Date();
 

@@ -33,8 +33,8 @@ export class LocationInputComponent implements ControlValueAccessor, OnDestroy {
     //#region Form
     
     public locationForm: FormGroup = this.formBuilder.group({
-        locationDomainName: [''],
-        locationXid: [''],
+        domainName: [''],
+        xid: [''],
         city: [''],
         uf: [''],
         refnums: ['']
