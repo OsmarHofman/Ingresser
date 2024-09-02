@@ -48,6 +48,16 @@ export class AppService {
 
         shipmentXml += "\n";
 
+        const shipmentLocationTab = form.controls['location'].value.tab;
+
+        if (shipmentLocationTab.tabSelected === 0) {
+            shipmentXml += shipment.convertLocationToXml();
+        } else {
+            shipmentXml += shipmentLocationTab.xmlContent;
+        }
+
+        shipmentXml += "\n";
+
         let finalXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
     xmlns:tem="http://tempuri.org/">
     <soapenv:Header />

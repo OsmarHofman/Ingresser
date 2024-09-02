@@ -28,7 +28,11 @@ export class Shipment {
             for (let index = 0; index < formStops.length; index++) {
                 const formStop = formStops[index];
 
-                const shipmentStop = new ShipmentStop(formStop.stopSequence, formStop.locationDomainName, formStop.locationXid, formStop.stopType);
+                const shipmentStop = new ShipmentStop(formStop.stopSequence,
+                    formStop.locationDomainName,
+                    formStop.locationXid,
+                    formStop.stopType
+                );
 
                 this.stops.push(shipmentStop);
             }
@@ -93,6 +97,20 @@ export class Shipment {
             });
 
             return stopXml;
+        }
+
+        return '';
+    }
+
+    public convertLocationToXml(): string {
+        if (this.locations) {
+            let locationXml: string = '';
+
+            this.locations.forEach(location => {
+                locationXml += location.convertToXml();
+            });
+
+            return locationXml;
         }
 
         return '';
@@ -260,7 +278,7 @@ export class ShipmentStop {
                 stopType = 'P';
 
                 break;
-            
+
             case "Entrega":
                 stopType = 'D';
 
@@ -291,6 +309,41 @@ export class Location {
         this.uf = formLocation.uf;
 
         this.refnums = formLocation.refnums.Refnums as Refnum[];
+    }
+
+    public convertToXml(): string {
+        let xml = `<Location>
+    <LocationGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[Xid]]</Xid>
+        </Gid>
+    </LocationGid>
+    <LocationName>[[Xid]]</LocationName>
+    <Address>
+        <AddressLines>
+            <SequenceNumber>1</SequenceNumber>
+            <AddressLine>ROD BR-262 SN KM 7.5</AddressLine>
+        </AddressLines>
+        <City>[[City]]</City>
+        <ProvinceCode>[[Uf]]</ProvinceCode>
+        <PostalCode>29136350</PostalCode>
+        <CountryCode3Gid>
+            <Gid>
+                <Xid>BR</Xid>
+            </Gid>
+        </CountryCode3Gid>
+    </Address>
+    [[Refnums]]
+</Location>`;
+
+        const refnums = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Location);
+
+        return xml.replaceAll('[[DomainName]]', this.domainName)
+            .replaceAll('[[Xid]]', this.xid)
+            .replaceAll('[[City]]', this.city)
+            .replaceAll('[[Uf]]', this.uf)
+            .replaceAll('[[Refnums]]', refnums);
     }
 }
 
@@ -344,6 +397,18 @@ export class Refnum {
 
                     break;
 
+                case RefnumType.Location:
+                    refnumXml = `<LocationRefnum>
+        <LocationRefnumQualifierGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>[[Xid]]</Xid>
+            </Gid>
+        </LocationRefnumQualifierGid>
+        <LocationRefnumValue>[[Value]]</LocationRefnumValue>
+    </LocationRefnum>`;
+
+                    break;
                 default:
                     return;
             }
