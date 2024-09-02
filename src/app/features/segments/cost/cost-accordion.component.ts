@@ -6,8 +6,8 @@ import { CostTabComponent } from './tab/cost-tab.component';
 
 @Component({
     selector: 'cost-accordion',
-    templateUrl: 'cost-accordion.html',
-    styleUrl: 'cost-accordion.scss',
+    templateUrl: 'cost-accordion.component.html',
+    styleUrl: 'cost-accordion.component.scss',
     standalone: true,
     imports: [
         CdkAccordionModule,

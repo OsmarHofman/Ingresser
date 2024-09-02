@@ -6,8 +6,8 @@ import { LocationTabComponent } from './tab/location-tab.component';
 
 @Component({
     selector: 'location-accordion',
-    templateUrl: 'location-accordion.html',
-    styleUrl: 'location-accordion.scss',
+    templateUrl: 'location-accordion.component.html',
+    styleUrl: 'location-accordion.component.scss',
     standalone: true,
     imports: [
         CdkAccordionModule,

@@ -6,8 +6,8 @@ import { ShipmentHeaderTabComponent } from './tab/shipment-header-tab.component'
 
 @Component({
     selector: 'shipment-header-accordion',
-    templateUrl: 'shipment-header-accordion.html',
-    styleUrl: 'shipment-header-accordion.scss',
+    templateUrl: 'shipment-header-accordion.component.html',
+    styleUrl: 'shipment-header-accordion.component.scss',
     standalone: true,
     imports: [
         CdkAccordionModule,

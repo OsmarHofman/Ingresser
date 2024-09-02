@@ -8,8 +8,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
     selector: 'cost-table',
-    templateUrl: './cost-table.html',
-    styleUrls: ['./cost-table.scss'],
+    templateUrl: './cost-table.component.html',
+    styleUrls: ['./cost-table.component.scss'],
     standalone: true,
     imports: [
         FormsModule,
