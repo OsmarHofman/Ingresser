@@ -51,16 +51,22 @@ export class AppComponent {
 
     if (this.validateForm())
       this.appService.convertFormToXml(this.form);
+    else
+      alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
   }
 
   private validateForm(): boolean {
 
-    if (!this.form.controls['shipmentHeader'].value) {
-
-      return false;
-    }
+    if (!this.validateFormControls()) return false;
 
     return true;
+  }
+
+  private validateFormControls(): boolean {
+
+    const controlNames = ['shipmentHeader', 'shipmentHeader2', 'shipmentStop', 'location', 'release', 'cost'];
+
+    return controlNames.every(controlName => this.form.controls[controlName].value);
   }
 
 
