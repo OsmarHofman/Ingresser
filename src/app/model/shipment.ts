@@ -26,7 +26,9 @@ export class Shipment {
             const formStops = form.controls['shipmentStop'].value.tab.inputContent.stops;
 
             for (let index = 0; index < formStops.length; index++) {
-                const shipmentStop = formStops[index] as ShipmentStop;
+                const formStop = formStops[index];
+
+                const shipmentStop = new ShipmentStop(formStop.stopSequence, formStop.locationDomainName, formStop.locationXid, formStop.stopType);
 
                 this.stops.push(shipmentStop);
             }
@@ -77,6 +79,20 @@ export class Shipment {
     public convertShipmentHeader2ToXml(): string {
         if (this.shipmentHeader2) {
             return this.shipmentHeader2.convertToXml();
+        }
+
+        return '';
+    }
+
+    public convertShipmentStopToXml(): string {
+        if (this.stops) {
+            let stopXml: string = '';
+
+            this.stops.forEach(stop => {
+                stopXml += stop.convertToXml();
+            });
+
+            return stopXml;
         }
 
         return '';
@@ -177,8 +193,7 @@ export class ShipmentHeader {
             </LocationRef>
         </InvolvedPartyLocationRef>
     </InvolvedParty>
-</ShipmentHeader>
-`;
+</ShipmentHeader>`;
 
         const refnums: string = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Shipment);
 
@@ -203,8 +218,7 @@ export class ShipmentHeader2 {
     }
 
     public convertToXml(): string {
-        let xml = `
-        <ShipmentHeader2>
+        let xml = `<ShipmentHeader2>
     <Perspective>[[Perspective]]</Perspective>
 </ShipmentHeader2>`;
 
@@ -218,6 +232,49 @@ export class ShipmentStop {
     public locationXid: string = "XID";
     public stopType: string = "P";
 
+    constructor(stopSequence: string, locationDomainName: string, locationXid: string, stopType: string) {
+        this.stopSequence = stopSequence;
+        this.locationDomainName = locationDomainName;
+        this.locationXid = locationXid;
+        this.stopType = stopType;
+    }
+
+    public convertToXml(): string {
+        let xml = `<ShipmentStop>
+    <StopSequence>[[StopSequence]]</StopSequence>
+    <LocationRef>
+        <LocationGid>
+            <Gid>
+                <DomainName>[[LocationDomainName]]</DomainName>
+                <Xid>[[LocationXid]]</Xid>
+            </Gid>
+        </LocationGid>
+    </LocationRef>
+    <StopType>[[StopType]]</StopType>
+</ShipmentStop>`;
+
+        let stopType: string;
+
+        switch (this.stopType) {
+            case "Coleta":
+                stopType = 'P';
+
+                break;
+            
+            case "Entrega":
+                stopType = 'D';
+
+                break;
+            default:
+                stopType = 'PD'
+                break;
+        }
+
+        return xml.replaceAll('[[StopSequence]]', this.stopSequence)
+            .replaceAll('[[LocationDomainName]]', this.locationDomainName)
+            .replaceAll('[[LocationXid]]', this.locationXid)
+            .replaceAll('[[StopType]]', stopType);
+    }
 }
 
 export class Location {

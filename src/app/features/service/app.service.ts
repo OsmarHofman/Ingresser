@@ -26,6 +26,8 @@ export class AppService {
             shipmentXml += shipmentHeaderTab.xmlContent;
         }
 
+        shipmentXml += "\n";
+
         const shipmentHeader2Tab = form.controls['shipmentHeader2'].value.tab;
 
         if (shipmentHeader2Tab.tabSelected === 0) {
@@ -34,6 +36,17 @@ export class AppService {
             shipmentXml += shipmentHeader2Tab.xmlContent;
         }
 
+        shipmentXml += "\n";
+
+        const shipmentStopTab = form.controls['shipmentStop'].value.tab;
+
+        if (shipmentStopTab.tabSelected === 0) {
+            shipmentXml += shipment.convertShipmentStopToXml();
+        } else {
+            shipmentXml += shipmentStopTab.xmlContent;
+        }
+
+        shipmentXml += "\n";
 
         let finalXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
     xmlns:tem="http://tempuri.org/">
