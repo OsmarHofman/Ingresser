@@ -73,6 +73,14 @@ export class Shipment {
 
         return '';
     }
+
+    public convertShipmentHeader2ToXml(): string {
+        if (this.shipmentHeader2) {
+            return this.shipmentHeader2.convertToXml();
+        }
+
+        return '';
+    }
 }
 
 export class ShipmentHeader {
@@ -169,7 +177,8 @@ export class ShipmentHeader {
             </LocationRef>
         </InvolvedPartyLocationRef>
     </InvolvedParty>
-</ShipmentHeader>`;
+</ShipmentHeader>
+`;
 
         const refnums: string = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Shipment);
 
@@ -191,6 +200,15 @@ export class ShipmentHeader2 {
         if (tabFormContent.tabSelected === 0) {
             this.perspective = tabFormContent.inputContent.perspective;
         }
+    }
+
+    public convertToXml(): string {
+        let xml = `
+        <ShipmentHeader2>
+    <Perspective>[[Perspective]]</Perspective>
+</ShipmentHeader2>`;
+
+        return xml.replaceAll('[[Perspective]]', (this.perspective === "Buy") ? 'B' : 'S');
     }
 }
 

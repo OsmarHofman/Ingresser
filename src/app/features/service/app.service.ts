@@ -26,6 +26,15 @@ export class AppService {
             shipmentXml += shipmentHeaderTab.xmlContent;
         }
 
+        const shipmentHeader2Tab = form.controls['shipmentHeader2'].value.tab;
+
+        if (shipmentHeader2Tab.tabSelected === 0) {
+            shipmentXml += shipment.convertShipmentHeader2ToXml();
+        } else {
+            shipmentXml += shipmentHeader2Tab.xmlContent;
+        }
+
+
         let finalXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
     xmlns:tem="http://tempuri.org/">
     <soapenv:Header />
