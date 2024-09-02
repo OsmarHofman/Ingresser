@@ -64,7 +64,12 @@ export class AppComponent {
 
   private validateFormControls(): boolean {
 
-    const controlNames = ['shipmentHeader', 'shipmentHeader2', 'shipmentStop', 'location', 'release', 'cost'];
+    /*O Cost não é validado aqui, pois se ele for preenchido manualmente será usado 
+      tanto no embarque quanto na release. Mas caso use o xml no shipmentHeader e na
+      release, terá que colocar em cada um. Então depois tem que ser validado se o cost
+      foi preenchido manualmente ou se está no xml do embarque ou da release
+    */
+    const controlNames = ['shipmentHeader', 'shipmentHeader2', 'shipmentStop', 'location', 'release'];
 
     return controlNames.every(controlName => this.form.controls[controlName].value);
   }
