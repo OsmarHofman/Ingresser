@@ -1,3 +1,6 @@
+import { FormGroup } from "@angular/forms";
+import { RefnumType } from "./refnumType";
+
 export class Shipment {
     public shipmentHeader: ShipmentHeader;
     public shipmentHeader2: ShipmentHeader2;
@@ -6,14 +9,69 @@ export class Shipment {
     public releases: Release[];
     public cost: Cost;
 
-    constructor(shipmentHeader: ShipmentHeader, shipmentHeader2: ShipmentHeader2,
-        stops: ShipmentStop[], locations: Location[], releases: Release[], cost: Cost) {
-        this.shipmentHeader = shipmentHeader;
-        this.shipmentHeader2 = shipmentHeader2;
-        this.stops = stops;
-        this.locations = locations;
-        this.releases = releases;
-        this.cost = cost;
+    constructor(form: FormGroup) {
+
+        const shipmentHeaderTab = form.controls['shipmentHeader'].value.tab;
+
+        this.shipmentHeader = new ShipmentHeader(shipmentHeaderTab);
+
+        const shipmentHeader2Tab = form.controls['shipmentHeader2'].value.tab;
+
+        this.shipmentHeader2 = new ShipmentHeader2(shipmentHeader2Tab);
+
+        this.stops = [];
+
+        if (form.controls['shipmentStop'].value.tab.tabSelected === 0) {
+
+            const formStops = form.controls['shipmentStop'].value.tab.inputContent.stops;
+
+            for (let index = 0; index < formStops.length; index++) {
+                const shipmentStop = formStops[index] as ShipmentStop;
+
+                this.stops.push(shipmentStop);
+            }
+
+        }
+
+        this.locations = [];
+
+        if (form.controls['location'].value.tab.tabSelected === 0) {
+
+            const formLocations = form.controls['location'].value.tab.inputContent.Locations;
+
+            for (let index = 0; index < formLocations.length; index++) {
+                const location = new Location(formLocations[index].location);
+
+                this.locations.push(location);
+            }
+
+        }
+
+        this.releases = [];
+
+        if (form.controls['release'].value.tab.tabSelected === 0) {
+
+            const formReleases = form.controls['release'].value.tab.inputContent.Releases;
+
+            for (let index = 0; index < formReleases.length; index++) {
+                const release = new Release(formReleases[index].release);
+
+                this.releases.push(release);
+            }
+
+        }
+
+        const costTab = form.controls['cost'].value.tab;
+
+        this.cost = new Cost(costTab);
+    }
+
+    public convertShipmentHeaderToXml(): string {
+        if (this.shipmentHeader) {
+            return this.shipmentHeader.convertToXml();
+        }
+
+        return '';
     }
 }
 
@@ -42,8 +100,87 @@ export class ShipmentHeader {
             this.carrierXid = shipmentCarrier.xid;
 
             this.refnums = inputContent.shipmentRefnums.Refnums as Refnum[];
-
         }
+    }
+
+    public convertToXml(): string {
+        let xml = `<ShipmentHeader>
+    <ShipmentGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[Xid]]</Xid>
+        </Gid>
+    </ShipmentGid>
+    [[Refnums]]
+    <InternalShipmentStatus>
+        <StatusTypeGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>CLL_STATUS_VIAGEM</Xid>
+            </Gid>
+        </StatusTypeGid>
+        <StatusValueGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>[[TravelStatus]]</Xid>
+            </Gid>
+        </StatusValueGid>
+    </InternalShipmentStatus>
+    <InternalShipmentStatus>
+        <StatusTypeGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>CLL_STATUS_EMISSAO</Xid>
+            </Gid>
+        </StatusTypeGid>
+        <StatusValueGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>[[EmissionStatus]]</Xid>
+            </Gid>
+        </StatusValueGid>
+    </InternalShipmentStatus>
+    <ServiceProviderGid>
+        <Gid>
+            <DomainName>[[CarrierDomainName]]</DomainName>
+            <Xid>[[CarrierXid]]</Xid>
+        </Gid>
+    </ServiceProviderGid>
+    <TransportModeGid>
+        <Gid>
+            <Xid>TL</Xid>
+        </Gid>
+    </TransportModeGid>
+    <InvolvedParty>
+        <InvolvedPartyQualifierGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>CLL_TOMADOR</Xid>
+            </Gid>
+        </InvolvedPartyQualifierGid>
+        <InvolvedPartyLocationRef>
+            <LocationRef>
+                <LocationGid>
+                    <Gid>
+                        <DomainName>[[DomainName]]</DomainName>
+                        <Xid>[[Taker]]</Xid>
+                    </Gid>
+                </LocationGid>
+            </LocationRef>
+        </InvolvedPartyLocationRef>
+    </InvolvedParty>
+</ShipmentHeader>`;
+
+        const refnums: string = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Shipment);
+
+        return xml.replaceAll('[[DomainName]]', this.shipmentDomainName)
+            .replaceAll('[[Xid]]', this.shipmentXid)
+            .replaceAll('[[Refnums]]', refnums)
+            .replaceAll('[[TravelStatus]]', this.travelStatus)
+            .replaceAll('[[EmissionStatus]]', this.emissionStatus)
+            .replaceAll('[[CarrierDomainName]]', this.carrierDomainName)
+            .replaceAll('[[CarrierXid]]', this.carrierXid)
+            .replaceAll('[[Taker]]', this.taker);
     }
 }
 
@@ -109,7 +246,40 @@ export class OrderMovement {
 export class Refnum {
     public domainName: string = 'EMBDEV';
     public xid: string = 'XID';
-    public value: string = 'CLL';
+    public refnumValue: string = 'CLL';
+
+    public static getRefnumsXmlByType(refnums: Refnum[], refnumType: RefnumType): string {
+
+        let finalRefnumXml: string = '';
+
+        refnums.forEach(refnum => {
+            let refnumXml: string = '';
+
+            switch (refnumType) {
+                case RefnumType.Shipment:
+                    refnumXml = `<ShipmentRefnum>
+        <ShipmentRefnumQualifierGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>[[Xid]]</Xid>
+            </Gid>
+        </ShipmentRefnumQualifierGid>
+        <ShipmentRefnumValue>[[Value]]</ShipmentRefnumValue>
+    </ShipmentRefnum>`;
+
+                    break;
+
+                default:
+                    return;
+            }
+
+            finalRefnumXml += refnumXml.replaceAll('[[DomainName]]', refnum.domainName)
+                .replaceAll('[[Xid]]', refnum.xid)
+                .replaceAll('[[Value]]', refnum.refnumValue)
+        });
+
+        return finalRefnumXml;
+    }
 }
 
 export class Cost {
