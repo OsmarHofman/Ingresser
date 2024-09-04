@@ -40,7 +40,8 @@ export class ReleaseInputComponent implements ControlValueAccessor, OnDestroy {
         shipFrom: [''],
         shipTo: [''],
         refnums: [''],
-        orderMovement: ['']
+        orderMovement: [''],
+        taker: ['']
     });
 
     public onTouched: Function = () => { };

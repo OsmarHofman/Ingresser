@@ -20,20 +20,31 @@ export class AppService {
 
         const shipmentHeaderTab = form.controls['shipmentHeader'].value.tab;
 
+        let shipmentXid: string;
+        let carrierXid: string;
+
         if (shipmentHeaderTab.tabSelected === 0) {
             shipmentXml += shipment.convertShipmentHeaderToXml();
+            shipmentXid = shipment.shipmentHeader.shipmentXid;
+            carrierXid = shipment.shipmentHeader.carrierXid;
         } else {
             shipmentXml += shipmentHeaderTab.xmlContent;
+            shipmentXid = ShipmentHeader.getShipmentXidFromXml(shipmentXml);
+            carrierXid = ShipmentHeader.getCarrierXidFromXml(shipmentXml);
         }
 
         shipmentXml += "\n";
 
         const shipmentHeader2Tab = form.controls['shipmentHeader2'].value.tab;
 
+        let shipmentPerspective: string;
+
         if (shipmentHeader2Tab.tabSelected === 0) {
             shipmentXml += shipment.convertShipmentHeader2ToXml();
+            shipmentPerspective = shipment.shipmentHeader2.perspective;
         } else {
             shipmentXml += shipmentHeader2Tab.xmlContent;
+            shipmentPerspective = ShipmentHeader2.getPerspectiveFromXml(shipmentXml);
         }
 
         shipmentXml += "\n";
@@ -54,6 +65,16 @@ export class AppService {
             shipmentXml += shipment.convertLocationToXml();
         } else {
             shipmentXml += shipmentLocationTab.xmlContent;
+        }
+
+        shipmentXml += "\n";
+
+        const shipmentReleaseTab = form.controls['release'].value.tab;
+
+        if (shipmentReleaseTab.tabSelected === 0) {
+            shipmentXml += shipment.convertReleaseToXml(shipmentXid, shipmentPerspective, carrierXid);
+        } else {
+            shipmentXml += shipmentReleaseTab.xmlContent;
         }
 
         shipmentXml += "\n";

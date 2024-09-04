@@ -115,6 +115,20 @@ export class Shipment {
 
         return '';
     }
+
+    public convertReleaseToXml(shipmentXid: string, perspective: string, carrierXid: string): string {
+        if (this.releases) {
+            let releaseXml: string = '';
+
+            this.releases.forEach(release => {
+                releaseXml += release.convertToXml(shipmentXid, perspective, carrierXid);
+            });
+
+            return releaseXml;
+        }
+
+        return '';
+    }
 }
 
 export class ShipmentHeader {
@@ -224,6 +238,32 @@ export class ShipmentHeader {
             .replaceAll('[[CarrierXid]]', this.carrierXid)
             .replaceAll('[[Taker]]', this.taker);
     }
+
+    public static getShipmentXidFromXml(xml: string): string {
+        const shipmentGid = xml.slice(
+            xml.indexOf('ShipmentGid'),
+            xml.indexOf('/ShipmentGid')
+        );
+
+        return shipmentGid
+            .slice(
+                shipmentGid.indexOf('<Xid>') + '<Xid>'.length,
+                shipmentGid.indexOf('</Xid>')
+            );
+    }
+
+    public static getCarrierXidFromXml(xml: string): string {
+        const shipmentGid = xml.slice(
+            xml.indexOf('ServiceProviderGid'),
+            xml.indexOf('/ServiceProviderGid')
+        );
+
+        return shipmentGid
+            .slice(
+                shipmentGid.indexOf('<Xid>') + '<Xid>'.length,
+                shipmentGid.indexOf('</Xid>')
+            );
+    }
 }
 
 export class ShipmentHeader2 {
@@ -241,6 +281,14 @@ export class ShipmentHeader2 {
 </ShipmentHeader2>`;
 
         return xml.replaceAll('[[Perspective]]', (this.perspective === "Buy") ? 'B' : 'S');
+    }
+
+    public static getPerspectiveFromXml(xml: string): string {
+        return xml
+            .slice(
+                xml.indexOf('<Perspective>') + '<Perspective>'.length,
+                xml.indexOf('</Perspective>')
+            );
     }
 }
 
@@ -354,21 +402,188 @@ export class Release {
     public shipTo: string = "XID_DESTINO";
     public refnums: Refnum[] = [];
     public orderMovements: OrderMovement[] = [];
+    public taker: string = "XID_TOMADOR";
 
     constructor(formRelease: any) {
         this.domainName = formRelease.releaseDomainName;
         this.xid = formRelease.releaseXid;
         this.shipFrom = formRelease.shipFrom;
         this.shipTo = formRelease.shipTo;
+        this.taker = formRelease.taker;
 
         this.refnums = formRelease.refnums.Refnums as Refnum[];
-        this.orderMovements = formRelease.orderMovement.Movements as OrderMovement[];
+        this.orderMovements = [];
+
+        for (let index = 0; index < formRelease.orderMovement.Movements.length; index++) {
+            const formOrderMovement = formRelease.orderMovement.Movements[index];
+
+            const orderMovement = new OrderMovement(formOrderMovement.shipFrom, formOrderMovement.shipTo);
+
+            this.orderMovements.push(orderMovement);
+        }
+    }
+
+    public convertToXml(shipmentXid: string, perspective: string, carrierXid: string): string {
+        let xml = `<Release>
+    <ReleaseGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[Xid]]</Xid>
+        </Gid>
+    </ReleaseGid>
+    <ShipFromLocationRef>
+        <LocationRef>
+            <LocationGid>
+                <Gid>
+                    <DomainName>[[DomainName]]</DomainName>
+                    <Xid>[[ShipFrom]]</Xid>
+                </Gid>
+            </LocationGid>
+        </LocationRef>
+    </ShipFromLocationRef>
+    <ShipToLocationRef>
+        <LocationRef>
+            <LocationGid>
+                <Gid>
+                    <DomainName>[[DomainName]]</DomainName>
+                    <Xid>[[ShipTo]]</Xid>
+                </Gid>
+            </LocationGid>
+        </LocationRef>
+    </ShipToLocationRef>
+    <ReleaseAllocationInfo>
+        <ReleaseAllocByType>
+            <AllocTypeQualGid>
+                <Gid>
+                    <Xid>PLANNING</Xid>
+                </Gid>
+            </AllocTypeQualGid>
+            <ReleaseAllocShipment>
+                <ShipmentGid>
+                    <Gid>
+                        <DomainName>[[DomainName]]</DomainName>
+                        <Xid>[[ShipmentXid]]</Xid>
+                    </Gid>
+                </ShipmentGid>
+            </ReleaseAllocShipment>
+        </ReleaseAllocByType>
+    </ReleaseAllocationInfo>
+    [[OrderMovement]]
+    [[Refnums]]
+    <InvolvedParty>
+        <InvolvedPartyQualifierGid>
+            <Gid>
+                <DomainName>[[DomainName]]</DomainName>
+                <Xid>CLL_TOMADOR</Xid>
+            </Gid>
+        </InvolvedPartyQualifierGid>
+        <InvolvedPartyLocationRef>
+            <LocationRef>
+                <LocationGid>
+                    <Gid>
+                        <DomainName>[[DomainName]]</DomainName>
+                        <Xid>[[Taker]]</Xid>
+                    </Gid>
+                </LocationGid>
+            </LocationRef>
+        </InvolvedPartyLocationRef>
+    </InvolvedParty>
+</Release>`;
+
+        const refnums = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Release);
+
+        let orderMovementXml: string = '';
+
+        for (let index = 0; index < this.orderMovements.length; index++) {
+
+            const orderMovement = this.orderMovements[index];
+
+            orderMovementXml += orderMovement.convertToXml(this.domainName, this.xid, perspective, shipmentXid, carrierXid);
+        }
+
+        return xml.replaceAll('[[DomainName]]', this.domainName)
+            .replaceAll('[[Xid]]', this.xid)
+            .replaceAll('[[ShipFrom]]', this.shipFrom)
+            .replaceAll('[[ShipTo]]', this.shipTo)
+            .replaceAll('[[ShipmentXid]]', shipmentXid)
+            .replaceAll('[[OrderMovement]]', orderMovementXml)
+            .replaceAll('[[Taker]]', this.taker)
+            .replaceAll('[[Refnums]]', refnums);
     }
 }
 
 export class OrderMovement {
     public shipFrom: string = "XID_ORIGEM";
     public shipTo: string = "XID_DESTINO";
+
+    constructor(shipFrom: string, shipTo: string) {
+        this.shipFrom = shipFrom;
+        this.shipTo = shipTo;
+    }
+
+    public convertToXml(domainName: string, releaseXid: string,
+        perspective: string, shipmentXid: string, carrierXid: string): string {
+
+        let xml = `<OrderMovement>
+    <OrderMovementGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>OMOVEMENT1</Xid>
+        </Gid>
+    </OrderMovementGid>
+    <OrderReleaseGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[ReleaseXid]]</Xid>
+        </Gid>
+    </OrderReleaseGid>
+    <Perspective>[[ShipmentPerspective]]</Perspective>
+    <ShipFromLocationRef>
+        <LocationRef>
+            <Location>
+                <LocationGid>
+                    <Gid>
+                        <DomainName>[[DomainName]]</DomainName>
+                        <Xid>[[ShipFrom]]</Xid>
+                    </Gid>
+                </LocationGid>
+            </Location>
+        </LocationRef>
+    </ShipFromLocationRef>
+    <ShipToLocationRef>
+        <LocationRef>
+            <Location>
+                <LocationGid>
+                    <Gid>
+                        <DomainName>[[DomainName]]</DomainName>
+                        <Xid>[[ShipTo]]</Xid>
+                    </Gid>
+                </LocationGid>
+            </Location>
+        </LocationRef>
+    </ShipToLocationRef>
+    <ShipmentGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[ShipmentXid]]</Xid>
+        </Gid>
+    </ShipmentGid>
+    <ServiceProviderGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[CarrierXid]]</Xid>
+        </Gid>
+    </ServiceProviderGid>
+</OrderMovement>`;
+
+        return xml.replaceAll('[[DomainName]]', domainName)
+            .replaceAll('[[ReleaseXid]]', releaseXid)
+            .replaceAll('[[ShipmentPerspective]]', perspective)
+            .replaceAll('[[ShipFrom]]', this.shipFrom)
+            .replaceAll('[[ShipTo]]', this.shipTo)
+            .replaceAll('[[ShipmentXid]]', shipmentXid)
+            .replaceAll('[[CarrierXid]]', carrierXid);
+    }
 }
 
 export class Refnum {
@@ -407,6 +622,19 @@ export class Refnum {
         </LocationRefnumQualifierGid>
         <LocationRefnumValue>[[Value]]</LocationRefnumValue>
     </LocationRefnum>`;
+
+                    break;
+
+                case RefnumType.Release:
+                    refnumXml = `<ReleaseRefnum>
+    <ReleaseRefnumQualifierGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[Xid]]</Xid>
+        </Gid>
+    </ReleaseRefnumQualifierGid>
+    <ReleaseRefnumValue>[[Value]]</ReleaseRefnumValue>
+</ReleaseRefnum>`;
 
                     break;
                 default:
