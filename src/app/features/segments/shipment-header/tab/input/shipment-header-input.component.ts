@@ -5,6 +5,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { RefnumComponent } from '../../../../shared/refnum/refnum.component';
+import { CostInputComponent } from '../../../../shared/cost-input/cost-input.component';
 
 @Component({
     selector: 'shipment-header-input',
@@ -12,8 +13,9 @@ import { RefnumComponent } from '../../../../shared/refnum/refnum.component';
     styleUrl: 'shipment-header-input.component.scss',
     standalone: true,
     imports: [
-        RefnumComponent,
         CarrierInputContainerComponent,
+        RefnumComponent,
+        CostInputComponent,
         ReactiveFormsModule,
         MatInputModule,
         MatFormField,
@@ -41,7 +43,8 @@ export class ShipmentHeaderInputComponent implements ControlValueAccessor, OnDes
         emissionStatus: [''],
         shipmentTaker: [''],
         shipmentCarrier: [''],
-        shipmentRefnums: ['']
+        shipmentRefnums: [''],
+        shipmentCosts: ['']
     });
 
     public onTouched: Function = () => { };

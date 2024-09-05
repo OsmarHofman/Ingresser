@@ -7,9 +7,9 @@ import { Subscription } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-    selector: 'cost-table',
-    templateUrl: './cost-table.component.html',
-    styleUrls: ['./cost-table.component.scss'],
+    selector: 'accessory-cost',
+    templateUrl: './accessory-cost.component.html',
+    styleUrls: ['./accessory-cost.component.scss'],
     standalone: true,
     imports: [
         FormsModule,

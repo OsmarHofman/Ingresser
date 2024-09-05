@@ -5,6 +5,9 @@ import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { RefnumComponent } from '../../../../../shared/refnum/refnum.component';
 import { OrderMovementComponent } from "./movement/order-movement.component";
+import { MatCheckbox } from '@angular/material/checkbox';
+import { CommonModule } from '@angular/common';
+import { CostInputComponent } from '../../../../../shared/cost-input/cost-input.component';
 
 @Component({
     selector: 'release-input',
@@ -13,11 +16,14 @@ import { OrderMovementComponent } from "./movement/order-movement.component";
     standalone: true,
     imports: [
     RefnumComponent,
+    OrderMovementComponent,
+    CostInputComponent,
+    CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatFormField,
     MatLabel,
-    OrderMovementComponent
+    MatCheckbox
 ],
     providers: [
         {
@@ -30,7 +36,13 @@ import { OrderMovementComponent } from "./movement/order-movement.component";
 
 export class ReleaseInputComponent implements ControlValueAccessor, OnDestroy {
 
+    public enableCost: boolean = true;
+
     constructor(private formBuilder: FormBuilder) { }
+
+    public enableCostInputs(): void {
+        this.enableCost = !this.enableCost;
+    }
     
     //#region Form
 
@@ -41,7 +53,8 @@ export class ReleaseInputComponent implements ControlValueAccessor, OnDestroy {
         shipTo: [''],
         refnums: [''],
         orderMovement: [''],
-        taker: ['']
+        taker: [''],
+        releaseCost: ['']
     });
 
     public onTouched: Function = () => { };

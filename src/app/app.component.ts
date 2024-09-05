@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ShipmentHeaderAccordionComponent } from './features/segments/shipment-header/shipment-header-accordion.component';
-import { CostAccordionComponent } from './features/segments/cost/cost-accordion.component';
 import { ShipmentHeader2AccordionComponent } from './features/segments/shipment-header2/shipment-header2-accordion.component';
 import { ShipmentStopAccordionComponent } from './features/segments/shipment-stop/shipment-stop-accordion.component';
 import { LocationAccordionComponent } from './features/segments/location/location-accordion.component';
@@ -22,7 +21,6 @@ import { AppService } from './features/service/app.service';
     ShipmentStopAccordionComponent,
     LocationAccordionComponent,
     ReleaseAccordionComponent,
-    CostAccordionComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -43,7 +41,6 @@ export class AppComponent {
     shipmentStop: [''],
     location: [''],
     release: [''],
-    cost: ['']
   });
 
   public submitForm(): void {

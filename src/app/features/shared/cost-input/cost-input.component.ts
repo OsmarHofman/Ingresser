@@ -1,35 +1,44 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { MatCardModule } from '@angular/material/card';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { CostTabComponent } from './tab/cost-tab.component';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CostTableComponent } from './accessory-cost/accessory-cost.component';
+
 
 @Component({
-    selector: 'cost-accordion',
-    templateUrl: 'cost-accordion.component.html',
-    styleUrl: 'cost-accordion.component.scss',
+    selector: 'cost-input',
+    templateUrl: 'cost-input.component.html',
+    styleUrl: 'cost-input.component.scss',
     standalone: true,
     imports: [
-        CdkAccordionModule,
-        CostTabComponent,
-        ReactiveFormsModule
+        MatCardModule,
+        CostTableComponent,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormField,
+        MatLabel,
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: CostAccordionComponent
+            useExisting: CostInputComponent
         }
     ]
 })
 
-export class CostAccordionComponent implements ControlValueAccessor, OnDestroy {
+export class CostInputComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
-    
+
     //#region Form
-    public accordionForm: FormGroup = this.formBuilder.group({
-        tab: ['']
+    
+    public costInputForm: FormGroup = this.formBuilder.group({
+        baseCost: [''],
+        acessorialCost: [''],
+        totalCost: [''],
     });
 
     public onTouched: Function = () => { };
@@ -37,7 +46,7 @@ export class CostAccordionComponent implements ControlValueAccessor, OnDestroy {
     public onChangeSubs: Subscription[] = [];
 
     public registerOnChange(onChange: any): void {
-        const sub = this.accordionForm.valueChanges.subscribe(onChange);
+        const sub = this.costInputForm.valueChanges.subscribe(onChange);
         this.onChangeSubs.push(sub);
     }
 
@@ -47,14 +56,14 @@ export class CostAccordionComponent implements ControlValueAccessor, OnDestroy {
 
     public setDisabledState?(isDisabled: boolean): void {
         if (isDisabled)
-            this.accordionForm.disable();
+            this.costInputForm.disable();
         else
-            this.accordionForm.enable();
+            this.costInputForm.enable();
     }
 
     public writeValue(value: any): void {
         if (value)
-            this.accordionForm.setValue(value, { emitEvent: false });
+            this.costInputForm.setValue(value, { emitEvent: false });
     }
     
     public ngOnDestroy(): void {

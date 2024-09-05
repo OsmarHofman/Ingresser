@@ -3,7 +3,7 @@
     border-color: rgb(13, 110, 253);
     border-style: solid;
     border-radius: 4px;
-    margin: 0px 22px;
+    margin: 0px 10px;
 }
 
 legend {
@@ -18,6 +18,10 @@ legend {
     margin: 0px 0px 20px 0px;
 }
 
+.fields {
+    margin-left: 6px;
+}
+
 hr {
     height: 6px;
     opacity: 0.5;
@@ -25,9 +29,11 @@ hr {
 }
 
 mat-form-field {
+    margin: 15px 0px 15px 10px;
     height: fit-content;
 }
 
-.component {
-    margin-bottom: 20px;
+.base-cost,
+.base-cost-label {
+    text-align: right;
 }
