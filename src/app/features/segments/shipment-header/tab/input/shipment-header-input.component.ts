@@ -44,7 +44,7 @@ export class ShipmentHeaderInputComponent implements ControlValueAccessor, OnDes
         shipmentTaker: [''],
         shipmentCarrier: [''],
         shipmentRefnums: [''],
-        shipmentCosts: ['']
+        shipmentCost: ['']
     });
 
     public onTouched: Function = () => { };

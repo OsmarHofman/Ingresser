@@ -1,5 +1,6 @@
 import { FormGroup } from "@angular/forms";
 import { RefnumType } from "./refnumType";
+import { CostType } from "./costType";
 
 export class Shipment {
     public shipmentHeader: ShipmentHeader;
@@ -7,7 +8,6 @@ export class Shipment {
     public stops: ShipmentStop[];
     public locations: Location[];
     public releases: Release[];
-    public cost: Cost;
 
     constructor(form: FormGroup) {
 
@@ -66,10 +66,6 @@ export class Shipment {
             }
 
         }
-
-        const costTab = form.controls['cost'].value.tab;
-
-        this.cost = new Cost(costTab);
     }
 
     public convertShipmentHeaderToXml(): string {
@@ -140,6 +136,7 @@ export class ShipmentHeader {
     public carrierDomainName: string = "EMBDEV";
     public carrierXid: string = 'XID_TRANSPORTADOR';
     public refnums: Refnum[] = [];
+    public cost: Cost = new Cost(null);
 
     constructor(tabFormContent: any) {
         if (tabFormContent.tabSelected === 0) {
@@ -156,6 +153,8 @@ export class ShipmentHeader {
             this.carrierXid = shipmentCarrier.xid;
 
             this.refnums = inputContent.shipmentRefnums.Refnums as Refnum[];
+
+            this.cost = new Cost(inputContent.shipmentCost);
         }
     }
 
@@ -202,6 +201,7 @@ export class ShipmentHeader {
             <Xid>[[CarrierXid]]</Xid>
         </Gid>
     </ServiceProviderGid>
+    [[ShipmentCost]]
     <TransportModeGid>
         <Gid>
             <Xid>TL</Xid>
@@ -236,7 +236,8 @@ export class ShipmentHeader {
             .replaceAll('[[EmissionStatus]]', this.emissionStatus)
             .replaceAll('[[CarrierDomainName]]', this.carrierDomainName)
             .replaceAll('[[CarrierXid]]', this.carrierXid)
-            .replaceAll('[[Taker]]', this.taker);
+            .replaceAll('[[Taker]]', this.taker)
+            .replaceAll('[[ShipmentCost]]', this.cost.convertToXml(CostType.Shipment, this.shipmentDomainName));
     }
 
     public static getShipmentXidFromXml(xml: string): string {
@@ -655,22 +656,116 @@ export class Cost {
     public acessorialCosts: AcessorialCost[] = [];
     public totalCost: string = "100.00";
 
-    constructor(tabFormContent: any) {
-        if (tabFormContent) {
-
-            const formCost = tabFormContent.inputContent;
+    constructor(formCost: any) {
+        if (formCost) {
 
             this.baseCost = formCost.baseCost;
 
-            this.acessorialCosts = formCost.acessorialCost.costs as AcessorialCost[];
+            for (let index = 0; index < formCost.acessorialCost.costs.length; index++) {
+                const formAcessorialCost = formCost.acessorialCost.costs[index];
+
+                const acessorialCost: AcessorialCost = new AcessorialCost(formAcessorialCost.xid, formAcessorialCost.costValue);
+
+                this.acessorialCosts.push(acessorialCost);
+                
+            }
 
             this.totalCost = formCost.totalCost;
         }
+    }
+
+    public convertToXml(costType: CostType, shipmentDomainName: string) {
+
+        var xml: string = `<TotalPlannedCost>
+        <FinancialAmount>
+            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+            <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
+        </FinancialAmount>
+    </TotalPlannedCost>
+    <TotalActualCost>
+        <FinancialAmount>
+            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+            <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
+        </FinancialAmount>
+    </TotalActualCost>
+    <TotalWeightedCost>
+        <FinancialAmount>
+            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+            <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
+        </FinancialAmount>
+    </TotalWeightedCost>
+    <ShipmentCost>
+        <ShipmentCostSeqno>1</ShipmentCostSeqno>
+        <CostType>B</CostType>
+        <Cost>
+            <FinancialAmount>
+                <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+                <MonetaryAmount>[[BaseCost]]</MonetaryAmount>
+            </FinancialAmount>
+        </Cost>
+    </ShipmentCost>
+    [[AccessorialCost]]`;
+
+        var accessorialCost: string = AcessorialCost.getAccessorialXmlByType(this.acessorialCosts, costType, shipmentDomainName);
+
+        return xml.replaceAll('[[TotalCost]]', this.totalCost)
+            .replaceAll('[[BaseCost]]', this.baseCost)
+            .replaceAll('[[AccessorialCost]]', accessorialCost);
     }
 }
 
 export class AcessorialCost {
     public costXid: string = "DIARIA";
     public costValue: string = "50.00";
-}
 
+    constructor(costXid: string, costValue: string){
+        this.costXid = costXid;
+        this.costValue = costValue;
+    }
+
+    public static getAccessorialXmlByType(costs: AcessorialCost[], costType: CostType, shipmentDomainName: string): string {
+
+        let finalCostXml: string = '';
+
+        costs.forEach(cost => {
+            let costXml: string = '';
+
+            switch (costType) {
+                case CostType.Shipment:
+                    costXml = `<ShipmentCost>
+    <ShipmentCostSeqno>465001</ShipmentCostSeqno>
+    <CostType>A</CostType>
+    <Cost>
+        <FinancialAmount>
+            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+            <MonetaryAmount>[[CostValue]]</MonetaryAmount>
+            <RateToBase>0.5639521768554027</RateToBase>
+            <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
+        </FinancialAmount>
+    </Cost>
+    <AccessorialCodeGid>
+        <Gid>
+            <DomainName>[[DomainName]]</DomainName>
+            <Xid>[[CostXid]]</Xid>
+        </Gid>
+    </AccessorialCodeGid>
+</ShipmentCost>`;
+
+                    break;
+
+                case CostType.Release:
+                    costXml = ``;
+
+                    break;
+                default:
+                    return;
+            }
+
+            finalCostXml += costXml.replaceAll('[[CostValue]]', cost.costValue)
+                .replaceAll('[[DomainName]]', shipmentDomainName)
+                .replaceAll('[[CostXid]]', cost.costXid);
+        });
+
+        return finalCostXml;
+    }
+}
