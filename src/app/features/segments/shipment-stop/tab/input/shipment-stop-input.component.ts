@@ -36,7 +36,10 @@ export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestr
 
     public stopTypes = ['Coleta', 'Entrega'];
 
-    constructor(private formBuilder: FormBuilder) { }
+    constructor(private formBuilder: FormBuilder) { 
+        this.addRow();
+        this.addRow();
+    }
 
     //#region Table
 
@@ -80,17 +83,13 @@ export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestr
 
     //#region Form
 
-    public shipmentStopForm: FormGroup = this.formBuilder.group('');
+    public shipmentStopForm: FormGroup = this.formBuilder.group({
+        stops: this.formBuilder.array([]),
+    });
 
     public onTouched: Function = () => { };
 
     public onChangeSubs: Subscription[] = [];
-
-    public ngOnInit() {
-        this.shipmentStopForm = this.formBuilder.group({
-            stops: this.formBuilder.array([]),
-        });
-    }
 
     public registerOnChange(onChange: any): void {
         const sub = this.shipmentStopForm.valueChanges.subscribe(onChange);

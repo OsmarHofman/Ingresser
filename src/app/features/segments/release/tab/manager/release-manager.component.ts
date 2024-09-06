@@ -31,9 +31,11 @@ import { ReleaseInputComponent } from './input/release-input.component';
     ]
 })
 
-export class ReleaseManagerComponent implements OnInit, ControlValueAccessor, OnDestroy {
+export class ReleaseManagerComponent implements ControlValueAccessor, OnDestroy {
 
-    constructor(private formBuilder: FormBuilder) { }
+    constructor(private formBuilder: FormBuilder) { 
+        this.addRow();
+    }
 
     //#region Table
 
@@ -71,17 +73,13 @@ export class ReleaseManagerComponent implements OnInit, ControlValueAccessor, On
 
     //#region Form
 
-    public releaseForm: FormGroup = this.formBuilder.group('');
+    public releaseForm: FormGroup = this.formBuilder.group({
+        Releases: this.formBuilder.array([]),
+    });
 
     onTouched: Function = () => { };
 
     onChangeSubs: Subscription[] = [];
-    
-    public ngOnInit() {
-        this.releaseForm = this.formBuilder.group({
-            Releases: this.formBuilder.array([]),
-        });
-    }
 
     registerOnChange(onChange: any): void {
         const sub = this.releaseForm.valueChanges.subscribe(onChange);

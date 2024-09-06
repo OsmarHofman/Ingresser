@@ -29,7 +29,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
     ]
 })
 
-export class RefnumComponent implements OnInit, ControlValueAccessor, OnDestroy {
+export class RefnumComponent implements ControlValueAccessor, OnDestroy {
 
     @Input() public colClass: string = 'col-md-6';
 
@@ -38,7 +38,9 @@ export class RefnumComponent implements OnInit, ControlValueAccessor, OnDestroy 
         return this.tableForm.get('Refnums') as FormArray;
     }
 
-    constructor(private formBuilder: FormBuilder) { }
+    constructor(private formBuilder: FormBuilder) { 
+        this.addRow();
+    }
 
     //#region Table
 
@@ -74,17 +76,13 @@ export class RefnumComponent implements OnInit, ControlValueAccessor, OnDestroy 
 
     //#region Form
 
-    public tableForm: FormGroup = this.formBuilder.group('');
+    public tableForm: FormGroup = this.formBuilder.group({
+        Refnums: this.formBuilder.array([]),
+    });
 
     public onTouched: Function = () => { };
 
     public onChangeSubs: Subscription[] = [];
-
-    public ngOnInit() {
-        this.tableForm = this.formBuilder.group({
-            Refnums: this.formBuilder.array([]),
-        });
-    }
 
     public registerOnChange(onChange: any): void {
         const sub = this.tableForm.valueChanges.subscribe(onChange);

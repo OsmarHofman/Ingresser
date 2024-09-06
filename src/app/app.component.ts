@@ -35,19 +35,122 @@ export class AppComponent {
 
   //#region Form
 
-  form: FormGroup = this.formBuilder.group({
-    shipmentHeader: [''],
-    shipmentHeader2: [''],
-    shipmentStop: [''],
-    location: [''],
-    release: [''],
+  public form: FormGroup = this.formBuilder.group({
+    shipmentHeader: [{
+      tab: {
+        inputContent: {
+          emissionStatus: "PRE_EMISSAO_ENVIADA",
+          shipmentCarrier: {
+            domainName: "EMBDEV",
+            xid: "CAR-12521"
+          },
+          shipmentCost: {
+            acessorialCost: "",
+            baseCost: "900",
+            totalCost: "900"
+          },
+          shipmentDomainName: "EMBDEV",
+          shipmentRefnums: "",
+          shipmentTaker: "ORG-8027-30018",
+          shipmentXid: "EMBARQUE1",
+          travelStatus: "PLANEJADO"
+        },
+        tabSelected: 0,
+        xmlContent: ''
+      }
+    }],
+    shipmentHeader2: [{
+      tab: {
+        inputContent: {
+          perspective: "Buy"
+        },
+        tabSelected: 0,
+        xmlContent: ''
+      }
+    }],
+    shipmentStop: [{
+      tab: {
+        inputContent: {
+          stops: [
+            {
+              locationDomainName: "EMBDEV",
+              locationXid: "LOCATION76515",
+              stopSequence: 1,
+              stopType: "Coleta"
+            },
+            {
+              locationDomainName: "EMBDEV",
+              locationXid: "ORG-8027-30018",
+              stopSequence: 2,
+              stopType: "Entrega"
+            }
+          ]
+        },
+        tabSelected: 0,
+        xmlContent: ''
+      }
+    }],
+    location: [{
+      tab: {
+        inputContent: {
+          Locations: [{
+            location: {
+              domainName: "EMBDEV",
+              xid: "ORG-8027-30018",
+              city: "Lages",
+              uf: "SC",
+              refnums: {
+                Refnums: [{
+                  domainName: "EMBDEV",
+                  xid: "CLL_CNPJ",
+                  refnumValue: "00720785000177"
+                }]
+              }
+            }
+          }]
+        },
+        tabSelected: 0,
+        xmlContent: ''
+      }
+    }],
+    release: [{
+      tab: {
+        inputContent: {
+          Releases: [{
+            release: {
+              releaseDomainName: "EMBDEV",
+              releaseXid: "ORG-8027-30018",
+              shipFrom: "LOCATION76515",
+              shipTo: "ORG-8027-30018",
+              taker: "ORG-8027-30018",
+              orderMovement: {
+                Movements: [{
+                  shipFrom: "LOCATION76515",
+                  shipTo: "ORG-8027-30018",
+                }],
+              },
+              refnums: {
+                Refnums: [{
+                  domainName: "EMBDEV",
+                  xid: "CLL_CNPJ",
+                  refnumValue: "00720785000177"
+                }]
+              },
+              releaseCost: ''
+            }
+          }]
+        },
+        tabSelected: 0,
+        xmlContent: ''
+      }
+    }],
   });
 
   public submitForm(): void {
     console.log('Formulario:', this.form.value);
 
     // if (this.validateForm())
-      this.appService.convertFormToXml(this.form);
+    this.appService.convertFormToXml(this.form);
     // else
     //   alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
   }

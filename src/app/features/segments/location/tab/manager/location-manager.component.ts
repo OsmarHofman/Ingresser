@@ -31,9 +31,11 @@ import { LocationInputComponent } from './input/location-input.component';
     ]
 })
 
-export class LocationManagerComponent implements OnInit, ControlValueAccessor, OnDestroy {
-    
-    constructor(private formBuilder: FormBuilder) { }
+export class LocationManagerComponent implements ControlValueAccessor, OnDestroy {
+
+    constructor(private formBuilder: FormBuilder) {
+        this.addRow();
+    }
 
     //#region Table
 
@@ -71,17 +73,13 @@ export class LocationManagerComponent implements OnInit, ControlValueAccessor, O
 
     //#region Form
 
-    public locationForm: FormGroup = this.formBuilder.group('');
+    public locationForm: FormGroup = this.formBuilder.group({
+        Locations: this.formBuilder.array([]),
+    });
 
     public onTouched: Function = () => { };
 
     public onChangeSubs: Subscription[] = [];
-
-    public ngOnInit() {
-        this.locationForm = this.formBuilder.group({
-            Locations: this.formBuilder.array([]),
-        });
-    }
 
     public registerOnChange(onChange: any): void {
         const sub = this.locationForm.valueChanges.subscribe(onChange);
@@ -103,7 +101,7 @@ export class LocationManagerComponent implements OnInit, ControlValueAccessor, O
         if (value)
             this.locationForm.setValue(value, { emitEvent: false });
     }
-    
+
     public ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
             sub.unsubscribe();

@@ -29,9 +29,11 @@ import { MatCheckbox } from '@angular/material/checkbox';
     ]
 })
 
-export class OrderMovementComponent implements OnInit, ControlValueAccessor, OnDestroy {
+export class OrderMovementComponent implements ControlValueAccessor, OnDestroy {
 
-    constructor(private formBuilder: FormBuilder) { }
+    constructor(private formBuilder: FormBuilder) { 
+        this.addRow();
+    }
 
     //#region Table
 
@@ -70,17 +72,13 @@ export class OrderMovementComponent implements OnInit, ControlValueAccessor, OnD
 
     //#region Form
 
-    public tableForm: FormGroup = this.formBuilder.group('');
+    public tableForm: FormGroup = this.formBuilder.group({
+        Movements: this.formBuilder.array([]),
+    });
 
     public onTouched: Function = () => { };
 
     public onChangeSubs: Subscription[] = [];
-
-    public ngOnInit() {
-        this.tableForm = this.formBuilder.group({
-            Movements: this.formBuilder.array([]),
-        });
-    }
 
     public registerOnChange(onChange: any): void {
         const sub = this.tableForm.valueChanges.subscribe(onChange);

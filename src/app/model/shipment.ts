@@ -152,7 +152,8 @@ export class ShipmentHeader {
             this.carrierDomainName = shipmentCarrier.domainName;
             this.carrierXid = shipmentCarrier.xid;
 
-            this.refnums = inputContent.shipmentRefnums.Refnums as Refnum[];
+            if (inputContent.shipmentRefnums)
+                this.refnums = inputContent.shipmentRefnums.Refnums as Refnum[];
 
             this.cost = new Cost(inputContent.shipmentCost);
         }
@@ -667,7 +668,7 @@ export class Cost {
                 const acessorialCost: AcessorialCost = new AcessorialCost(formAcessorialCost.xid, formAcessorialCost.costValue);
 
                 this.acessorialCosts.push(acessorialCost);
-                
+
             }
 
             this.totalCost = formCost.totalCost;
@@ -718,7 +719,7 @@ export class AcessorialCost {
     public costXid: string = "DIARIA";
     public costValue: string = "50.00";
 
-    constructor(costXid: string, costValue: string){
+    constructor(costXid: string, costValue: string) {
         this.costXid = costXid;
         this.costValue = costValue;
     }
