@@ -117,7 +117,10 @@ export class Shipment {
             let releaseXml: string = '';
 
             this.releases.forEach(release => {
-                releaseXml += release.convertToXml(shipmentXid, perspective, carrierXid);
+                if (release.useShipmentCost)
+                    releaseXml += release.convertToXml(shipmentXid, perspective, carrierXid, this.shipmentHeader.cost);
+                else
+                    releaseXml += release.convertToXml(shipmentXid, perspective, carrierXid);
             });
 
             return releaseXml;
@@ -406,6 +409,7 @@ export class Release {
     public orderMovements: OrderMovement[] = [];
     public taker: string = "XID_TOMADOR";
     public cost: Cost = new Cost('');
+    public useShipmentCost: boolean = false;
 
     constructor(formRelease: any) {
         this.domainName = formRelease.releaseDomainName;
@@ -418,6 +422,8 @@ export class Release {
 
         if (formRelease.releaseCost) {
             this.cost = new Cost(formRelease.releaseCost);
+        } else {
+            this.useShipmentCost = true;
         }
 
         this.orderMovements = [];
@@ -431,7 +437,7 @@ export class Release {
         }
     }
 
-    public convertToXml(shipmentXid: string, perspective: string, carrierXid: string): string {
+    public convertToXml(shipmentXid: string, perspective: string, carrierXid: string, shipmentCost: Cost | null = null): string {
         let xml = `<Release>
     <ReleaseGid>
         <Gid>
@@ -482,7 +488,7 @@ export class Release {
     </InvolvedParty>
 </Release>`;
 
-        const refnums = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Release);
+        const refnums = (this.refnums) ? Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Release) : '';
 
         let orderMovementXml: string = '';
 
@@ -493,7 +499,13 @@ export class Release {
             orderMovementXml += orderMovement.convertToXml(this.domainName, this.xid, perspective, shipmentXid, carrierXid);
         }
 
-        const cost: string = this.cost.convertToXml(CostType.Release, this.domainName, shipmentXid);
+        let cost: string;
+
+        if (shipmentCost)
+            cost = this.cost.convertToXml(CostType.Release, this.domainName, shipmentXid, shipmentCost);
+        else
+            cost = this.cost.convertToXml(CostType.Release, this.domainName, shipmentXid);
+
 
         return xml.replaceAll('[[DomainName]]', this.domainName)
             .replaceAll('[[Xid]]', this.xid)
@@ -672,7 +684,7 @@ export class Cost {
         }
     }
 
-    public convertToXml(costType: CostType, shipmentDomainName: string, shipmentXid: string = '') {
+    public convertToXml(costType: CostType, shipmentDomainName: string, shipmentXid: string = '', shipmentCost: Cost | null = null) {
 
         let xml: string = '';
 
@@ -760,10 +772,22 @@ export class Cost {
                 break;
         }
 
-        var accessorialCost: string = AcessorialCost.getAccessorialXmlByType(this.acessorialCosts, costType, shipmentDomainName);
+        let baseCost: string;
+        let totalCost: string;
+        let accessorialCost: string;
 
-        return xml.replaceAll('[[TotalCost]]', this.totalCost)
-            .replaceAll('[[BaseCost]]', this.baseCost)
+        if (shipmentCost) {
+            baseCost = shipmentCost.baseCost;
+            totalCost = shipmentCost.totalCost;
+            accessorialCost = AcessorialCost.getAccessorialXmlByType(shipmentCost.acessorialCosts, costType, shipmentDomainName);
+        } else {
+            baseCost = this.baseCost;
+            totalCost = this.totalCost;
+            accessorialCost = AcessorialCost.getAccessorialXmlByType(this.acessorialCosts, costType, shipmentDomainName);
+        }
+
+        return xml.replaceAll('[[TotalCost]]', totalCost)
+            .replaceAll('[[BaseCost]]', baseCost)
             .replaceAll('[[AccessorialCost]]', accessorialCost)
             .replaceAll('[[DomainName]]', shipmentDomainName)
             .replaceAll('[[ShipmentXid]]', shipmentXid);
