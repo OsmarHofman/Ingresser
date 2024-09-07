@@ -8,6 +8,7 @@ import { ShipmentStopAccordionComponent } from './features/segments/shipment-sto
 import { LocationAccordionComponent } from './features/segments/location/location-accordion.component';
 import { ReleaseAccordionComponent } from './features/segments/release/release-accordion.component';
 import { AppService } from './features/service/app.service';
+import { ShipmentBaseTag } from './model/xml-base-tags';
 
 @Component({
   selector: 'app-root',
@@ -69,7 +70,7 @@ export class AppComponent {
           travelStatus: "PLANEJADO"
         },
         tabSelected: 0,
-        xmlContent: ''
+        xmlContent: ShipmentBaseTag.ShipmentHeader
       }
     }],
     shipmentHeader2: [{
@@ -78,7 +79,7 @@ export class AppComponent {
           perspective: "Buy"
         },
         tabSelected: 0,
-        xmlContent: ''
+        xmlContent: ShipmentBaseTag.ShipmentHeader2
       }
     }],
     shipmentStop: [{
@@ -100,7 +101,7 @@ export class AppComponent {
           ]
         },
         tabSelected: 0,
-        xmlContent: ''
+        xmlContent: ShipmentBaseTag.ShipmentStop
       }
     }],
     location: [{
@@ -188,11 +189,11 @@ export class AppComponent {
                 }
               }
             },
-            
+
           ]
         },
         tabSelected: 0,
-        xmlContent: ''
+        xmlContent: ShipmentBaseTag.Location
       }
     }],
     release: [{
@@ -201,7 +202,7 @@ export class AppComponent {
           Releases: [{
             release: {
               releaseDomainName: "EMBDEV",
-              releaseXid: "RELEASE1",
+              releaseXid: "ORDEM1",
               shipFrom: "LOCATION76515",
               shipTo: "ORG-8027-30018",
               taker: "ORG-8027-30018",
@@ -217,7 +218,7 @@ export class AppComponent {
           }]
         },
         tabSelected: 0,
-        xmlContent: ''
+        xmlContent: ShipmentBaseTag.Release
       }
     }],
   });

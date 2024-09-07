@@ -31,11 +31,9 @@ import { LocationManagerComponent } from './manager/location-manager.component';
 
 export class LocationTabComponent implements ControlValueAccessor, OnDestroy {
 
-    constructor(private formBuilder: FormBuilder) { 
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.Location);
-    }
+    constructor(private formBuilder: FormBuilder) { }
 
-    public tabChanged(event: MatTabChangeEvent): void{
+    public tabChanged(event: MatTabChangeEvent): void {
         this.tabForm.controls['tabSelected'].setValue(event.index);
     }
 

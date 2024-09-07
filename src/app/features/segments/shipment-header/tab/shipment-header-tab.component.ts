@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ShipmentBaseTag } from '../../../../model/xml-base-tags';
 import { ShipmentHeaderInputComponent } from './input/shipment-header-input.component';
 
 @Component({
@@ -31,9 +30,7 @@ import { ShipmentHeaderInputComponent } from './input/shipment-header-input.comp
 
 export class ShipmentHeaderTabComponent implements ControlValueAccessor, OnDestroy {
 
-    constructor(private formBuilder: FormBuilder) {
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentHeader);
-    }
+    constructor(private formBuilder: FormBuilder) { }
 
     public tabChanged(event: MatTabChangeEvent): void {
         this.tabForm.controls['tabSelected'].setValue(event.index);

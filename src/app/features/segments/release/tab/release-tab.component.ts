@@ -31,11 +31,9 @@ import { ReleaseManagerComponent } from './manager/release-manager.component';
 
 export class ReleaseTabComponent implements ControlValueAccessor, OnDestroy {
 
-    constructor(private formBuilder: FormBuilder) { 
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.Release);
-    }
+    constructor(private formBuilder: FormBuilder) { }
 
-    public tabChanged(event: MatTabChangeEvent): void{
+    public tabChanged(event: MatTabChangeEvent): void {
         this.tabForm.controls['tabSelected'].setValue(event.index);
     }
 
@@ -71,12 +69,12 @@ export class ReleaseTabComponent implements ControlValueAccessor, OnDestroy {
         if (value)
             this.tabForm.setValue(value, { emitEvent: false });
     }
-    
+
     public ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
             sub.unsubscribe();
         });
     }
-    
+
     //#endregion
 }

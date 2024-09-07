@@ -31,9 +31,7 @@ import { ShipmentStopInputComponent } from './input/shipment-stop-input.componen
 
 export class ShipmentStopTabComponent implements ControlValueAccessor, OnDestroy {
 
-    constructor(private formBuilder: FormBuilder) {
-        this.tabForm.controls['xmlContent'].setValue(ShipmentBaseTag.ShipmentStop);
-    }
+    constructor(private formBuilder: FormBuilder) { }
 
     public tabChanged(event: MatTabChangeEvent): void {
         this.tabForm.controls['tabSelected'].setValue(event.index);
