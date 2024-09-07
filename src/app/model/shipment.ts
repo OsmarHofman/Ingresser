@@ -405,6 +405,7 @@ export class Release {
     public refnums: Refnum[] = [];
     public orderMovements: OrderMovement[] = [];
     public taker: string = "XID_TOMADOR";
+    public cost: Cost = new Cost('');
 
     constructor(formRelease: any) {
         this.domainName = formRelease.releaseDomainName;
@@ -414,6 +415,11 @@ export class Release {
         this.taker = formRelease.taker;
 
         this.refnums = formRelease.refnums.Refnums as Refnum[];
+
+        if (formRelease.releaseCost) {
+            this.cost = new Cost(formRelease.releaseCost);
+        }
+
         this.orderMovements = [];
 
         for (let index = 0; index < formRelease.orderMovement.Movements.length; index++) {
@@ -453,23 +459,7 @@ export class Release {
             </LocationGid>
         </LocationRef>
     </ShipToLocationRef>
-    <ReleaseAllocationInfo>
-        <ReleaseAllocByType>
-            <AllocTypeQualGid>
-                <Gid>
-                    <Xid>PLANNING</Xid>
-                </Gid>
-            </AllocTypeQualGid>
-            <ReleaseAllocShipment>
-                <ShipmentGid>
-                    <Gid>
-                        <DomainName>[[DomainName]]</DomainName>
-                        <Xid>[[ShipmentXid]]</Xid>
-                    </Gid>
-                </ShipmentGid>
-            </ReleaseAllocShipment>
-        </ReleaseAllocByType>
-    </ReleaseAllocationInfo>
+    [[ReleaseCost]]
     [[OrderMovement]]
     [[Refnums]]
     <InvolvedParty>
@@ -503,6 +493,8 @@ export class Release {
             orderMovementXml += orderMovement.convertToXml(this.domainName, this.xid, perspective, shipmentXid, carrierXid);
         }
 
+        const cost: string = this.cost.convertToXml(CostType.Release, this.domainName, shipmentXid);
+
         return xml.replaceAll('[[DomainName]]', this.domainName)
             .replaceAll('[[Xid]]', this.xid)
             .replaceAll('[[ShipFrom]]', this.shipFrom)
@@ -510,7 +502,8 @@ export class Release {
             .replaceAll('[[ShipmentXid]]', shipmentXid)
             .replaceAll('[[OrderMovement]]', orderMovementXml)
             .replaceAll('[[Taker]]', this.taker)
-            .replaceAll('[[Refnums]]', refnums);
+            .replaceAll('[[Refnums]]', refnums)
+            .replaceAll('[[ReleaseCost]]', cost);
     }
 }
 
@@ -662,12 +655,16 @@ export class Cost {
 
             this.baseCost = formCost.baseCost;
 
-            for (let index = 0; index < formCost.acessorialCost.costs.length; index++) {
-                const formAcessorialCost = formCost.acessorialCost.costs[index];
+            if (formCost.acessorialCost) {
 
-                const acessorialCost: AcessorialCost = new AcessorialCost(formAcessorialCost.xid, formAcessorialCost.costValue);
+                for (let index = 0; index < formCost.acessorialCost.costs.length; index++) {
+                    const formAcessorialCost = formCost.acessorialCost.costs[index];
 
-                this.acessorialCosts.push(acessorialCost);
+                    const acessorialCost: AcessorialCost = new AcessorialCost(formAcessorialCost.xid, formAcessorialCost.costValue);
+
+                    this.acessorialCosts.push(acessorialCost);
+
+                }
 
             }
 
@@ -675,9 +672,13 @@ export class Cost {
         }
     }
 
-    public convertToXml(costType: CostType, shipmentDomainName: string) {
+    public convertToXml(costType: CostType, shipmentDomainName: string, shipmentXid: string = '') {
 
-        var xml: string = `<TotalPlannedCost>
+        let xml: string = '';
+
+        switch (costType) {
+            case CostType.Shipment:
+                xml = `<TotalPlannedCost>
         <FinancialAmount>
             <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
             <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
@@ -707,11 +708,65 @@ export class Cost {
     </ShipmentCost>
     [[AccessorialCost]]`;
 
+                break;
+
+            case CostType.Release:
+                xml = `<ReleaseAllocationInfo>
+        <ReleaseAllocByType>
+            <AllocTypeQualGid>
+                <Gid>
+                    <Xid>PLANNING</Xid>
+                </Gid>
+            </AllocTypeQualGid>
+            <ReleaseAllocShipment>
+                <ShipmentGid>
+                    <Gid>
+                        <DomainName>[[DomainName]]</DomainName>
+                        <Xid>[[ShipmentXid]]</Xid>
+                    </Gid>
+                </ShipmentGid>
+                <TotalAllocCost>
+                    <FinancialAmount>
+                        <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+                        <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
+                        <RateToBase>0.5639521768554027</RateToBase>
+                        <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
+                    </FinancialAmount>
+                </TotalAllocCost>
+            </ReleaseAllocShipment>
+            <ReleaseAllocShipmentDetail>
+                <Cost>
+                    <FinancialAmount>
+                        <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+                        <MonetaryAmount>[[BaseCost]]</MonetaryAmount>
+                        <RateToBase>0.5639521768554027</RateToBase>
+                        <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
+                    </FinancialAmount>
+                </Cost>
+                <CostTypeGid>
+                    <Gid>
+                        <Xid>B</Xid>
+                    </Gid>
+                </CostTypeGid>
+                <CostDescription>B</CostDescription>
+            </ReleaseAllocShipmentDetail>
+            [[AccessorialCost]]
+        </ReleaseAllocByType>
+    </ReleaseAllocationInfo>`;
+
+                break;
+
+            default:
+                break;
+        }
+
         var accessorialCost: string = AcessorialCost.getAccessorialXmlByType(this.acessorialCosts, costType, shipmentDomainName);
 
         return xml.replaceAll('[[TotalCost]]', this.totalCost)
             .replaceAll('[[BaseCost]]', this.baseCost)
-            .replaceAll('[[AccessorialCost]]', accessorialCost);
+            .replaceAll('[[AccessorialCost]]', accessorialCost)
+            .replaceAll('[[DomainName]]', shipmentDomainName)
+            .replaceAll('[[ShipmentXid]]', shipmentXid);
     }
 }
 
@@ -740,8 +795,6 @@ export class AcessorialCost {
         <FinancialAmount>
             <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
             <MonetaryAmount>[[CostValue]]</MonetaryAmount>
-            <RateToBase>0.5639521768554027</RateToBase>
-            <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
         </FinancialAmount>
     </Cost>
     <AccessorialCodeGid>
@@ -755,7 +808,32 @@ export class AcessorialCost {
                     break;
 
                 case CostType.Release:
-                    costXml = ``;
+                    costXml = `<ReleaseAllocShipmentDetail>
+                <AllocSeqNo>79997</AllocSeqNo>
+                <AllocCostSeqno>8</AllocCostSeqno>
+                <Cost>
+                    <FinancialAmount>
+                        <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
+                        <MonetaryAmount>[[CostValue]]</MonetaryAmount>
+                        <RateToBase>0.5639521768554027</RateToBase>
+                        <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
+                    </FinancialAmount>
+                </Cost>
+                <CostTypeGid>
+                    <Gid>
+                        <Xid>A</Xid>
+                    </Gid>
+                </CostTypeGid>
+                <AccessorialCodeGid>
+                    <Gid>
+                        <DomainName>[[DomainName]]</DomainName>
+                        <Xid>[[CostXid]]</Xid>
+                    </Gid>
+                </AccessorialCodeGid>
+                <FlexFieldStrings />
+                <FlexFieldNumbers />
+                <FlexFieldDates />
+            </ReleaseAllocShipmentDetail>`;
 
                     break;
                 default:
