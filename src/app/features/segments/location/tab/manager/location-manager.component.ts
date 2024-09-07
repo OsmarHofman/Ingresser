@@ -35,6 +35,8 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
 
     constructor(private formBuilder: FormBuilder) {
         this.addRow();
+        this.addRow();
+        this.addRow();
     }
 
     //#region Table

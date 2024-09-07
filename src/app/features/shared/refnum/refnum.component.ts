@@ -29,17 +29,23 @@ import { MatCheckbox } from '@angular/material/checkbox';
     ]
 })
 
-export class RefnumComponent implements ControlValueAccessor, OnDestroy {
+export class RefnumComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
     @Input() public colClass: string = 'col-md-6';
+
+    @Input() public defaultRowCount: number = 2;
 
 
     get refnums() {
         return this.tableForm.get('Refnums') as FormArray;
     }
 
-    constructor(private formBuilder: FormBuilder) { 
-        this.addRow();
+    constructor(private formBuilder: FormBuilder) { }
+
+    ngOnInit(): void {
+        for (let index = 0; index < this.defaultRowCount; index++) {
+            this.addRow();
+        }
     }
 
     //#region Table

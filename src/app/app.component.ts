@@ -46,11 +46,24 @@ export class AppComponent {
           },
           shipmentCost: {
             acessorialCost: "",
-            baseCost: "900",
-            totalCost: "900"
+            baseCost: "100",
+            totalCost: "100"
           },
           shipmentDomainName: "EMBDEV",
-          shipmentRefnums: "",
+          shipmentRefnums: {
+            Refnums: [
+              {
+                domainName: "EMBDEV",
+                xid: "CLL_IMPOSTO_SOMADO",
+                refnumValue: "N"
+              },
+              {
+                domainName: "EMBDEV",
+                xid: "CLL_IMPOSTO_INCLUSO",
+                refnumValue: "S"
+              }
+            ]
+          },
           shipmentTaker: "ORG-8027-30018",
           shipmentXid: "EMBARQUE1",
           travelStatus: "PLANEJADO"
@@ -93,21 +106,90 @@ export class AppComponent {
     location: [{
       tab: {
         inputContent: {
-          Locations: [{
-            location: {
-              domainName: "EMBDEV",
-              xid: "ORG-8027-30018",
-              city: "Lages",
-              uf: "SC",
-              refnums: {
-                Refnums: [{
-                  domainName: "EMBDEV",
-                  xid: "CLL_CNPJ",
-                  refnumValue: "00720785000177"
-                }]
+          Locations: [
+            {
+              location: {
+                domainName: "EMBDEV",
+                xid: "CAR-12521",
+                city: "São Paulo",
+                uf: "SP",
+                refnums: {
+                  Refnums: [
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_CNPJ",
+                      refnumValue: "00720785000177"
+                    },
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_CODIGO_IBGE",
+                      refnumValue: "3550308"
+                    },
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_TIPO_TRANSPORTADOR",
+                      refnumValue: "ETC_NORMAL"
+                    },
+                  ]
+                }
               }
-            }
-          }]
+            },
+            {
+              location: {
+                domainName: "EMBDEV",
+                xid: "LOCATION76515",
+                city: "São Paulo",
+                uf: "SP",
+                refnums: {
+                  Refnums: [
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_CNPJ",
+                      refnumValue: "96973902000183"
+                    },
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_CODIGO_IBGE",
+                      refnumValue: "3550308"
+                    },
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_BAIRRO",
+                      refnumValue: "BAIRRO10"
+                    },
+                  ]
+                }
+              }
+            },
+            {
+              location: {
+                domainName: "EMBDEV",
+                xid: "ORG-8027-30018",
+                city: "Lages",
+                uf: "SC",
+                refnums: {
+                  Refnums: [
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_CNPJ",
+                      refnumValue: "05257045000160"
+                    },
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_CODIGO_IBGE",
+                      refnumValue: "4209300"
+                    },
+                    {
+                      domainName: "EMBDEV",
+                      xid: "CLL_BAIRRO",
+                      refnumValue: "BAIRRO1"
+                    },
+                  ]
+                }
+              }
+            },
+            
+          ]
         },
         tabSelected: 0,
         xmlContent: ''
@@ -119,7 +201,7 @@ export class AppComponent {
           Releases: [{
             release: {
               releaseDomainName: "EMBDEV",
-              releaseXid: "ORG-8027-30018",
+              releaseXid: "RELEASE1",
               shipFrom: "LOCATION76515",
               shipTo: "ORG-8027-30018",
               taker: "ORG-8027-30018",
@@ -129,13 +211,7 @@ export class AppComponent {
                   shipTo: "ORG-8027-30018",
                 }],
               },
-              refnums: {
-                Refnums: [{
-                  domainName: "EMBDEV",
-                  xid: "CLL_CNPJ",
-                  refnumValue: "00720785000177"
-                }]
-              },
+              refnums: "",
               releaseCost: ''
             }
           }]
