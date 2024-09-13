@@ -84,82 +84,84 @@ export class AppService {
     <soapenv:Header />
     <soapenv:Body>
         <Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
-            <TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
+            <otm:TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
                 xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                <Version>20a</Version>
-                <TransmissionCreateDt>
-                    <GLogDate>${gLogDate}</GLogDate>
-                    <TZId>UTC</TZId>
-                    <TZOffset>+00:00</TZOffset>
-                </TransmissionCreateDt>
-                <TransactionCount>1</TransactionCount>
-                <SenderHostName>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</SenderHostName>
-                <SenderSystemID>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</SenderSystemID>
-                <SenderTransmissionNo>328969</SenderTransmissionNo>
-                <ReferenceTransmissionNo>0</ReferenceTransmissionNo>
-                <GLogXMLElementName>PlannedShipment</GLogXMLElementName>
-                <NotifyInfo>
-                    <ContactGid>
-                        <Gid>
-                            <DomainName>EMBDEV</DomainName>
-                            <Xid>TEST</Xid>
-                        </Gid>
-                    </ContactGid>
-                    <ExternalSystemGid>
-                        <Gid>
-                            <DomainName>EMBDEV</DomainName>
-                            <Xid>TEST</Xid>
-                        </Gid>
-                    </ExternalSystemGid>
-                </NotifyInfo>
-            </TransmissionHeader>
+                <otm:Version>20a</otm:Version>
+                <otm:TransmissionCreateDt>
+                    <otm:GLogDate>${gLogDate}</otm:GLogDate>
+                    <otm:TZId>UTC</otm:TZId>
+                    <otm:TZOffset>+00:00</otm:TZOffset>
+                </otm:TransmissionCreateDt>
+                <otm:TransactionCount>1</otm:TransactionCount>
+                <otm:SenderHostName>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderHostName>
+                <otm:SenderSystemID>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderSystemID>
+                <otm:SenderTransmissionNo>328969</otm:SenderTransmissionNo>
+                <otm:ReferenceTransmissionNo>0</otm:ReferenceTransmissionNo>
+                <otm:GLogXMLElementName>PlannedShipment</otm:GLogXMLElementName>
+                <otm:NotifyInfo>
+                    <otm:ContactGid>
+                        <otm:Gid>
+                            <otm:DomainName>EMBDEV</otm:DomainName>
+                            <otm:Xid>TEST</otm:Xid>
+                        </otm:Gid>
+                    </otm:ContactGid>
+                    <otm:ExternalSystemGid>
+                        <otm:Gid>
+                            <otm:DomainName>EMBDEV</otm:DomainName>
+                            <otm:Xid>TEST</otm:Xid>
+                        </otm:Gid>
+                    </otm:ExternalSystemGid>
+                </otm:NotifyInfo>
+            </otm:TransmissionHeader>
             <TransmissionBody>
                 <GLogXMLElement>
-                    <TransactionHeader
+                    <otm:TransactionHeader
                         xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
                         xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                        <SenderTransactionId>710385</SenderTransactionId>
-                        <ObjectModInfo>
-                            <InsertDt>
-                                <GLogDate>${gLogDate}</GLogDate>
-                                <TZId>UTC</TZId>
-                                <TZOffset>+00:00</TZOffset>
-                            </InsertDt>
-                            <UpdateDt>
-                                <GLogDate>${gLogDate}</GLogDate>
-                                <TZId>UTC</TZId>
-                                <TZOffset>+00:00</TZOffset>
-                            </UpdateDt>
-                        </ObjectModInfo>
-                        <SendReason>
-                            <Remark>
-                                <RemarkSequence>1</RemarkSequence>
-                                <RemarkQualifierGid>
-                                    <Gid>
-                                        <Xid>QUERY TYPE</Xid>
-                                    </Gid>
-                                </RemarkQualifierGid>
-                                <RemarkText>SHIPMENT</RemarkText>
-                            </Remark>
-                            <SendReasonGid>
-                                <Gid>
-                                    <Xid>SEND INTEGRATION</Xid>
-                                </Gid>
-                            </SendReasonGid>
-                            <ObjectType>SHIPMENT</ObjectType>
-                        </SendReason>
-                    </TransactionHeader>
-                    <PlannedShipment xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
+                        <otm:SenderTransactionId>710385</otm:SenderTransactionId>
+                        <otm:ObjectModInfo>
+                            <otm:InsertDt>
+                                <otm:GLogDate>${gLogDate}</otm:GLogDate>
+                                <otm:TZId>UTC</otm:TZId>
+                                <otm:TZOffset>+00:00</otm:TZOffset>
+                            </otm:InsertDt>
+                            <otm:UpdateDt>
+                                <otm:GLogDate>${gLogDate}</otm:GLogDate>
+                                <otm:TZId>UTC</otm:TZId>
+                                <otm:TZOffset>+00:00</otm:TZOffset>
+                            </otm:UpdateDt>
+                        </otm:ObjectModInfo>
+                        <otm:SendReason>
+                            <otm:Remark>
+                                <otm:RemarkSequence>1</otm:RemarkSequence>
+                                <otm:RemarkQualifierGid>
+                                    <otm:Gid>
+                                        <otm:Xid>QUERY TYPE</otm:Xid>
+                                    <otm:/otm:Gid>
+                                </otm:RemarkQualifierGid>
+                                <otm:RemarkText>SHIPMENT</otm:RemarkText>
+                            </otm:Remark>
+                            <otm:SendReasonGid>
+                                <otm:Gid>
+                                    <otm:Xid>SEND INTEGRATION</otm:Xid>
+                                </otm:Gid>
+                            </otm:SendReasonGid>
+                            <otm:ObjectType>SHIPMENT</otm:ObjectType>
+                        </otm:SendReason>
+                    </otm:TransactionHeader>
+                    <otm:PlannedShipment xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
                         xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                        <Shipment>
+                        <otm:Shipment>
                             [[Shipment]]
-                        </Shipment>
-                    </PlannedShipment>
-                </GLogXMLElement>
-            </TransmissionBody>
+                        </otm:Shipment>
+                    </otm:PlannedShipment>
+                </otm:GLogXMLElement>
+            </otm:TransmissionBody>
         </Transmission>
     </soapenv:Body>
-</soapenv:Envelope>`;
+</soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
+
+
 
         return finalXml;
     }

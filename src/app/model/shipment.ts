@@ -163,73 +163,73 @@ export class ShipmentHeader {
     }
 
     public convertToXml(): string {
-        let xml = `<ShipmentHeader>
-    <ShipmentGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[Xid]]</Xid>
-        </Gid>
-    </ShipmentGid>
+        let xml = `<otm:ShipmentHeader>
+    <otm:ShipmentGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[Xid]]</otm:Xid>
+        </otm:Gid>
+    </otm:ShipmentGid>
     [[Refnums]]
-    <InternalShipmentStatus>
-        <StatusTypeGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>CLL_STATUS_VIAGEM</Xid>
-            </Gid>
-        </StatusTypeGid>
-        <StatusValueGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>[[TravelStatus]]</Xid>
-            </Gid>
-        </StatusValueGid>
-    </InternalShipmentStatus>
-    <InternalShipmentStatus>
-        <StatusTypeGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>CLL_STATUS_EMISSAO</Xid>
-            </Gid>
-        </StatusTypeGid>
-        <StatusValueGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>[[EmissionStatus]]</Xid>
-            </Gid>
-        </StatusValueGid>
-    </InternalShipmentStatus>
-    <ServiceProviderGid>
-        <Gid>
-            <DomainName>[[CarrierDomainName]]</DomainName>
-            <Xid>[[CarrierXid]]</Xid>
-        </Gid>
-    </ServiceProviderGid>
+    <otm:InternalShipmentStatus>
+        <otm:StatusTypeGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>CLL_STATUS_VIAGEM</otm:Xid>
+            </otm:Gid>
+        </otm:StatusTypeGid>
+        <otm:StatusValueGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>[[TravelStatus]]</otm:Xid>
+            </otm:Gid>
+        </otm:StatusValueGid>
+    </otm:InternalShipmentStatus>
+    <otm:InternalShipmentStatus>
+        <otm:StatusTypeGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>CLL_STATUS_EMISSAO</otm:Xid>
+            </otm:Gid>
+        </otm:StatusTypeGid>
+        <otm:StatusValueGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>[[EmissionStatus]]</otm:Xid>
+            </otm:Gid>
+        </otm:StatusValueGid>
+    </otm:InternalShipmentStatus>
+    <otm:ServiceProviderGid>
+        <otm:Gid>
+            <otm:DomainName>[[CarrierDomainName]]</otm:DomainName>
+            <otm:Xid>[[CarrierXid]]</otm:Xid>
+        </otm:Gid>
+    </otm:ServiceProviderGid>
     [[ShipmentCost]]
-    <TransportModeGid>
-        <Gid>
-            <Xid>TL</Xid>
-        </Gid>
-    </TransportModeGid>
-    <InvolvedParty>
-        <InvolvedPartyQualifierGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>CLL_TOMADOR</Xid>
-            </Gid>
-        </InvolvedPartyQualifierGid>
-        <InvolvedPartyLocationRef>
-            <LocationRef>
-                <LocationGid>
-                    <Gid>
-                        <DomainName>[[DomainName]]</DomainName>
-                        <Xid>[[Taker]]</Xid>
-                    </Gid>
-                </LocationGid>
-            </LocationRef>
-        </InvolvedPartyLocationRef>
-    </InvolvedParty>
-</ShipmentHeader>`;
+    <otm:TransportModeGid>
+        <otm:Gid>
+            <otm:Xid>TL</otm:Xid>
+        </otm:Gid>
+    </otm:TransportModeGid>
+    <otm:InvolvedParty>
+        <otm:InvolvedPartyQualifierGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>CLL_TOMADOR</otm:Xid>
+            </otm:Gid>
+        </otm:InvolvedPartyQualifierGid>
+        <otm:InvolvedPartyLocationRef>
+            <otm:LocationRef>
+                <otm:LocationGid>
+                    <otm:Gid>
+                        <otm:DomainName>[[DomainName]]</otm:DomainName>
+                        <otm:Xid>[[Taker]]</otm:Xid>
+                    </otm:Gid>
+                </otm:LocationGid>
+            </otm:LocationRef>
+        </otm:InvolvedPartyLocationRef>
+    </otm:InvolvedParty>
+</otm:ShipmentHeader>`;
 
         const refnums: string = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Shipment);
 
@@ -246,27 +246,27 @@ export class ShipmentHeader {
 
     public static getShipmentXidFromXml(xml: string): string {
         const shipmentGid = xml.slice(
-            xml.indexOf('ShipmentGid'),
-            xml.indexOf('/ShipmentGid')
+            xml.indexOf('otm:ShipmentGid'),
+            xml.indexOf('/otm:ShipmentGid')
         );
 
         return shipmentGid
             .slice(
-                shipmentGid.indexOf('<Xid>') + '<Xid>'.length,
-                shipmentGid.indexOf('</Xid>')
+                shipmentGid.indexOf('<otm:Xid>') + '<otm:Xid>'.length,
+                shipmentGid.indexOf('</otm:Xid>')
             );
     }
 
     public static getCarrierXidFromXml(xml: string): string {
         const shipmentGid = xml.slice(
-            xml.indexOf('ServiceProviderGid'),
-            xml.indexOf('/ServiceProviderGid')
+            xml.indexOf('otm:ServiceProviderGid'),
+            xml.indexOf('/otm:ServiceProviderGid')
         );
 
         return shipmentGid
             .slice(
-                shipmentGid.indexOf('<Xid>') + '<Xid>'.length,
-                shipmentGid.indexOf('</Xid>')
+                shipmentGid.indexOf('<otm:Xid>') + '<otm:Xid>'.length,
+                shipmentGid.indexOf('</otm:Xid>')
             );
     }
 }
@@ -281,9 +281,9 @@ export class ShipmentHeader2 {
     }
 
     public convertToXml(): string {
-        let xml = `<ShipmentHeader2>
-    <Perspective>[[Perspective]]</Perspective>
-</ShipmentHeader2>`;
+        let xml = `<otm:ShipmentHeader2>
+    <otm:Perspective>[[Perspective]]</otm:Perspective>
+</otm:ShipmentHeader2>`;
 
         return xml.replaceAll('[[Perspective]]', (this.perspective === "Buy") ? 'B' : 'S');
     }
@@ -291,8 +291,8 @@ export class ShipmentHeader2 {
     public static getPerspectiveFromXml(xml: string): string {
         return xml
             .slice(
-                xml.indexOf('<Perspective>') + '<Perspective>'.length,
-                xml.indexOf('</Perspective>')
+                xml.indexOf('<otm:Perspective>') + '<otm:Perspective>'.length,
+                xml.indexOf('</otm:Perspective>')
             );
     }
 }
@@ -311,18 +311,18 @@ export class ShipmentStop {
     }
 
     public convertToXml(): string {
-        let xml = `<ShipmentStop>
-    <StopSequence>[[StopSequence]]</StopSequence>
-    <LocationRef>
-        <LocationGid>
-            <Gid>
-                <DomainName>[[LocationDomainName]]</DomainName>
-                <Xid>[[LocationXid]]</Xid>
-            </Gid>
-        </LocationGid>
-    </LocationRef>
-    <StopType>[[StopType]]</StopType>
-</ShipmentStop>`;
+        let xml = `<otm:ShipmentStop>
+    <otm:StopSequence>[[StopSequence]]</otm:StopSequence>
+    <otm:LocationRef>
+        <otm:LocationGid>
+            <otm:Gid>
+                <otm:DomainName>[[LocationDomainName]]</otm:DomainName>
+                <otm:Xid>[[LocationXid]]</otm:Xid>
+            </otm:Gid>
+        </otm:LocationGid>
+    </otm:LocationRef>
+    <otm:StopType>[[StopType]]</otm:StopType>
+</otm:ShipmentStop>`;
 
         let stopType: string;
 
@@ -365,30 +365,30 @@ export class Location {
     }
 
     public convertToXml(): string {
-        let xml = `<Location>
-    <LocationGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[Xid]]</Xid>
-        </Gid>
-    </LocationGid>
-    <LocationName>[[Xid]]</LocationName>
-    <Address>
-        <AddressLines>
-            <SequenceNumber>1</SequenceNumber>
-            <AddressLine>ROD BR-262 SN KM 7.5</AddressLine>
-        </AddressLines>
-        <City>[[City]]</City>
-        <ProvinceCode>[[Uf]]</ProvinceCode>
-        <PostalCode>29136350</PostalCode>
-        <CountryCode3Gid>
-            <Gid>
-                <Xid>BR</Xid>
-            </Gid>
-        </CountryCode3Gid>
-    </Address>
+        let xml = `<otm:Location>
+    <otm:LocationGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[Xid]]</otm:Xid>
+        </otm:Gid>
+    </otm:LocationGid>
+    <otm:LocationName>[[Xid]]</otm:LocationName>
+    <otm:Address>
+        <otm:AddressLines>
+            <otm:SequenceNumber>1</otm:SequenceNumber>
+            <otm:AddressLine>ROD BR-262 SN KM 7.5</otm:AddressLine>
+        </otm:AddressLines>
+        <otm:City>[[City]]</otm:City>
+        <otm:ProvinceCode>[[Uf]]</otm:ProvinceCode>
+        <otm:PostalCode>29136350</otm:PostalCode>
+        <otm:CountryCode3Gid>
+            <otm:Gid>
+                <otm:Xid>BR</otm:Xid>
+            </otm:Gid>
+        </otm:CountryCode3Gid>
+    </otm:Address>
     [[Refnums]]
-</Location>`;
+</otm:Location>`;
 
         const refnums = Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Location);
 
@@ -438,55 +438,55 @@ export class Release {
     }
 
     public convertToXml(shipmentXid: string, perspective: string, carrierXid: string, shipmentCost: Cost | null = null): string {
-        let xml = `<Release>
-    <ReleaseGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[Xid]]</Xid>
-        </Gid>
-    </ReleaseGid>
-    <ShipFromLocationRef>
-        <LocationRef>
-            <LocationGid>
-                <Gid>
-                    <DomainName>[[DomainName]]</DomainName>
-                    <Xid>[[ShipFrom]]</Xid>
-                </Gid>
-            </LocationGid>
-        </LocationRef>
-    </ShipFromLocationRef>
-    <ShipToLocationRef>
-        <LocationRef>
-            <LocationGid>
-                <Gid>
-                    <DomainName>[[DomainName]]</DomainName>
-                    <Xid>[[ShipTo]]</Xid>
-                </Gid>
-            </LocationGid>
-        </LocationRef>
-    </ShipToLocationRef>
+        let xml = `<otm:Release>
+    <otm:ReleaseGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[Xid]]</otm:Xid>
+        </otm:Gid>
+    </otm:ReleaseGid>
+    <otm:ShipFromLocationRef>
+        <otm:LocationRef>
+            <otm:LocationGid>
+                <otm:Gid>
+                    <otm:DomainName>[[DomainName]]</otm:DomainName>
+                    <otm:Xid>[[ShipFrom]]</otm:Xid>
+                </otm:Gid>
+            </otm:LocationGid>
+        </otm:LocationRef>
+    </otm:ShipFromLocationRef>
+    <otm:ShipToLocationRef>
+        <otm:LocationRef>
+            <otm:LocationGid>
+                <otm:Gid>
+                    <otm:DomainName>[[DomainName]]</otm:DomainName>
+                    <otm:Xid>[[ShipTo]]</otm:Xid>
+                </otm:Gid>
+            </otm:LocationGid>
+        </otm:LocationRef>
+    </otm:ShipToLocationRef>
     [[ReleaseCost]]
     [[OrderMovement]]
     [[Refnums]]
-    <InvolvedParty>
-        <InvolvedPartyQualifierGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>CLL_TOMADOR</Xid>
-            </Gid>
-        </InvolvedPartyQualifierGid>
-        <InvolvedPartyLocationRef>
-            <LocationRef>
-                <LocationGid>
-                    <Gid>
-                        <DomainName>[[DomainName]]</DomainName>
-                        <Xid>[[Taker]]</Xid>
-                    </Gid>
-                </LocationGid>
-            </LocationRef>
-        </InvolvedPartyLocationRef>
-    </InvolvedParty>
-</Release>`;
+    <otm:InvolvedParty>
+        <otm:InvolvedPartyQualifierGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>CLL_TOMADOR</otm:Xid>
+            </otm:Gid>
+        </otm:InvolvedPartyQualifierGid>
+        <otm:InvolvedPartyLocationRef>
+            <otm:LocationRef>
+                <otm:LocationGid>
+                    <otm:Gid>
+                        <otm:DomainName>[[DomainName]]</otm:DomainName>
+                        <otm:Xid>[[Taker]]</otm:Xid>
+                    </otm:Gid>
+                </otm:LocationGid>
+            </otm:LocationRef>
+        </otm:InvolvedPartyLocationRef>
+    </otm:InvolvedParty>
+</otm:Release>`;
 
         const refnums = (this.refnums) ? Refnum.getRefnumsXmlByType(this.refnums, RefnumType.Release) : '';
 
@@ -531,57 +531,57 @@ export class OrderMovement {
     public convertToXml(domainName: string, releaseXid: string,
         perspective: string, shipmentXid: string, carrierXid: string): string {
 
-        let xml = `<OrderMovement>
-    <OrderMovementGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>OMOVEMENT1</Xid>
-        </Gid>
-    </OrderMovementGid>
-    <OrderReleaseGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[ReleaseXid]]</Xid>
-        </Gid>
-    </OrderReleaseGid>
-    <Perspective>[[ShipmentPerspective]]</Perspective>
-    <ShipFromLocationRef>
-        <LocationRef>
-            <Location>
-                <LocationGid>
-                    <Gid>
-                        <DomainName>[[DomainName]]</DomainName>
-                        <Xid>[[ShipFrom]]</Xid>
-                    </Gid>
-                </LocationGid>
-            </Location>
-        </LocationRef>
-    </ShipFromLocationRef>
-    <ShipToLocationRef>
-        <LocationRef>
-            <Location>
-                <LocationGid>
-                    <Gid>
-                        <DomainName>[[DomainName]]</DomainName>
-                        <Xid>[[ShipTo]]</Xid>
-                    </Gid>
-                </LocationGid>
-            </Location>
-        </LocationRef>
-    </ShipToLocationRef>
-    <ShipmentGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[ShipmentXid]]</Xid>
-        </Gid>
-    </ShipmentGid>
-    <ServiceProviderGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[CarrierXid]]</Xid>
-        </Gid>
-    </ServiceProviderGid>
-</OrderMovement>`;
+        let xml = `<otm:OrderMovement>
+    <otm:OrderMovementGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>OMOVEMENT1</otm:Xid>
+        </otm:Gid>
+    </otm:OrderMovementGid>
+    <otm:OrderReleaseGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[ReleaseXid]]</otm:Xid>
+        </otm:Gid>
+    </otm:OrderReleaseGid>
+    <otm:Perspective>[[ShipmentPerspective]]</otm:Perspective>
+    <otm:ShipFromLocationRef>
+        <otm:LocationRef>
+            <otm:Location>
+                <otm:LocationGid>
+                    <otm:Gid>
+                        <otm:DomainName>[[DomainName]]</otm:DomainName>
+                        <otm:Xid>[[ShipFrom]]</otm:Xid>
+                    </otm:Gid>
+                </otm:LocationGid>
+            </otm:Location>
+        </otm:LocationRef>
+    </otm:ShipFromLocationRef>
+    <otm:ShipToLocationRef>
+        <otm:LocationRef>
+            <otm:Location>
+                <otm:LocationGid>
+                    <otm:Gid>
+                        <otm:DomainName>[[DomainName]]</otm:DomainName>
+                        <otm:Xid>[[ShipTo]]</otm:Xid>
+                    </otm:Gid>
+                </otm:LocationGid>
+            </otm:Location>
+        </otm:LocationRef>
+    </otm:ShipToLocationRef>
+    <otm:ShipmentGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[ShipmentXid]]</otm:Xid>
+        </otm:Gid>
+    </otm:ShipmentGid>
+    <otm:ServiceProviderGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[CarrierXid]]</otm:Xid>
+        </otm:Gid>
+    </otm:ServiceProviderGid>
+</otm:OrderMovement>`;
 
         return xml.replaceAll('[[DomainName]]', domainName)
             .replaceAll('[[ReleaseXid]]', releaseXid)
@@ -607,41 +607,41 @@ export class Refnum {
 
             switch (refnumType) {
                 case RefnumType.Shipment:
-                    refnumXml = `<ShipmentRefnum>
-        <ShipmentRefnumQualifierGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>[[Xid]]</Xid>
-            </Gid>
-        </ShipmentRefnumQualifierGid>
-        <ShipmentRefnumValue>[[Value]]</ShipmentRefnumValue>
-    </ShipmentRefnum>`;
+                    refnumXml = `<otm:ShipmentRefnum>
+        <otm:ShipmentRefnumQualifierGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>[[Xid]]</otm:Xid>
+            </otm:Gid>
+        </otm:ShipmentRefnumQualifierGid>
+        <otm:ShipmentRefnumValue>[[Value]]</otm:ShipmentRefnumValue>
+    </otm:ShipmentRefnum>`;
 
                     break;
 
                 case RefnumType.Location:
-                    refnumXml = `<LocationRefnum>
-        <LocationRefnumQualifierGid>
-            <Gid>
-                <DomainName>[[DomainName]]</DomainName>
-                <Xid>[[Xid]]</Xid>
-            </Gid>
-        </LocationRefnumQualifierGid>
-        <LocationRefnumValue>[[Value]]</LocationRefnumValue>
-    </LocationRefnum>`;
+                    refnumXml = `<otm:LocationRefnum>
+        <otm:LocationRefnumQualifierGid>
+            <otm:Gid>
+                <otm:DomainName>[[DomainName]]</otm:DomainName>
+                <otm:Xid>[[Xid]]</otm:Xid>
+            </otm:Gid>
+        </otm:LocationRefnumQualifierGid>
+        <otm:LocationRefnumValue>[[Value]]</otm:LocationRefnumValue>
+    </otm:LocationRefnum>`;
 
                     break;
 
                 case RefnumType.Release:
-                    refnumXml = `<ReleaseRefnum>
-    <ReleaseRefnumQualifierGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[Xid]]</Xid>
-        </Gid>
-    </ReleaseRefnumQualifierGid>
-    <ReleaseRefnumValue>[[Value]]</ReleaseRefnumValue>
-</ReleaseRefnum>`;
+                    refnumXml = `<otm:ReleaseRefnum>
+    <otm:ReleaseRefnumQualifierGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[Xid]]</otm:Xid>
+        </otm:Gid>
+    </otm:ReleaseRefnumQualifierGid>
+    <otm:ReleaseRefnumValue>[[Value]]</otm:ReleaseRefnumValue>
+</otm:ReleaseRefnum>`;
 
                     break;
                 default:
@@ -690,81 +690,81 @@ export class Cost {
 
         switch (costType) {
             case CostType.Shipment:
-                xml = `<TotalPlannedCost>
-        <FinancialAmount>
-            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-            <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
-        </FinancialAmount>
-    </TotalPlannedCost>
-    <TotalActualCost>
-        <FinancialAmount>
-            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-            <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
-        </FinancialAmount>
-    </TotalActualCost>
-    <TotalWeightedCost>
-        <FinancialAmount>
-            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-            <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
-        </FinancialAmount>
-    </TotalWeightedCost>
-    <ShipmentCost>
-        <ShipmentCostSeqno>1</ShipmentCostSeqno>
-        <CostType>B</CostType>
-        <Cost>
-            <FinancialAmount>
-                <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-                <MonetaryAmount>[[BaseCost]]</MonetaryAmount>
-            </FinancialAmount>
-        </Cost>
-    </ShipmentCost>
+                xml = `<otm:TotalPlannedCost>
+        <otm:FinancialAmount>
+            <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+            <otm:MonetaryAmount>[[TotalCost]]</otm:MonetaryAmount>
+        </otm:FinancialAmount>
+    </otm:TotalPlannedCost>
+    <otm:TotalActualCost>
+        <otm:FinancialAmount>
+            <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+            <otm:MonetaryAmount>[[TotalCost]]</otm:MonetaryAmount>
+        </otm:FinancialAmount>
+    </otm:TotalActualCost>
+    <otm:TotalWeightedCost>
+        <otm:FinancialAmount>
+            <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+            <otm:MonetaryAmount>[[TotalCost]]</otm:MonetaryAmount>
+        </otm:FinancialAmount>
+    </otm:TotalWeightedCost>
+    <otm:ShipmentCost>
+        <otm:ShipmentCostSeqno>1</otm:ShipmentCostSeqno>
+        <otm:CostType>B</otm:CostType>
+        <otm:Cost>
+            <otm:FinancialAmount>
+                <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+                <otm:MonetaryAmount>[[BaseCost]]</otm:MonetaryAmount>
+            </otm:FinancialAmount>
+        </otm:Cost>
+    </otm:ShipmentCost>
     [[AccessorialCost]]`;
 
                 break;
 
             case CostType.Release:
-                xml = `<ReleaseAllocationInfo>
-        <ReleaseAllocByType>
-            <AllocTypeQualGid>
-                <Gid>
-                    <Xid>PLANNING</Xid>
-                </Gid>
-            </AllocTypeQualGid>
-            <ReleaseAllocShipment>
-                <ShipmentGid>
-                    <Gid>
-                        <DomainName>[[DomainName]]</DomainName>
-                        <Xid>[[ShipmentXid]]</Xid>
-                    </Gid>
-                </ShipmentGid>
-                <TotalAllocCost>
-                    <FinancialAmount>
-                        <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-                        <MonetaryAmount>[[TotalCost]]</MonetaryAmount>
-                        <RateToBase>0.5639521768554027</RateToBase>
-                        <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
-                    </FinancialAmount>
-                </TotalAllocCost>
-            </ReleaseAllocShipment>
-            <ReleaseAllocShipmentDetail>
-                <Cost>
-                    <FinancialAmount>
-                        <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-                        <MonetaryAmount>[[BaseCost]]</MonetaryAmount>
-                        <RateToBase>0.5639521768554027</RateToBase>
-                        <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
-                    </FinancialAmount>
-                </Cost>
-                <CostTypeGid>
-                    <Gid>
-                        <Xid>B</Xid>
-                    </Gid>
-                </CostTypeGid>
-                <CostDescription>B</CostDescription>
-            </ReleaseAllocShipmentDetail>
+                xml = `<otm:ReleaseAllocationInfo>
+        <otm:ReleaseAllocByType>
+            <otm:AllocTypeQualGid>
+                <otm:Gid>
+                    <otm:Xid>PLANNING</otm:Xid>
+                </otm:Gid>
+            </otm:AllocTypeQualGid>
+            <otm:ReleaseAllocShipment>
+                <otm:ShipmentGid>
+                    <otm:Gid>
+                        <otm:DomainName>[[DomainName]]</otm:DomainName>
+                        <otm:Xid>[[ShipmentXid]]</otm:Xid>
+                    </otm:Gid>
+                </otm:ShipmentGid>
+                <otm:TotalAllocCost>
+                    <otm:FinancialAmount>
+                        <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+                        <otm:MonetaryAmount>[[TotalCost]]</otm:MonetaryAmount>
+                        <otm:RateToBase>0.5639521768554027</otm:RateToBase>
+                        <otm:FuncCurrencyAmount>0.0</otm:FuncCurrencyAmount>
+                    </otm:FinancialAmount>
+                </otm:TotalAllocCost>
+            </otm:ReleaseAllocShipment>
+            <otm:ReleaseAllocShipmentDetail>
+                <otm:Cost>
+                    <otm:FinancialAmount>
+                        <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+                        <otm:MonetaryAmount>[[BaseCost]]</otm:MonetaryAmount>
+                        <otm:RateToBase>0.5639521768554027</otm:RateToBase>
+                        <otm:FuncCurrencyAmount>0.0</otm:FuncCurrencyAmount>
+                    </otm:FinancialAmount>
+                </otm:Cost>
+                <otm:CostTypeGid>
+                    <otm:Gid>
+                        <otm:Xid>B</otm:Xid>
+                    </otm:Gid>
+                </otm:CostTypeGid>
+                <otm:CostDescription>B</otm:CostDescription>
+            </otm:ReleaseAllocShipmentDetail>
             [[AccessorialCost]]
-        </ReleaseAllocByType>
-    </ReleaseAllocationInfo>`;
+        </otm:ReleaseAllocByType>
+    </otm:ReleaseAllocationInfo>`;
 
                 break;
 
@@ -812,52 +812,52 @@ export class AcessorialCost {
 
             switch (costType) {
                 case CostType.Shipment:
-                    costXml = `<ShipmentCost>
-    <ShipmentCostSeqno>465001</ShipmentCostSeqno>
-    <CostType>A</CostType>
-    <Cost>
-        <FinancialAmount>
-            <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-            <MonetaryAmount>[[CostValue]]</MonetaryAmount>
-        </FinancialAmount>
-    </Cost>
-    <AccessorialCodeGid>
-        <Gid>
-            <DomainName>[[DomainName]]</DomainName>
-            <Xid>[[CostXid]]</Xid>
-        </Gid>
-    </AccessorialCodeGid>
-</ShipmentCost>`;
+                    costXml = `<otm:ShipmentCost>
+    <otm:ShipmentCostSeqno>465001</otm:ShipmentCostSeqno>
+    <otm:CostType>A</otm:CostType>
+    <otm:Cost>
+        <otm:FinancialAmount>
+            <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+            <otm:MonetaryAmount>[[CostValue]]</otm:MonetaryAmount>
+        </otm:FinancialAmount>
+    </otm:Cost>
+    <otm:AccessorialCodeGid>
+        <otm:Gid>
+            <otm:DomainName>[[DomainName]]</otm:DomainName>
+            <otm:Xid>[[CostXid]]</otm:Xid>
+        </otm:Gid>
+    </otm:AccessorialCodeGid>
+</otm:ShipmentCost>`;
 
                     break;
 
                 case CostType.Release:
-                    costXml = `<ReleaseAllocShipmentDetail>
-                <AllocSeqNo>79997</AllocSeqNo>
-                <AllocCostSeqno>8</AllocCostSeqno>
-                <Cost>
-                    <FinancialAmount>
-                        <GlobalCurrencyCode>BRL</GlobalCurrencyCode>
-                        <MonetaryAmount>[[CostValue]]</MonetaryAmount>
-                        <RateToBase>0.5639521768554027</RateToBase>
-                        <FuncCurrencyAmount>0.0</FuncCurrencyAmount>
-                    </FinancialAmount>
-                </Cost>
-                <CostTypeGid>
-                    <Gid>
-                        <Xid>A</Xid>
-                    </Gid>
-                </CostTypeGid>
-                <AccessorialCodeGid>
-                    <Gid>
-                        <DomainName>[[DomainName]]</DomainName>
-                        <Xid>[[CostXid]]</Xid>
-                    </Gid>
-                </AccessorialCodeGid>
-                <FlexFieldStrings />
-                <FlexFieldNumbers />
-                <FlexFieldDates />
-            </ReleaseAllocShipmentDetail>`;
+                    costXml = `<otm:ReleaseAllocShipmentDetail>
+                <otm:AllocSeqNo>79997</otm:AllocSeqNo>
+                <otm:AllocCostSeqno>8</otm:AllocCostSeqno>
+                <otm:Cost>
+                    <otm:FinancialAmount>
+                        <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+                        <otm:MonetaryAmount>[[CostValue]]</otm:MonetaryAmount>
+                        <otm:RateToBase>0.5639521768554027</otm:RateToBase>
+                        <otm:FuncCurrencyAmount>0.0</otm:FuncCurrencyAmount>
+                    </otm:FinancialAmount>
+                </otm:Cost>
+                <otm:CostTypeGid>
+                    <otm:Gid>
+                        <otm:Xid>A</otm:Xid>
+                    </otm:Gid>
+                </otm:CostTypeGid>
+                <otm:AccessorialCodeGid>
+                    <otm:Gid>
+                        <otm:DomainName>[[DomainName]]</otm:DomainName>
+                        <otm:Xid>[[CostXid]]</otm:Xid>
+                    </otm:Gid>
+                </otm:AccessorialCodeGid>
+                <otm:FlexFieldStrings />
+                <otm:FlexFieldNumbers />
+                <otm:FlexFieldDates />
+            </otm:ReleaseAllocShipmentDetail>`;
 
                     break;
                 default:
