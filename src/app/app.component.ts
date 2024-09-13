@@ -88,7 +88,7 @@ export class AppComponent {
           stops: [
             {
               locationDomainName: "EMBDEV",
-              locationXid: "LOCATION76515",
+              locationXid: "LOCATION7",
               stopSequence: 1,
               stopType: "Coleta"
             },
@@ -138,7 +138,7 @@ export class AppComponent {
             {
               location: {
                 domainName: "EMBDEV",
-                xid: "LOCATION76515",
+                xid: "LOCATION7",
                 city: "São Paulo",
                 uf: "SP",
                 refnums: {
@@ -203,12 +203,12 @@ export class AppComponent {
             release: {
               releaseDomainName: "EMBDEV",
               releaseXid: "ORDEM1",
-              shipFrom: "LOCATION76515",
+              shipFrom: "LOCATION7",
               shipTo: "ORG-8027-30018",
               taker: "ORG-8027-30018",
               orderMovement: {
                 Movements: [{
-                  shipFrom: "LOCATION76515",
+                  shipFrom: "LOCATION7",
                   shipTo: "ORG-8027-30018",
                 }],
               },
