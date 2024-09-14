@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -23,16 +23,16 @@ import { ShipmentBaseTag } from './model/xml-base-tags';
     LocationAccordionComponent,
     ReleaseAccordionComponent,
   ],
+  providers: [AppService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 
+
+@Injectable()
 export class AppComponent {
 
-  private appService: AppService = new AppService();
-
-  constructor(private formBuilder: FormBuilder) {
-  }
+  constructor(private formBuilder: FormBuilder, private appService: AppService) { }
 
   //#region Form
 

@@ -1,7 +1,23 @@
 import { FormGroup } from "@angular/forms";
-import { Cost, Location, Release, Shipment, ShipmentHeader, ShipmentHeader2, ShipmentStop } from "../../model/shipment";
+import { Shipment, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
 
+const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'text/xml; charset=utf-8',
+      'SOAPAction': 'ReceiveTransmission'
+    })
+  };
+
+@Injectable()
 export class AppService {
+
+    public wsUrl = 'pr.nddfrete.com.br/1046/tmsExchangeMessage/TMSExchangeMessage'
+
+    constructor(private http: HttpClient){
+
+    }
 
     public convertFormToXml(form: FormGroup): string {
 
@@ -161,7 +177,7 @@ export class AppService {
     </soapenv:Body>
 </soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
 
-
+        let response = this.http.post(this.wsUrl, finalXml, httpOptions);
 
         return finalXml;
     }
