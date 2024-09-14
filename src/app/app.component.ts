@@ -112,7 +112,7 @@ export class AppComponent {
               location: {
                 domainName: "EMBDEV",
                 xid: "CAR-12521",
-                city: "São Paulo",
+                city: "SAO PAULO",
                 uf: "SP",
                 refnums: {
                   Refnums: [
@@ -139,7 +139,7 @@ export class AppComponent {
               location: {
                 domainName: "EMBDEV",
                 xid: "LOCATION7",
-                city: "São Paulo",
+                city: "SAO PAULO",
                 uf: "SP",
                 refnums: {
                   Refnums: [
@@ -166,7 +166,7 @@ export class AppComponent {
               location: {
                 domainName: "EMBDEV",
                 xid: "ORG-8027-30018",
-                city: "Lages",
+                city: "LAGES",
                 uf: "SC",
                 refnums: {
                   Refnums: [

@@ -583,6 +583,8 @@ export class OrderMovement {
     </otm:ServiceProviderGid>
 </otm:OrderMovement>`;
 
+        perspective = perspective == "Buy" ? "B" : "S";
+
         return xml.replaceAll('[[DomainName]]', domainName)
             .replaceAll('[[ReleaseXid]]', releaseXid)
             .replaceAll('[[ShipmentPerspective]]', perspective)
