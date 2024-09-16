@@ -8,15 +8,22 @@
       </h1>
     </div>
   </header>
-  <form [formGroup]="form" (ngSubmit)="submitForm()">
 
-    <div class="bd-main container-fluid">
-      <shipment formControlName="shipment" />
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened class="left-sidenav-container">Sidenav content</mat-sidenav>
+    <mat-sidenav-content>
+      <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
 
-      <hr>
-      <button class="btn btn-primary submit" type="submit">Enviar</button>
-    </div>
-  </form>
+        <div>
+          <shipment formControlName="shipment" />
+
+          <hr>
+          <button class="btn btn-primary submit" type="submit">Enviar</button>
+        </div>
+      </form>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
 
 </main>
 

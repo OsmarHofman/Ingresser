@@ -1,6 +1,7 @@
 import { Component, Injectable } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { ShipmentBaseTag } from './model/xml-base-tags';
@@ -15,7 +16,8 @@ import { ShipmentComponent } from './features/segments/shipment/shipment.compone
     RouterOutlet,
     CommonModule,
     ReactiveFormsModule,
-    ShipmentComponent
+    ShipmentComponent,
+    MatSidenavModule
   ],
   providers: [AppService],
 
