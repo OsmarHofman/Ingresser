@@ -6,30 +6,29 @@ import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ShipmentBaseTag } from '../../../../model/xml-base-tags';
-import { ShipmentStopInputComponent } from './input/shipment-stop-input.component';
+import { LocationManagerComponent } from './manager/location-manager.component';
 
 @Component({
-    selector: 'shipment-stop-tab',
-    templateUrl: 'shipment-stop-tab.component.html',
-    styleUrl: 'shipment-stop-tab.component.scss',
+    selector: 'location-tab',
+    templateUrl: 'location-tab.component.html',
+    styleUrl: 'location-tab.component.scss',
     standalone: true,
     imports: [
         CommonModule,
         MatTabsModule,
-        ShipmentStopInputComponent,
+        LocationManagerComponent,
         ReactiveFormsModule
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: ShipmentStopTabComponent
+            useExisting: LocationTabComponent
         }
     ]
 })
 
-export class ShipmentStopTabComponent implements ControlValueAccessor, OnDestroy {
+export class LocationTabComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 
@@ -77,5 +76,4 @@ export class ShipmentStopTabComponent implements ControlValueAccessor, OnDestroy
     }
 
     //#endregion
-
 }

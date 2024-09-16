@@ -1,17 +1,21 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { CarrierInputContainerComponent } from "./carrier/shipment-header-carrier.component";
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { RefnumComponent } from '../../../../../shared/refnum/refnum.component';
+import { CostInputComponent } from '../../../../../shared/cost-input/cost-input.component';
 
 @Component({
-    selector: 'location-input',
-    templateUrl: 'location-input.component.html',
-    styleUrl: 'location-input.component.scss',
+    selector: 'shipment-header-input',
+    templateUrl: 'shipment-header-input.component.html',
+    styleUrl: 'shipment-header-input.component.scss',
     standalone: true,
     imports: [
+        CarrierInputContainerComponent,
         RefnumComponent,
+        CostInputComponent,
         ReactiveFormsModule,
         MatInputModule,
         MatFormField,
@@ -21,23 +25,26 @@ import { RefnumComponent } from '../../../../../shared/refnum/refnum.component';
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: LocationInputComponent
+            useExisting: ShipmentHeaderInputComponent
         }
     ]
 })
 
-export class LocationInputComponent implements ControlValueAccessor, OnDestroy {
+export class ShipmentHeaderInputComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 
     //#region Form
-    
-    public locationForm: FormGroup = this.formBuilder.group({
-        domainName: [''],
-        xid: [''],
-        city: [''],
-        uf: [''],
-        refnums: ['']
+
+    public shipmentHeaderForm: FormGroup = this.formBuilder.group({
+        shipmentDomainName: [''],
+        shipmentXid: [''],
+        travelStatus: [''],
+        emissionStatus: [''],
+        shipmentTaker: [''],
+        shipmentCarrier: [''],
+        shipmentRefnums: [''],
+        shipmentCost: ['']
     });
 
     public onTouched: Function = () => { };
@@ -45,7 +52,7 @@ export class LocationInputComponent implements ControlValueAccessor, OnDestroy {
     public onChangeSubs: Subscription[] = [];
 
     public registerOnChange(onChange: any): void {
-        const sub = this.locationForm.valueChanges.subscribe(onChange);
+        const sub = this.shipmentHeaderForm.valueChanges.subscribe(onChange);
         this.onChangeSubs.push(sub);
     }
 
@@ -55,14 +62,14 @@ export class LocationInputComponent implements ControlValueAccessor, OnDestroy {
 
     public setDisabledState?(isDisabled: boolean): void {
         if (isDisabled)
-            this.locationForm.disable();
+            this.shipmentHeaderForm.disable();
         else
-            this.locationForm.enable();
+            this.shipmentHeaderForm.enable();
     }
 
     public writeValue(value: any): void {
         if (value)
-            this.locationForm.setValue(value, { emitEvent: false });
+            this.shipmentHeaderForm.setValue(value, { emitEvent: false });
     }
 
     public ngOnDestroy(): void {

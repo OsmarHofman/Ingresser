@@ -21,7 +21,7 @@ export class AppService {
 
     public convertFormToXml(form: FormGroup): string {
 
-        const shipment: Shipment = new Shipment(form);
+        const shipment: Shipment = new Shipment(form.controls['shipment'].value);
 
         const currentTime = new Date();
 

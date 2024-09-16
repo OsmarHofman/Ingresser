@@ -6,30 +6,30 @@ import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ShipmentBaseTag } from '../../../../model/xml-base-tags';
-import { LocationManagerComponent } from './manager/location-manager.component';
+import { ShipmentBaseTag } from '../../../../../model/xml-base-tags';
+import { ReleaseManagerComponent } from './manager/release-manager.component';
 
 @Component({
-    selector: 'location-tab',
-    templateUrl: 'location-tab.component.html',
-    styleUrl: 'location-tab.component.scss',
+    selector: 'release-tab',
+    templateUrl: 'release-tab.component.html',
+    styleUrl: 'release-tab.component.scss',
     standalone: true,
     imports: [
         CommonModule,
         MatTabsModule,
-        LocationManagerComponent,
+        ReleaseManagerComponent,
         ReactiveFormsModule
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: LocationTabComponent
+            useExisting: ReleaseTabComponent
         }
     ]
 })
 
-export class LocationTabComponent implements ControlValueAccessor, OnDestroy {
+export class ReleaseTabComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 

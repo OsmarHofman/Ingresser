@@ -5,7 +5,6 @@ import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 
-
 @Component({
     selector: 'shipment-header2-input',
     templateUrl: 'shipment-header2-input.component.html',

@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, FormsModule, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
+import { ControlValueAccessor, FormArray, FormControl, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { LocationInputComponent } from './input/location-input.component';
 
 @Component({
-    selector: 'location-manager',
-    templateUrl: './location-manager.component.html',
-    styleUrls: ['./location-manager.component.scss'],
+    selector: 'shipment-stop-input',
+    templateUrl: 'shipment-stop-input.component.html',
+    styleUrl: 'shipment-stop-input.component.scss',
     standalone: true,
     imports: [
         FormsModule,
@@ -19,22 +19,23 @@ import { LocationInputComponent } from './input/location-input.component';
         MatInputModule,
         MatFormField,
         MatLabel,
-        MatCheckbox,
-        LocationInputComponent
+        MatSelectModule,
+        MatCheckbox
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: LocationManagerComponent
+            useExisting: ShipmentStopInputComponent
         }
     ]
 })
 
-export class LocationManagerComponent implements ControlValueAccessor, OnDestroy {
+export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestroy {
 
-    constructor(private formBuilder: FormBuilder) {
-        this.addRow();
+    public stopTypes = ['Coleta', 'Entrega'];
+
+    constructor(private formBuilder: FormBuilder) { 
         this.addRow();
         this.addRow();
     }
@@ -42,15 +43,21 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
     //#region Table
 
     public selectedRows: number[] = [];
-
-    get locations() {
-        return this.locationForm.get('Locations') as FormArray;
+    
+    get shipmentStops() {
+        return this.shipmentStopForm.get('stops') as FormArray;
     }
 
     public addRow() {
-        this.locations.push(
+        const defaultStopType: string = this.shipmentStops.controls.length % 2 == 0 ? 'Coleta' : 'Entrega';
+
+        this.shipmentStops.push(
+
             this.formBuilder.group({
-                location: new FormControl(),
+                stopSequence: new FormControl(this.shipmentStops.controls.length + 1),
+                locationDomainName: new FormControl(),
+                locationXid: new FormControl(),
+                stopType: new FormControl(defaultStopType),
             })
         );
     }
@@ -58,7 +65,7 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
     public removeRow() {
         this.selectedRows.sort((a, b) => b - a)
             .forEach(rowIndex => {
-                this.locations.removeAt(rowIndex);
+                this.shipmentStops.removeAt(rowIndex);
             });
 
         this.selectedRows = [];
@@ -75,8 +82,8 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
 
     //#region Form
 
-    public locationForm: FormGroup = this.formBuilder.group({
-        Locations: this.formBuilder.array([]),
+    public shipmentStopForm: FormGroup = this.formBuilder.group({
+        stops: this.formBuilder.array([]),
     });
 
     public onTouched: Function = () => { };
@@ -84,7 +91,7 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
     public onChangeSubs: Subscription[] = [];
 
     public registerOnChange(onChange: any): void {
-        const sub = this.locationForm.valueChanges.subscribe(onChange);
+        const sub = this.shipmentStopForm.valueChanges.subscribe(onChange);
         this.onChangeSubs.push(sub);
     }
 
@@ -94,14 +101,14 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
 
     public setDisabledState?(isDisabled: boolean): void {
         if (isDisabled)
-            this.locationForm.disable();
+            this.shipmentStopForm.disable();
         else
-            this.locationForm.enable();
+            this.shipmentStopForm.enable();
     }
 
     public writeValue(value: any): void {
         if (value)
-            this.locationForm.setValue(value, { emitEvent: false });
+            this.shipmentStopForm.setValue(value, { emitEvent: false });
     }
 
     public ngOnDestroy(): void {

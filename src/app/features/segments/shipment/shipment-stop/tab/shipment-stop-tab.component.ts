@@ -6,30 +6,29 @@ import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ShipmentBaseTag } from '../../../../model/xml-base-tags';
-import { ReleaseManagerComponent } from './manager/release-manager.component';
+import { ShipmentStopInputComponent } from './input/shipment-stop-input.component';
 
 @Component({
-    selector: 'release-tab',
-    templateUrl: 'release-tab.component.html',
-    styleUrl: 'release-tab.component.scss',
+    selector: 'shipment-stop-tab',
+    templateUrl: 'shipment-stop-tab.component.html',
+    styleUrl: 'shipment-stop-tab.component.scss',
     standalone: true,
     imports: [
         CommonModule,
         MatTabsModule,
-        ReleaseManagerComponent,
+        ShipmentStopInputComponent,
         ReactiveFormsModule
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: ReleaseTabComponent
+            useExisting: ShipmentStopTabComponent
         }
     ]
 })
 
-export class ReleaseTabComponent implements ControlValueAccessor, OnDestroy {
+export class ShipmentStopTabComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 
@@ -77,4 +76,5 @@ export class ReleaseTabComponent implements ControlValueAccessor, OnDestroy {
     }
 
     //#endregion
+
 }
