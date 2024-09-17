@@ -9,25 +9,23 @@ export class Shipment {
     public locations: Location[];
     public releases: Release[];
 
-    constructor(form: FormGroup) {
+    constructor(shipmentValue: any) {
 
-        const shipmentHeaderTab = form.controls['shipmentHeader'].value.tab;
+        const shipmentHeaderTab = shipmentValue.shipmentHeader.tab;
 
         this.shipmentHeader = new ShipmentHeader(shipmentHeaderTab);
 
-        const shipmentHeader2Tab = form.controls['shipmentHeader2'].value.tab;
+        const shipmentHeader2Tab = shipmentValue.shipmentHeader2.tab;
 
         this.shipmentHeader2 = new ShipmentHeader2(shipmentHeader2Tab);
 
         this.stops = [];
 
-        if (form.controls['shipmentStop'].value.tab.tabSelected === 0) {
+        if (shipmentValue.shipmentStop.tab.tabSelected === 0) {
 
-            const formStops = form.controls['shipmentStop'].value.tab.inputContent.stops;
+            const formStops = shipmentValue.shipmentStop.tab.inputContent.stops;
 
-            for (let index = 0; index < formStops.length; index++) {
-                const formStop = formStops[index];
-
+            formStops.forEach((formStop: any) => {
                 const shipmentStop = new ShipmentStop(formStop.stopSequence,
                     formStop.locationDomainName,
                     formStop.locationXid,
@@ -35,36 +33,35 @@ export class Shipment {
                 );
 
                 this.stops.push(shipmentStop);
-            }
+            });
 
         }
 
         this.locations = [];
 
-        if (form.controls['location'].value.tab.tabSelected === 0) {
+        if (shipmentValue.location.tab.tabSelected === 0) {
 
-            const formLocations = form.controls['location'].value.tab.inputContent.Locations;
+            const formLocations = shipmentValue.location.tab.inputContent.Locations;
 
-            for (let index = 0; index < formLocations.length; index++) {
-                const location = new Location(formLocations[index].location);
-
+            formLocations.forEach((formLocation: any) => {
+                const location = new Location(formLocation.location);
                 this.locations.push(location);
-            }
-
+            });
         }
 
         this.releases = [];
 
-        if (form.controls['release'].value.tab.tabSelected === 0) {
+        if (shipmentValue.release.tab.tabSelected === 0) {
 
-            const formReleases = form.controls['release'].value.tab.inputContent.Releases;
+            const formReleases = shipmentValue.release.tab.inputContent.Releases;
 
-            for (let index = 0; index < formReleases.length; index++) {
-                const release = new Release(formReleases[index].release);
+            formReleases.forEach((formRelease: any) => {
+
+                const release = new Release(formRelease.release);
 
                 this.releases.push(release);
-            }
 
+            });
         }
     }
 
@@ -726,28 +723,27 @@ export class Cost {
 
             case CostType.Release:
                 xml = `<otm:ReleaseAllocationInfo>
-        <otm:ReleaseAllocByType>
-            <otm:AllocTypeQualGid>
-                <otm:Gid>
-                    <otm:Xid>PLANNING</otm:Xid>
-                </otm:Gid>
-            </otm:AllocTypeQualGid>
+    <otm:ReleaseAllocByType>
+        <otm:AllocTypeQualGid>
+            <otm:Gid>
+                <otm:Xid>PLANNING</otm:Xid>
+            </otm:Gid>
+        </otm:AllocTypeQualGid>
             <otm:ReleaseAllocShipment>
-                <otm:ShipmentGid>
-                    <otm:Gid>
-                        <otm:DomainName>[[DomainName]]</otm:DomainName>
-                        <otm:Xid>[[ShipmentXid]]</otm:Xid>
-                    </otm:Gid>
-                </otm:ShipmentGid>
-                <otm:TotalAllocCost>
-                    <otm:FinancialAmount>
-                        <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
-                        <otm:MonetaryAmount>[[TotalCost]]</otm:MonetaryAmount>
-                        <otm:RateToBase>0.5639521768554027</otm:RateToBase>
-                        <otm:FuncCurrencyAmount>0.0</otm:FuncCurrencyAmount>
-                    </otm:FinancialAmount>
-                </otm:TotalAllocCost>
-            </otm:ReleaseAllocShipment>
+            <otm:ShipmentGid>
+                <otm:Gid>
+                    <otm:DomainName>[[DomainName]]</otm:DomainName>
+                    <otm:Xid>[[ShipmentXid]]</otm:Xid>
+                </otm:Gid>
+            </otm:ShipmentGid>
+            <otm:TotalAllocCost>
+                <otm:FinancialAmount>
+                    <otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode>
+                    <otm:MonetaryAmount>[[TotalCost]]</otm:MonetaryAmount>
+                    <otm:RateToBase>0.5639521768554027</otm:RateToBase>
+                    <otm:FuncCurrencyAmount>0.0</otm:FuncCurrencyAmount>
+                </otm:FinancialAmount>
+            </otm:TotalAllocCost>
             <otm:ReleaseAllocShipmentDetail>
                 <otm:Cost>
                     <otm:FinancialAmount>
@@ -764,9 +760,10 @@ export class Cost {
                 </otm:CostTypeGid>
                 <otm:CostDescription>B</otm:CostDescription>
             </otm:ReleaseAllocShipmentDetail>
-            [[AccessorialCost]]
-        </otm:ReleaseAllocByType>
-    </otm:ReleaseAllocationInfo>`;
+        </otm:ReleaseAllocShipment>
+        [[AccessorialCost]] 
+    </otm:ReleaseAllocByType>
+</otm:ReleaseAllocationInfo>`;
 
                 break;
 

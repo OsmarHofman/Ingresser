@@ -151,8 +151,8 @@ export class AppComponent {
                       },
                       {
                         domainName: "EMBDEV",
-                        xid: "CLL_BAIRRO",
-                        refnumValue: "BAIRRO10"
+                        xid: "CLL_RAZAO_SOCIAL",
+                        refnumValue: "GALPAO"
                       },
                     ]
                   }
@@ -178,8 +178,8 @@ export class AppComponent {
                       },
                       {
                         domainName: "EMBDEV",
-                        xid: "CLL_BAIRRO",
-                        refnumValue: "BAIRRO1"
+                        xid: "CLL_RAZAO_SOCIAL",
+                        refnumValue: "MATRIZ 12"
                       },
                     ]
                   }

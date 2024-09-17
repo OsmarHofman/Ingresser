@@ -5,23 +5,25 @@ import { Injectable } from "@angular/core";
 
 const httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'text/xml; charset=utf-8',
-      'SOAPAction': 'ReceiveTransmission'
+        'Content-Type': 'text/xml; charset=utf-8',
+        'SOAPAction': 'ReceiveTransmission'
     })
-  };
+};
 
 @Injectable()
 export class AppService {
 
     public wsUrl = 'pr.nddfrete.com.br/1046/tmsExchangeMessage/TMSExchangeMessage'
 
-    constructor(private http: HttpClient){
+    constructor(private http: HttpClient) {
 
     }
 
     public convertFormToXml(form: FormGroup): string {
 
-        const shipment: Shipment = new Shipment(form.controls['shipment'].value);
+        const formShipment = form.controls['shipment'].value;
+
+        const shipment: Shipment = new Shipment(formShipment);
 
         const currentTime = new Date();
 
@@ -34,7 +36,7 @@ export class AppService {
 
         let shipmentXml: string = '';
 
-        const shipmentHeaderTab = form.controls['shipmentHeader'].value.tab;
+        const shipmentHeaderTab = formShipment.shipmentHeader.tab;
 
         let shipmentXid: string;
         let carrierXid: string;
@@ -51,7 +53,7 @@ export class AppService {
 
         shipmentXml += "\n";
 
-        const shipmentHeader2Tab = form.controls['shipmentHeader2'].value.tab;
+        const shipmentHeader2Tab = formShipment.shipmentHeader2.tab;
 
         let shipmentPerspective: string;
 
@@ -65,7 +67,7 @@ export class AppService {
 
         shipmentXml += "\n";
 
-        const shipmentStopTab = form.controls['shipmentStop'].value.tab;
+        const shipmentStopTab = formShipment.shipmentStop.tab;
 
         if (shipmentStopTab.tabSelected === 0) {
             shipmentXml += shipment.convertShipmentStopToXml();
@@ -75,7 +77,7 @@ export class AppService {
 
         shipmentXml += "\n";
 
-        const shipmentLocationTab = form.controls['location'].value.tab;
+        const shipmentLocationTab = formShipment.location.tab;
 
         if (shipmentLocationTab.tabSelected === 0) {
             shipmentXml += shipment.convertLocationToXml();
@@ -85,7 +87,7 @@ export class AppService {
 
         shipmentXml += "\n";
 
-        const shipmentReleaseTab = form.controls['release'].value.tab;
+        const shipmentReleaseTab = formShipment.release.tab;
 
         if (shipmentReleaseTab.tabSelected === 0) {
             shipmentXml += shipment.convertReleaseToXml(shipmentXid, shipmentPerspective, carrierXid);
@@ -95,10 +97,9 @@ export class AppService {
 
         shipmentXml += "\n";
 
-        let finalXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-    xmlns:tem="http://tempuri.org/">
-    <soapenv:Header />
-    <soapenv:Body>
+        let finalXml: string = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tms="http://tempuri.org/tms">
+	<soap:Header/>
+	<soap:Body>
         <Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
             <otm:TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
                 xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
@@ -131,51 +132,37 @@ export class AppService {
             </otm:TransmissionHeader>
             <TransmissionBody>
                 <GLogXMLElement>
-                    <otm:TransactionHeader
-                        xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
-                        xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                        <otm:SenderTransactionId>710385</otm:SenderTransactionId>
-                        <otm:ObjectModInfo>
-                            <otm:InsertDt>
-                                <otm:GLogDate>${gLogDate}</otm:GLogDate>
-                                <otm:TZId>UTC</otm:TZId>
-                                <otm:TZOffset>+00:00</otm:TZOffset>
-                            </otm:InsertDt>
-                            <otm:UpdateDt>
-                                <otm:GLogDate>${gLogDate}</otm:GLogDate>
-                                <otm:TZId>UTC</otm:TZId>
-                                <otm:TZOffset>+00:00</otm:TZOffset>
-                            </otm:UpdateDt>
-                        </otm:ObjectModInfo>
-                        <otm:SendReason>
-                            <otm:Remark>
-                                <otm:RemarkSequence>1</otm:RemarkSequence>
-                                <otm:RemarkQualifierGid>
-                                    <otm:Gid>
-                                        <otm:Xid>QUERY TYPE</otm:Xid>
-                                    <otm:/otm:Gid>
-                                </otm:RemarkQualifierGid>
-                                <otm:RemarkText>SHIPMENT</otm:RemarkText>
-                            </otm:Remark>
-                            <otm:SendReasonGid>
+                    <otm:TransactionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4" xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
+                    <otm:SenderTransactionId>70352</otm:SenderTransactionId>
+                    <otm:SendReason>
+                        <otm:Remark>
+                            <otm:RemarkSequence>1</otm:RemarkSequence>
+                            <otm:RemarkQualifierGid>
                                 <otm:Gid>
-                                    <otm:Xid>SEND INTEGRATION</otm:Xid>
+                                    <otm:Xid>QUERY TYPE</otm:Xid>
                                 </otm:Gid>
-                            </otm:SendReasonGid>
-                            <otm:ObjectType>SHIPMENT</otm:ObjectType>
-                        </otm:SendReason>
-                    </otm:TransactionHeader>
+                            </otm:RemarkQualifierGid>
+                            <otm:RemarkText>SHIPMENT</otm:RemarkText>
+                        </otm:Remark>
+                        <otm:SendReasonGid>
+                            <otm:Gid>
+                                <otm:Xid>SEND INTEGRATION</otm:Xid>
+                            </otm:Gid>
+                        </otm:SendReasonGid>
+                        <otm:ObjectType>SHIPMENT</otm:ObjectType>
+                    </otm:SendReason>
+                </otm:TransactionHeader>
                     <otm:PlannedShipment xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
                         xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
                         <otm:Shipment>
                             [[Shipment]]
                         </otm:Shipment>
                     </otm:PlannedShipment>
-                </otm:GLogXMLElement>
+                </GLogXMLElement>
             </otm:TransmissionBody>
         </Transmission>
-    </soapenv:Body>
-</soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
+    </soap:Body>
+</soap:Envelope>`.replace('[[Shipment]]', shipmentXml);
 
         let response = this.http.post(this.wsUrl, finalXml, httpOptions);
 
