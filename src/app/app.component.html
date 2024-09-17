@@ -9,20 +9,16 @@
     </div>
   </header>
 
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav mode="side" opened class="left-sidenav-container">Sidenav content</mat-sidenav>
-    <mat-sidenav-content>
-      <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
+  <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
 
-        <div>
-          <shipment formControlName="shipment" />
+    <div>
+      <shipment formControlName="shipment" />
 
-          <hr>
-          <button class="btn btn-primary submit" type="submit">Enviar</button>
-        </div>
-      </form>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+      <hr>
+      
+      <button class="btn btn-primary submit" type="submit">Enviar</button>
+    </div>
+  </form>
 
 
 </main>
