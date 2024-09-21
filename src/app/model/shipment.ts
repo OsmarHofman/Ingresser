@@ -41,7 +41,7 @@ export class Shipment {
 
         if (shipmentValue.location.tab.tabSelected === 0) {
 
-            const formLocations = shipmentValue.location.tab.inputContent.Locations;
+            const formLocations = shipmentValue.location.tab.inputContent.locations;
 
             formLocations.forEach((formLocation: any) => {
                 const location = new Location(formLocation.location);

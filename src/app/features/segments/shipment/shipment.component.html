@@ -1,17 +1,29 @@
 <form [formGroup]="form">
 
   <div class="bd-main container-fluid">
-    <button type="button" class="btn btn-primary" (click)="createShipment()">Criar embarque</button>
+    <button type="button" class="btn btn-primary" (click)="addShipment()">Criar embarque</button>
 
-    <button type="button" class="btn btn-primary" (click)="deleteShipment()">Remover embarque</button>
+    <table class="col-md-12">
+      <tbody>
+        <ng-container formArrayName="shipments">
+          <ng-container *ngFor="
+          let control of shipments.controls;
+          let i = index
+        ">
 
-    <div *ngIf="showShipmentAccordion">
-      <shipment-header-accordion formControlName="shipmentHeader" />
-      <shipment-header2-accordion formControlName="shipmentHeader2" />
-      <shipment-stop-accordion formControlName="shipmentStop" />
-      <location-accordion formControlName="location" />
-      <release-accordion formControlName="release" />
-    </div>
-
+            <tr [formGroupName]="i" class="row shipments">
+              <td>
+                <shipment-header-accordion formControlName="shipmentHeader" />
+                <shipment-header2-accordion formControlName="shipmentHeader2" />
+                <shipment-stop-accordion formControlName="shipmentStop" />
+                <location-accordion formControlName="location" />
+                <release-accordion formControlName="release" />
+                <hr>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
   </div>
 </form>

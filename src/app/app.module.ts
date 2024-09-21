@@ -3,6 +3,8 @@ import { provideRouter, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { provideHttpClient } from "@angular/common/http";
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -26,7 +28,8 @@ export const appConfig: ApplicationConfig = {
     CommonModule,
     ReactiveFormsModule,
     ShipmentComponent,
-    MatSidenavModule
+    MatSidenavModule,
+    BrowserAnimationsModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],

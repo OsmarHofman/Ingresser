@@ -44,7 +44,7 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
     public selectedRows: number[] = [];
 
     get locations() {
-        return this.locationForm.get('Locations') as FormArray;
+        return this.locationForm.get('locations') as FormArray;
     }
 
     public addRow() {
@@ -76,7 +76,7 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
     //#region Form
 
     public locationForm: FormGroup = this.formBuilder.group({
-        Locations: this.formBuilder.array([]),
+        locations: this.formBuilder.array([]),
     });
 
     public onTouched: Function = () => { };
