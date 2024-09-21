@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { AcessorialCost } from '../../../../model/shipment';
+import { ShipmentOptionsResult as ShipmentOptionsResult } from './model/shipment-options-result';
 
 
 @Component({
@@ -35,9 +36,13 @@ import { AcessorialCost } from '../../../../model/shipment';
 export class ShipmentOptionDialog {
     readonly dialogRef = inject(MatDialogRef<ShipmentOptionDialog>);
     readonly data = inject<AcessorialCost>(MAT_DIALOG_DATA);
-    readonly costValue = model(this.data.costValue);
+    readonly action = model(this.data.costValue);
 
-    onNoClick(): void {
+    public onNoClick(): void {
         this.dialogRef.close();
+    }
+
+    public returnCreateShipment(): ShipmentOptionsResult {
+        return new ShipmentOptionsResult('create', []);
     }
 }

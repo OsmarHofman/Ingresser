@@ -1,9 +1,10 @@
-import { Component, Injectable, signal, model } from '@angular/core';
+import { Component, Injectable, signal, model, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
-import { ShipmentBaseTag } from './model/xml-base-tags';
 import { MatDialog } from '@angular/material/dialog';
 import { ShipmentOptionDialog } from './features/shared/dialogs/shipment-option/shipment-option-dialog.component';
+import { ShipmentOptionsResult } from './features/shared/dialogs/shipment-option/model/shipment-options-result';
+import { ShipmentComponent } from './features/segments/shipment/shipment.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,9 @@ import { ShipmentOptionDialog } from './features/shared/dialogs/shipment-option/
 @Injectable()
 export class AppComponent {
 
-  constructor(private formBuilder: FormBuilder, private appService: AppService, private dialog: MatDialog) { }
+  constructor(private formBuilder: FormBuilder,
+    private appService: AppService,
+    private dialog: MatDialog) { }
 
   //#region Form
 
@@ -53,10 +56,13 @@ export class AppComponent {
   }
 
   //#endregion
+
   readonly costXid = signal('');
   readonly costValue = model('');
 
+  //#region Menu Options
 
+  //#region Shipment Options
   public showShipmentOptions(): void {
     const dialogRef = this.dialog.open(ShipmentOptionDialog, {
       data: { costXid: 'XID', costValue: this.costValue() },
@@ -66,8 +72,29 @@ export class AppComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('dialog fechou!');
       if (result !== undefined) {
-        console.log(result);
+        this.chooseShipmentAction(result);
+
       }
     });
   }
+
+  @ViewChild(ShipmentComponent) shipmentComponent!: ShipmentComponent;
+
+  public chooseShipmentAction(result: ShipmentOptionsResult) {
+
+    switch (result.action) {
+      case 'create':
+      this.shipmentComponent.addShipment();
+        
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  //#endregion
+
+  
+  //#endregion
 }

@@ -1,12 +1,10 @@
-<h2 mat-dialog-title>Hi {{data.costXid}}</h2>
-<mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <mat-form-field>
+<h2 mat-dialog-title>Gerenciar Embarques {{data.costXid}}</h2>
+  <!-- <mat-form-field>
     <mat-label>Favorite Animal</mat-label>
     <input matInput [(ngModel)]="costValue" />
-  </mat-form-field>
-</mat-dialog-content>
+  </mat-form-field> -->
+  <button mat-button (click)="dialogRef.close(returnCreateShipment())">Criar novo embarque</button>
 <mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="costValue()" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button >Ok</button>
 </mat-dialog-actions>

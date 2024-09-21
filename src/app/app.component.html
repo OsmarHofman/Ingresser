@@ -36,7 +36,7 @@
   </ul>
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
     <div>
-      <shipment formControlName="shipment" />
+      <shipment #shipment formControlName="shipment" />
 
       <hr>
 

@@ -46,7 +46,6 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
     shipments: this.formBuilder.array([]),
   });
 
-
   public onTouched: Function = () => { };
 
   public onChangeSubs: Subscription[] = [];
@@ -78,7 +77,13 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
     });
   }
 
+  get shipments() {
+    return this.form.get('shipments') as FormArray;
+  }
+
   //#endregion
+
+  //#region Validation
 
   private validateForm(): boolean {
 
@@ -99,12 +104,8 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
     return controlNames.every(controlName => this.form.controls[controlName].value);
   }
 
-
   //#endregion
 
-  get shipments() {
-    return this.form.get('shipments') as FormArray;
-  }
 
   public addShipment() {
     this.shipments.push(
