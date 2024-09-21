@@ -58,3 +58,104 @@ button {
 .submit {
   font-size: x-large;
 }
+
+.float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px; //fixa o botão à 40px do fim da página
+  right: 10px; //fixa o botão a 10px da borda direita da página
+  background-color: rgb(13, 110, 253);
+  color: #fff;
+  border: 1px dotted rgba(130, 130, 130, 0.3);
+  border-radius: 50px;
+  text-align: center;
+  z-index: 1000; //posiciona o botão acima dos demais componentes da página
+  animation: bot-to-top 2s ease-out; //animação executada quando a página é carregada
+}
+
+ul {
+  position: fixed;
+  right: 10px;
+  padding-bottom: 20px;
+  bottom: 80px;
+  z-index: 100;
+}
+
+ul li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+ul li button {
+  background-color: rgb(13, 110, 253);
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow:
+    0 8px 16px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: 1px solid rgba(130, 130, 130, 0.3);
+  width: 60px;
+  height: 60px;
+  display: block;
+}
+
+.btn-icon {
+  font-size: 24px;
+  margin-top: 18px;
+}
+
+button#menu-share + ul {
+  //esconde a lista de opções
+  visibility: hidden;
+}
+
+button#menu-share:hover + ul {
+  //mostra a lista de opções
+  visibility: visible;
+  animation: slide-up 0.2s ease-out;
+}
+
+ul:hover {
+  //mantem os botões de opções visíveis
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+button#menu-share i {
+  animation: rotate-in 0.5s;
+}
+
+button#menu-share:hover > i {
+  animation: rotate-out 0.5s;
+}
+
+button.fab-btn > div.label-container {
+  //esconde o tooltip
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s,
+    opacity 0.5s ease;
+}
+
+//animações aplicadas aos botões
+
+@keyframes bot-to-top {
+  0% {
+    bottom: -40px;
+  }
+  50% {
+    bottom: 40px;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 40px;
+  }
+}

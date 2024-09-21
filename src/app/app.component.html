@@ -11,11 +11,37 @@
 
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
 
+    <button class="float fab-btn" id="menu-share">
+      Menu
+    </button>
+
+    <ul>
+      <li>
+        <button class="fab-btn">
+            Eventos
+        </button>
+      </li>
+
+      <li>
+        <button class="fab-btn">
+          Gráficos
+        </button>
+      </li>
+
+      <li>
+        <button class="fab-btn">
+            Home
+        </button>
+      </li>
+
+    </ul>
+
+
     <div>
       <shipment formControlName="shipment" />
 
       <hr>
-      
+
       <button class="btn btn-primary submit" type="submit">Enviar</button>
     </div>
   </form>

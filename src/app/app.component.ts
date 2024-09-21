@@ -1,26 +1,12 @@
 import { Component, Injectable } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { ShipmentBaseTag } from './model/xml-base-tags';
-import { ShipmentComponent } from './features/segments/shipment/shipment.component';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    CommonModule,
-    ReactiveFormsModule,
-    ShipmentComponent,
-    MatSidenavModule
-  ],
   providers: [AppService],
-
 })
 
 
