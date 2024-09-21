@@ -1,8 +1,7 @@
 <form [formGroup]="form">
 
+  <br>
   <div class="bd-main container-fluid">
-    <button type="button" class="btn btn-primary" (click)="addShipment()">Criar embarque</button>
-
     <table class="col-md-12">
       <tbody>
         <ng-container formArrayName="shipments">
@@ -13,6 +12,7 @@
 
             <tr [formGroupName]="i" class="row shipments">
               <td>
+                <h4>Embarque</h4>
                 <shipment-header-accordion formControlName="shipmentHeader" />
                 <shipment-header2-accordion formControlName="shipmentHeader2" />
                 <shipment-stop-accordion formControlName="shipmentStop" />
