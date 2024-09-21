@@ -19,153 +19,159 @@ export class AppService {
 
     }
 
-    public convertFormToXml(form: FormGroup): string {
+    public convertFormToXml(form: FormGroup): void {
 
-        const formShipment = form.controls['shipment'].value;
+        let xmlsToSend: string[] = [];
 
-        const shipment: Shipment = new Shipment(formShipment);
+        const formShipments = form.controls['shipment'].value;
 
-        const currentTime = new Date();
+        formShipments.forEach((formShipment: any) => {
+            const shipment: Shipment = new Shipment(formShipment);
 
-        const gLogDate: string = String(currentTime.getFullYear()) +
-            String(currentTime.getMonth()).padStart(2, '0') +
-            String(currentTime.getDate()).padStart(2, '0') +
-            String(currentTime.getHours()).padStart(2, '0') +
-            String(currentTime.getMinutes()).padStart(2, '0') +
-            String(currentTime.getSeconds()).padStart(2, '0');
+            const currentTime = new Date();
 
-        let shipmentXml: string = '';
+            const gLogDate: string = String(currentTime.getFullYear()) +
+                String(currentTime.getMonth()).padStart(2, '0') +
+                String(currentTime.getDate()).padStart(2, '0') +
+                String(currentTime.getHours()).padStart(2, '0') +
+                String(currentTime.getMinutes()).padStart(2, '0') +
+                String(currentTime.getSeconds()).padStart(2, '0');
 
-        const shipmentHeaderTab = formShipment.shipmentHeader.tab;
+            let shipmentXml: string = '';
 
-        let shipmentXid: string;
-        let carrierXid: string;
+            const shipmentHeaderTab = formShipment.shipmentHeader.tab;
 
-        if (shipmentHeaderTab.tabSelected === 0) {
-            shipmentXml += shipment.convertShipmentHeaderToXml();
-            shipmentXid = shipment.shipmentHeader.shipmentXid;
-            carrierXid = shipment.shipmentHeader.carrierXid;
-        } else {
-            shipmentXml += shipmentHeaderTab.xmlContent;
-            shipmentXid = ShipmentHeader.getShipmentXidFromXml(shipmentXml);
-            carrierXid = ShipmentHeader.getCarrierXidFromXml(shipmentXml);
-        }
+            let shipmentXid: string;
+            let carrierXid: string;
 
-        shipmentXml += "\n";
+            if (shipmentHeaderTab.tabSelected === 0) {
+                shipmentXml += shipment.convertShipmentHeaderToXml();
+                shipmentXid = shipment.shipmentHeader.shipmentXid;
+                carrierXid = shipment.shipmentHeader.carrierXid;
+            } else {
+                shipmentXml += shipmentHeaderTab.xmlContent;
+                shipmentXid = ShipmentHeader.getShipmentXidFromXml(shipmentXml);
+                carrierXid = ShipmentHeader.getCarrierXidFromXml(shipmentXml);
+            }
 
-        const shipmentHeader2Tab = formShipment.shipmentHeader2.tab;
+            shipmentXml += "\n";
 
-        let shipmentPerspective: string;
+            const shipmentHeader2Tab = formShipment.shipmentHeader2.tab;
 
-        if (shipmentHeader2Tab.tabSelected === 0) {
-            shipmentXml += shipment.convertShipmentHeader2ToXml();
-            shipmentPerspective = shipment.shipmentHeader2.perspective;
-        } else {
-            shipmentXml += shipmentHeader2Tab.xmlContent;
-            shipmentPerspective = ShipmentHeader2.getPerspectiveFromXml(shipmentXml);
-        }
+            let shipmentPerspective: string;
 
-        shipmentXml += "\n";
+            if (shipmentHeader2Tab.tabSelected === 0) {
+                shipmentXml += shipment.convertShipmentHeader2ToXml();
+                shipmentPerspective = shipment.shipmentHeader2.perspective;
+            } else {
+                shipmentXml += shipmentHeader2Tab.xmlContent;
+                shipmentPerspective = ShipmentHeader2.getPerspectiveFromXml(shipmentXml);
+            }
 
-        const shipmentStopTab = formShipment.shipmentStop.tab;
+            shipmentXml += "\n";
 
-        if (shipmentStopTab.tabSelected === 0) {
-            shipmentXml += shipment.convertShipmentStopToXml();
-        } else {
-            shipmentXml += shipmentStopTab.xmlContent;
-        }
+            const shipmentStopTab = formShipment.shipmentStop.tab;
 
-        shipmentXml += "\n";
+            if (shipmentStopTab.tabSelected === 0) {
+                shipmentXml += shipment.convertShipmentStopToXml();
+            } else {
+                shipmentXml += shipmentStopTab.xmlContent;
+            }
 
-        const shipmentLocationTab = formShipment.location.tab;
+            shipmentXml += "\n";
 
-        if (shipmentLocationTab.tabSelected === 0) {
-            shipmentXml += shipment.convertLocationToXml();
-        } else {
-            shipmentXml += shipmentLocationTab.xmlContent;
-        }
+            const shipmentLocationTab = formShipment.location.tab;
 
-        shipmentXml += "\n";
+            if (shipmentLocationTab.tabSelected === 0) {
+                shipmentXml += shipment.convertLocationToXml();
+            } else {
+                shipmentXml += shipmentLocationTab.xmlContent;
+            }
 
-        const shipmentReleaseTab = formShipment.release.tab;
+            shipmentXml += "\n";
 
-        if (shipmentReleaseTab.tabSelected === 0) {
-            shipmentXml += shipment.convertReleaseToXml(shipmentXid, shipmentPerspective, carrierXid);
-        } else {
-            shipmentXml += shipmentReleaseTab.xmlContent;
-        }
+            const shipmentReleaseTab = formShipment.release.tab;
 
-        shipmentXml += "\n";
+            if (shipmentReleaseTab.tabSelected === 0) {
+                shipmentXml += shipment.convertReleaseToXml(shipmentXid, shipmentPerspective, carrierXid);
+            } else {
+                shipmentXml += shipmentReleaseTab.xmlContent;
+            }
 
-        let finalXml: string = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tms="http://tempuri.org/tms">
-	<soap:Header/>
-	<soap:Body>
-        <Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
-            <otm:TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
-                xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                <otm:Version>20a</otm:Version>
-                <otm:TransmissionCreateDt>
-                    <otm:GLogDate>${gLogDate}</otm:GLogDate>
-                    <otm:TZId>UTC</otm:TZId>
-                    <otm:TZOffset>+00:00</otm:TZOffset>
-                </otm:TransmissionCreateDt>
-                <otm:TransactionCount>1</otm:TransactionCount>
-                <otm:SenderHostName>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderHostName>
-                <otm:SenderSystemID>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderSystemID>
-                <otm:SenderTransmissionNo>328969</otm:SenderTransmissionNo>
-                <otm:ReferenceTransmissionNo>0</otm:ReferenceTransmissionNo>
-                <otm:GLogXMLElementName>PlannedShipment</otm:GLogXMLElementName>
-                <otm:NotifyInfo>
-                    <otm:ContactGid>
-                        <otm:Gid>
-                            <otm:DomainName>EMBDEV</otm:DomainName>
-                            <otm:Xid>TEST</otm:Xid>
-                        </otm:Gid>
-                    </otm:ContactGid>
-                    <otm:ExternalSystemGid>
-                        <otm:Gid>
-                            <otm:DomainName>EMBDEV</otm:DomainName>
-                            <otm:Xid>TEST</otm:Xid>
-                        </otm:Gid>
-                    </otm:ExternalSystemGid>
-                </otm:NotifyInfo>
-            </otm:TransmissionHeader>
-            <TransmissionBody>
-                <GLogXMLElement>
-                    <otm:TransactionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4" xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                    <otm:SenderTransactionId>70352</otm:SenderTransactionId>
-                    <otm:SendReason>
-                        <otm:Remark>
-                            <otm:RemarkSequence>1</otm:RemarkSequence>
-                            <otm:RemarkQualifierGid>
-                                <otm:Gid>
-                                    <otm:Xid>QUERY TYPE</otm:Xid>
-                                </otm:Gid>
-                            </otm:RemarkQualifierGid>
-                            <otm:RemarkText>SHIPMENT</otm:RemarkText>
-                        </otm:Remark>
-                        <otm:SendReasonGid>
+            shipmentXml += "\n";
+
+            let finalXml: string = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tms="http://tempuri.org/tms">
+        <soap:Header/>
+        <soap:Body>
+            <Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
+                <otm:TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
+                    xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
+                    <otm:Version>20a</otm:Version>
+                    <otm:TransmissionCreateDt>
+                        <otm:GLogDate>${gLogDate}</otm:GLogDate>
+                        <otm:TZId>UTC</otm:TZId>
+                        <otm:TZOffset>+00:00</otm:TZOffset>
+                    </otm:TransmissionCreateDt>
+                    <otm:TransactionCount>1</otm:TransactionCount>
+                    <otm:SenderHostName>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderHostName>
+                    <otm:SenderSystemID>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderSystemID>
+                    <otm:SenderTransmissionNo>328969</otm:SenderTransmissionNo>
+                    <otm:ReferenceTransmissionNo>0</otm:ReferenceTransmissionNo>
+                    <otm:GLogXMLElementName>PlannedShipment</otm:GLogXMLElementName>
+                    <otm:NotifyInfo>
+                        <otm:ContactGid>
                             <otm:Gid>
-                                <otm:Xid>SEND INTEGRATION</otm:Xid>
+                                <otm:DomainName>EMBDEV</otm:DomainName>
+                                <otm:Xid>TEST</otm:Xid>
                             </otm:Gid>
-                        </otm:SendReasonGid>
-                        <otm:ObjectType>SHIPMENT</otm:ObjectType>
-                    </otm:SendReason>
-                </otm:TransactionHeader>
-                    <otm:PlannedShipment xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
-                        xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                        <otm:Shipment>
-                            [[Shipment]]
-                        </otm:Shipment>
-                    </otm:PlannedShipment>
-                </GLogXMLElement>
-            </otm:TransmissionBody>
-        </Transmission>
-    </soap:Body>
-</soap:Envelope>`.replace('[[Shipment]]', shipmentXml);
+                        </otm:ContactGid>
+                        <otm:ExternalSystemGid>
+                            <otm:Gid>
+                                <otm:DomainName>EMBDEV</otm:DomainName>
+                                <otm:Xid>TEST</otm:Xid>
+                            </otm:Gid>
+                        </otm:ExternalSystemGid>
+                    </otm:NotifyInfo>
+                </otm:TransmissionHeader>
+                <TransmissionBody>
+                    <GLogXMLElement>
+                        <otm:TransactionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4" xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
+                        <otm:SenderTransactionId>70352</otm:SenderTransactionId>
+                        <otm:SendReason>
+                            <otm:Remark>
+                                <otm:RemarkSequence>1</otm:RemarkSequence>
+                                <otm:RemarkQualifierGid>
+                                    <otm:Gid>
+                                        <otm:Xid>QUERY TYPE</otm:Xid>
+                                    </otm:Gid>
+                                </otm:RemarkQualifierGid>
+                                <otm:RemarkText>SHIPMENT</otm:RemarkText>
+                            </otm:Remark>
+                            <otm:SendReasonGid>
+                                <otm:Gid>
+                                    <otm:Xid>SEND INTEGRATION</otm:Xid>
+                                </otm:Gid>
+                            </otm:SendReasonGid>
+                            <otm:ObjectType>SHIPMENT</otm:ObjectType>
+                        </otm:SendReason>
+                    </otm:TransactionHeader>
+                        <otm:PlannedShipment xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
+                            xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
+                            <otm:Shipment>
+                                [[Shipment]]
+                            </otm:Shipment>
+                        </otm:PlannedShipment>
+                    </GLogXMLElement>
+                </otm:TransmissionBody>
+            </Transmission>
+        </soap:Body>
+    </soap:Envelope>`.replace('[[Shipment]]', shipmentXml);
 
-        let response = this.http.post(this.wsUrl, finalXml, httpOptions);
+            xmlsToSend.push(finalXml);
+        });
 
-        return finalXml;
+        xmlsToSend.forEach((xmlToSend: string) =>{
+            let response = this.http.post(this.wsUrl, xmlToSend, httpOptions);
+        })
     }
 }
