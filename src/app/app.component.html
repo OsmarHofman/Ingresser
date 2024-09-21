@@ -9,34 +9,32 @@
     </div>
   </header>
 
+
+  <button class="float fab-btn" id="menu-share">
+    Menu
+  </button>
+
+  <ul>
+    <!-- <li>
+        <button class="fab-btn">
+            CT-e
+        </button>
+      </li>
+
+      <li>
+        <button class="fab-btn">
+          NF-e
+        </button>
+      </li> -->
+
+    <li>
+      <button class="fab-btn menu-shipment-option" (click)="showShipmentOptions()">
+        Embarque
+      </button>
+    </li>
+
+  </ul>
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
-
-    <button class="float fab-btn" id="menu-share">
-      Menu
-    </button>
-
-    <ul>
-      <li>
-        <button class="fab-btn">
-            Eventos
-        </button>
-      </li>
-
-      <li>
-        <button class="fab-btn">
-          Gráficos
-        </button>
-      </li>
-
-      <li>
-        <button class="fab-btn">
-            Home
-        </button>
-      </li>
-
-    </ul>
-
-
     <div>
       <shipment formControlName="shipment" />
 

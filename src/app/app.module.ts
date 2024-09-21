@@ -26,7 +26,7 @@ export const appConfig: ApplicationConfig = {
     CommonModule,
     ReactiveFormsModule,
     ShipmentComponent,
-    MatSidenavModule,
+    MatSidenavModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],

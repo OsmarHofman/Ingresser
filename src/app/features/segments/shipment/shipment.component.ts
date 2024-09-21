@@ -104,8 +104,6 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
 
   //#endregion
 
-  title = 'Ingresser';
-
   showShipmentAccordion: boolean = false;
 
   public createShipment() {

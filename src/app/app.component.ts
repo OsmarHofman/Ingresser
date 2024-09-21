@@ -1,7 +1,10 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, signal, model } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { ShipmentBaseTag } from './model/xml-base-tags';
+import { MatDialog } from '@angular/material/dialog';
+import { ShipmentOptionDialog } from './features/shared/dialogs/shipment-option/shipment-option-dialog.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,7 +16,7 @@ import { ShipmentBaseTag } from './model/xml-base-tags';
 @Injectable()
 export class AppComponent {
 
-  constructor(private formBuilder: FormBuilder, private appService: AppService) { }
+  constructor(private formBuilder: FormBuilder, private appService: AppService, private dialog: MatDialog) { }
 
   //#region Form
 
@@ -234,8 +237,22 @@ export class AppComponent {
     return controlNames.every(controlName => this.form.controls[controlName].value);
   }
 
-
   //#endregion
+  readonly costXid = signal('');
+  readonly costValue = model('');
 
-  title = 'Ingresser';
+
+  public showShipmentOptions(): void {
+    const dialogRef = this.dialog.open(ShipmentOptionDialog, {
+        data: { costXid: 'XID', costValue: this.costValue() },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('dialog fechou!');
+      if (result !== undefined) {
+        console.log(result);
+      }
+    });
+  }
 }
