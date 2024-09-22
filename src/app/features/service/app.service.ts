@@ -23,7 +23,7 @@ export class AppService {
 
         let xmlsToSend: string[] = [];
 
-        const formShipments = form.controls['shipment'].value;
+        const formShipments = form.controls['shipment'].value.shipments;
 
         formShipments.forEach((formShipment: any) => {
             const shipment: Shipment = new Shipment(formShipment);
@@ -162,7 +162,7 @@ export class AppService {
                             </otm:Shipment>
                         </otm:PlannedShipment>
                     </GLogXMLElement>
-                </otm:TransmissionBody>
+                </TransmissionBody>
             </Transmission>
         </soap:Body>
     </soap:Envelope>`.replace('[[Shipment]]', shipmentXml);
