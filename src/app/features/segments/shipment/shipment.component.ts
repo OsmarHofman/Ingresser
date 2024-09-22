@@ -9,6 +9,7 @@ import { LocationAccordionComponent } from './location/location-accordion.compon
 import { ReleaseAccordionComponent } from './release/release-accordion.component';
 import { Subscription } from 'rxjs';
 import { ShipmentBaseTag } from '../../../model/xml-base-tags';
+import { ShipmentHeader } from '../../../model/shipment';
 
 @Component({
   selector: 'shipment',
@@ -105,7 +106,6 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
   }
 
   //#endregion
-
 
   public addShipment() {
     this.shipments.push(
@@ -297,5 +297,26 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
 
       })
     )
+  }
+
+  public removeShipmentByIndex(index: number): void {
+    this.shipments.removeAt(index);
+  }
+
+  public getShipmentXidByIndex(index: number): string {
+    const shipment: any = this.form.controls['shipments'].value[index].shipmentHeader.tab;
+
+    let shipmentXid = '';
+
+    if (shipment) {
+
+      if (shipment.tabSelected === 0) {
+        shipmentXid = shipment.inputContent.shipmentXid;
+      } else {
+        shipmentXid = ShipmentHeader.getShipmentXidFromXml(shipment.xmlContent);
+      }
+    }
+
+    return shipmentXid;
   }
 }

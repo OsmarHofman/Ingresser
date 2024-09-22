@@ -15,11 +15,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { AcessorialCost } from '../../../../model/shipment';
 import { ShipmentOptionsResult as ShipmentOptionsResult } from './model/shipment-options-result';
 
-
 @Component({
-    selector: 'shipment-option-dialog',
-    templateUrl: 'shipment-option-dialog.component.html',
-    styleUrl: 'shipment-option-dialog.component.scss',
+    selector: 'create-option-dialog',
+    templateUrl: 'create-option-dialog.component.html',
+    styleUrl: 'create-option-dialog.component.scss',
     standalone: true,
     imports: [
         MatFormFieldModule,
@@ -33,8 +32,8 @@ import { ShipmentOptionsResult as ShipmentOptionsResult } from './model/shipment
     ]
 })
 
-export class ShipmentOptionDialog {
-    readonly dialogRef = inject(MatDialogRef<ShipmentOptionDialog>);
+export class CreateOptionDialog {
+    readonly dialogRef = inject(MatDialogRef<CreateOptionDialog>);
     readonly data = inject<AcessorialCost>(MAT_DIALOG_DATA);
     readonly action = model(this.data.costValue);
 
@@ -43,6 +42,6 @@ export class ShipmentOptionDialog {
     }
 
     public returnCreateShipment(): ShipmentOptionsResult {
-        return new ShipmentOptionsResult('create', []);
+        return new ShipmentOptionsResult('shipment', []);
     }
 }

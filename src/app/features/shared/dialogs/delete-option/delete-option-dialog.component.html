@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Deletar</h2>
+<!-- <mat-form-field>
+    <mat-label>Favorite Animal</mat-label>
+  </mat-form-field>  -->
+<ng-container *ngFor="
+    let control of entities;
+    let i = index
+  ">
+  <mat-checkbox (change)="markRowAsSelected(i)">{{ getEntityAndNumberByIndex(i) }}</mat-checkbox>
+</ng-container>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button (click)="dialogRef.close(selectedRows)" cdkFocusInitial>Deletar</button>
+</mat-dialog-actions>

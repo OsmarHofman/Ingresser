@@ -2,9 +2,11 @@ import { Component, Injectable, signal, model, Output, EventEmitter, ViewChild }
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ShipmentOptionDialog } from './features/shared/dialogs/shipment-option/shipment-option-dialog.component';
-import { ShipmentOptionsResult } from './features/shared/dialogs/shipment-option/model/shipment-options-result';
+import { CreateOptionDialog as CreateOptionDialog } from './features/shared/dialogs/create-option/create-option-dialog.component';
+import { ShipmentOptionsResult } from './features/shared/dialogs/create-option/model/shipment-options-result';
 import { ShipmentComponent } from './features/segments/shipment/shipment.component';
+import { EntityType, SendEntity } from './model/entityType';
+import { DeleteOptionDialog } from './features/shared/dialogs/delete-option/delete-option-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,8 @@ import { ShipmentComponent } from './features/segments/shipment/shipment.compone
 
 @Injectable()
 export class AppComponent {
+
+  public entitiesToBeSent: SendEntity[] = [];
 
   constructor(private formBuilder: FormBuilder,
     private appService: AppService,
@@ -62,32 +66,41 @@ export class AppComponent {
 
   //#region Menu Options
 
-  //#region Shipment Options
-  public showShipmentOptions(): void {
-    const dialogRef = this.dialog.open(ShipmentOptionDialog, {
+  @ViewChild(ShipmentComponent) shipmentComponent!: ShipmentComponent;
+
+  //#region Create Options
+  public showCreateOptions(): void {
+    const dialogRef = this.dialog.open(CreateOptionDialog, {
       data: { costXid: 'XID', costValue: this.costValue() },
     }
     );
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('dialog fechou!');
       if (result !== undefined) {
-        this.chooseShipmentAction(result);
-
+        this.createEntityByAction(result);
       }
     });
   }
 
-  @ViewChild(ShipmentComponent) shipmentComponent!: ShipmentComponent;
-
-  public chooseShipmentAction(result: ShipmentOptionsResult) {
+  public createEntityByAction(result: ShipmentOptionsResult) {
 
     switch (result.action) {
-      case 'create':
-      this.shipmentComponent.addShipment();
-        
+      case 'shipment':
+
+        let shipmentIndex: number = 0;
+
+        const shipmentList: any = this.form.controls['shipment'].value.shipments;
+
+        if (shipmentList) {
+          shipmentIndex = shipmentList.length;
+        }
+
+        this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, shipmentIndex));
+
+        this.shipmentComponent.addShipment();
+
         break;
-    
+
       default:
         break;
     }
@@ -95,6 +108,52 @@ export class AppComponent {
 
   //#endregion
 
-  
+  //#region Delete Options
+  public showDeleteOptions(): void {
+    if (this.entitiesToBeSent.length === 0) {
+      alert("Não há nada para ser deletado!");
+
+      return;
+    }
+
+    const dialogRef = this.dialog.open(DeleteOptionDialog, {
+      data: this.entitiesToBeSent,
+    }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.deleteEntityByIndex(result);
+      }
+    });
+  }
+
+  public deleteEntityByIndex(indexes: number[]) {
+    indexes = indexes.sort();
+
+    for (let i = indexes.length - 1; i >= 0; i--) {
+      const entityToBeDeleted = this.entitiesToBeSent[indexes[i]];
+
+      switch (entityToBeDeleted.type) {
+        case EntityType.Shipment:
+          this.shipmentComponent.removeShipmentByIndex(entityToBeDeleted.entityListIndex);
+
+          break;
+
+        default:
+          break;
+      }
+
+      delete this.entitiesToBeSent[indexes[i]]
+    }
+
+    this.entitiesToBeSent = this.entitiesToBeSent.filter((entityToBeSent: SendEntity) => {
+        return entityToBeSent;
+    })
+  }
+
+
+  //#endregion
+
   //#endregion
 }

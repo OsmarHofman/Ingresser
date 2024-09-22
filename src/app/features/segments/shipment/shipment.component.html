@@ -12,7 +12,7 @@
 
             <tr [formGroupName]="i" class="row shipments">
               <td>
-                <h4>Embarque</h4>
+                <h4>Embarque - {{ getShipmentXidByIndex(i) }}</h4>
                 <shipment-header-accordion formControlName="shipmentHeader" />
                 <shipment-header2-accordion formControlName="shipmentHeader2" />
                 <shipment-stop-accordion formControlName="shipmentStop" />
