@@ -95,6 +95,14 @@ export class AppComponent {
           shipmentIndex = shipmentList.length;
         }
 
+        const shipmentWithSameIndexNumber = this.entitiesToBeSent.filter((entityToBeSent: SendEntity) => {
+          entityToBeSent.entityListIndex == shipmentIndex
+        });
+
+        if (shipmentWithSameIndexNumber) {
+
+        }
+
         this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, shipmentIndex));
 
         this.shipmentComponent.addShipment();
@@ -123,12 +131,12 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this.deleteEntityByIndex(result);
+        this.deleteEntityByIndexes(result);
       }
     });
   }
 
-  public deleteEntityByIndex(indexes: number[]) {
+  public deleteEntityByIndexes(indexes: number[]) {
     indexes = indexes.sort();
 
     for (let i = indexes.length - 1; i >= 0; i--) {
@@ -137,6 +145,8 @@ export class AppComponent {
       switch (entityToBeDeleted.type) {
         case EntityType.Shipment:
           this.shipmentComponent.removeShipmentByIndex(entityToBeDeleted.entityListIndex);
+
+          this.recalculateShipmentIndexesInEntitiesToBeSent(indexes, i);
 
           break;
 
@@ -148,11 +158,26 @@ export class AppComponent {
     }
 
     this.entitiesToBeSent = this.entitiesToBeSent.filter((entityToBeSent: SendEntity) => {
-        return entityToBeSent;
+      return entityToBeSent;
     })
   }
 
+  private recalculateShipmentIndexesInEntitiesToBeSent(indexes: number[], i: number) {
+    const lastEntityIndex: number = this.entitiesToBeSent.length - 1;
 
+    if (lastEntityIndex > indexes[i]) {
+
+      const entitiesAfterDeletedInList: SendEntity[] = this.entitiesToBeSent
+        .slice(indexes[i] + 1, this.entitiesToBeSent.length)
+        .filter((entityToBeSent: SendEntity) => {
+          return entityToBeSent.type === EntityType.Shipment;
+        });
+
+      entitiesAfterDeletedInList.forEach((entityToBeSent: SendEntity) => {
+        entityToBeSent.entityListIndex -= 1;
+      });
+    }
+  }
   //#endregion
 
   //#endregion
