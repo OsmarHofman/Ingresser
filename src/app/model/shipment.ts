@@ -253,6 +253,24 @@ export class ShipmentHeader {
             );
     }
 
+    public static getTravelStatusFromXml(xml: string): string {
+        const statusViagemTag = xml.slice(
+            xml.indexOf('CLL_STATUS_VIAGEM'),
+            xml.lastIndexOf('</otm:StatusValueGid>')
+        )
+        
+        const statusViagemValue =  statusViagemTag.slice(
+            statusViagemTag.indexOf('<otm:StatusValueGid>'),
+            statusViagemTag.lastIndexOf('</otm:Gid>')
+        );
+
+        return statusViagemValue
+            .slice(
+                statusViagemValue.indexOf('<otm:Xid>') + '<otm:Xid>'.length,
+                statusViagemValue.indexOf('</otm:Xid>')
+            );
+    }
+
     public static getCarrierXidFromXml(xml: string): string {
         const shipmentGid = xml.slice(
             xml.indexOf('otm:ServiceProviderGid'),

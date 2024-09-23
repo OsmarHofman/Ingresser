@@ -326,4 +326,21 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
 
     return shipmentXid;
   }
+
+  public getShipmentTravelStatusByIndex(index: number): string {
+    const shipment: any = this.form.controls['shipments'].value[index].shipmentHeader.tab;
+
+    let travelStatus = '';
+
+    if (shipment) {
+
+      if (shipment.tabSelected === 0) {
+        travelStatus = shipment.inputContent.travelStatus;
+      } else {
+        travelStatus = ShipmentHeader.getTravelStatusFromXml(shipment.xmlContent);
+      }
+    }
+
+    return travelStatus;
+  }
 }
