@@ -15,8 +15,8 @@ import { ShipmentStopAccordionComponent } from './shipment-stop/shipment-stop-ac
 import { LocationAccordionComponent } from './location/location-accordion.component';
 import { ReleaseAccordionComponent } from './release/release-accordion.component';
 import { Subscription } from 'rxjs';
-import { ShipmentBaseTag } from '../../../model/xml-base-tags';
 import { ShipmentHeader } from '../../../model/shipment';
+import { AppService } from '../../service/app.service';
 
 @Component({
   selector: 'shipment',
@@ -38,7 +38,8 @@ import { ShipmentHeader } from '../../../model/shipment';
       provide: NG_VALUE_ACCESSOR,
       multi: true,
       useExisting: ShipmentComponent
-    }
+    },
+    AppService,
   ],
 })
 
@@ -46,7 +47,7 @@ import { ShipmentHeader } from '../../../model/shipment';
 @Injectable()
 export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private appService: AppService) { }
 
   //#region Form
 
@@ -116,193 +117,7 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
 
   public addShipment() {
     this.shipments.push(
-      this.formBuilder.group({
-        shipmentHeader: {
-          tab: {
-            inputContent: {
-              emissionStatus: "PRE_EMISSAO_ENVIADA",
-              shipmentCarrier: {
-                domainName: "EMBDEV",
-                xid: "CAR-12521"
-              },
-              shipmentCost: {
-                acessorialCost: "",
-                baseCost: "100",
-                totalCost: "100"
-              },
-              shipmentDomainName: "EMBDEV",
-              shipmentRefnums: {
-                Refnums: [
-                  {
-                    domainName: "EMBDEV",
-                    xid: "CLL_IMPOSTO_SOMADO",
-                    refnumValue: "N"
-                  },
-                  {
-                    domainName: "EMBDEV",
-                    xid: "CLL_IMPOSTO_INCLUSO",
-                    refnumValue: "S"
-                  }
-                ]
-              },
-              shipmentTaker: "ORG-8027-30018",
-              shipmentXid: "EMBARQUE1",
-              travelStatus: "PLANEJADO"
-            },
-            tabSelected: 0,
-            xmlContent: ShipmentBaseTag.ShipmentHeader
-          }
-        },
-        shipmentHeader2: {
-          tab: {
-            inputContent: {
-              perspective: "Buy"
-            },
-            tabSelected: 0,
-            xmlContent: ShipmentBaseTag.ShipmentHeader2
-          }
-        },
-        shipmentStop: {
-          tab: {
-            inputContent: {
-              stops: [
-                {
-                  locationDomainName: "EMBDEV",
-                  locationXid: "LOCATION7",
-                  stopSequence: 1,
-                  stopType: "Coleta"
-                },
-                {
-                  locationDomainName: "EMBDEV",
-                  locationXid: "ORG-8027-30018",
-                  stopSequence: 2,
-                  stopType: "Entrega"
-                }
-              ]
-            },
-            tabSelected: 0,
-            xmlContent: ShipmentBaseTag.ShipmentStop
-          }
-        },
-        location: {
-          tab: {
-            inputContent: {
-              locations: [
-                {
-                  location: {
-                    domainName: "EMBDEV",
-                    xid: "CAR-12521",
-                    city: "SAO PAULO",
-                    uf: "SP",
-                    refnums: {
-                      Refnums: [
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_CNPJ",
-                          refnumValue: "00720785000177"
-                        },
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_CODIGO_IBGE",
-                          refnumValue: "3550308"
-                        },
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_TIPO_TRANSPORTADOR",
-                          refnumValue: "ETC_NORMAL"
-                        },
-                      ]
-                    }
-                  }
-                },
-                {
-                  location: {
-                    domainName: "EMBDEV",
-                    xid: "LOCATION7",
-                    city: "SAO PAULO",
-                    uf: "SP",
-                    refnums: {
-                      Refnums: [
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_CNPJ",
-                          refnumValue: "96973902000183"
-                        },
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_CODIGO_IBGE",
-                          refnumValue: "3550308"
-                        },
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_RAZAO_SOCIAL",
-                          refnumValue: "GALPAO"
-                        },
-                      ]
-                    }
-                  }
-                },
-                {
-                  location: {
-                    domainName: "EMBDEV",
-                    xid: "ORG-8027-30018",
-                    city: "LAGES",
-                    uf: "SC",
-                    refnums: {
-                      Refnums: [
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_CNPJ",
-                          refnumValue: "05257045000160"
-                        },
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_CODIGO_IBGE",
-                          refnumValue: "4209300"
-                        },
-                        {
-                          domainName: "EMBDEV",
-                          xid: "CLL_RAZAO_SOCIAL",
-                          refnumValue: "MATRIZ 12"
-                        },
-                      ]
-                    }
-                  }
-                },
-
-              ]
-            },
-            tabSelected: 0,
-            xmlContent: ShipmentBaseTag.Location
-          }
-        },
-        release: {
-          tab: {
-            inputContent: {
-              Releases: [{
-                release: {
-                  releaseDomainName: "EMBDEV",
-                  releaseXid: "ORDEM1",
-                  shipFrom: "LOCATION7",
-                  shipTo: "ORG-8027-30018",
-                  taker: "ORG-8027-30018",
-                  orderMovement: {
-                    Movements: [{
-                      shipFrom: "LOCATION7",
-                      shipTo: "ORG-8027-30018",
-                    }],
-                  },
-                  refnums: "",
-                  releaseCost: ''
-                }
-              }]
-            },
-            tabSelected: 0,
-            xmlContent: ShipmentBaseTag.Release
-          }
-        },
-
-      })
+      this.formBuilder.group(this.appService.getShipmentDefaultFormValues())
     )
   }
 
