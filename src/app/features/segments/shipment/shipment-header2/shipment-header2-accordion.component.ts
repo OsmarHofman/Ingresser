@@ -1,6 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ShipmentHeader2TabComponent } from './tab/shipment-header2-tab.component';
 

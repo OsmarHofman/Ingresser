@@ -1,5 +1,14 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ControlValueAccessor, FormArray, FormControl, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormArray,
+    FormControl,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    FormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
@@ -35,7 +44,7 @@ export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestr
 
     public stopTypes = ['Coleta', 'Entrega'];
 
-    constructor(private formBuilder: FormBuilder) { 
+    constructor(private formBuilder: FormBuilder) {
         this.addRow();
         this.addRow();
     }
@@ -43,7 +52,7 @@ export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestr
     //#region Table
 
     public selectedRows: number[] = [];
-    
+
     get shipmentStops() {
         return this.shipmentStopForm.get('stops') as FormArray;
     }

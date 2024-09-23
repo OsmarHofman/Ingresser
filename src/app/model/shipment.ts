@@ -1,4 +1,3 @@
-import { FormGroup } from "@angular/forms";
 import { RefnumType } from "./refnumType";
 import { CostType } from "./costType";
 

@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, FormsModule, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    FormArray,
+    FormsModule,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR,
+    ControlValueAccessor
+} from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';

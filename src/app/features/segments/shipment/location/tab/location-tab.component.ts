@@ -4,7 +4,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LocationManagerComponent } from './manager/location-manager.component';
 

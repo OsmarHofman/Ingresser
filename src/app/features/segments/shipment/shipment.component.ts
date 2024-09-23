@@ -1,7 +1,14 @@
 import { Component, Injectable, OnDestroy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, FormArray, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { ShipmentHeaderAccordionComponent } from './shipment-header/shipment-header-accordion.component';
 import { ShipmentHeader2AccordionComponent } from './shipment-header2/shipment-header2-accordion.component';
 import { ShipmentStopAccordionComponent } from './shipment-stop/shipment-stop-accordion.component';

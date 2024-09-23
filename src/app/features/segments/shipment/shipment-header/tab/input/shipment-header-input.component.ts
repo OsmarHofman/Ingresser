@@ -1,6 +1,12 @@
-import { Component, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CarrierInputContainerComponent } from "./carrier/shipment-header-carrier.component";
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';

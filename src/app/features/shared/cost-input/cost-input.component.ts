@@ -1,6 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -34,7 +40,7 @@ export class CostInputComponent implements ControlValueAccessor, OnDestroy {
     constructor(private formBuilder: FormBuilder) { }
 
     //#region Form
-    
+
     public costInputForm: FormGroup = this.formBuilder.group({
         baseCost: [''],
         acessorialCost: [''],
@@ -65,7 +71,7 @@ export class CostInputComponent implements ControlValueAccessor, OnDestroy {
         if (value)
             this.costInputForm.setValue(value, { emitEvent: false });
     }
-    
+
     public ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
             sub.unsubscribe();

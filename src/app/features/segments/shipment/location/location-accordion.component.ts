@@ -1,6 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LocationTabComponent } from './tab/location-tab.component';
 
@@ -26,7 +32,7 @@ import { LocationTabComponent } from './tab/location-tab.component';
 export class LocationAccordionComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
-    
+
     //#region Form
 
     public accordionForm: FormGroup = this.formBuilder.group({
@@ -57,7 +63,7 @@ export class LocationAccordionComponent implements ControlValueAccessor, OnDestr
         if (value)
             this.accordionForm.setValue(value, { emitEvent: false });
     }
-    
+
     public ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
             sub.unsubscribe();

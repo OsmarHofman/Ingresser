@@ -1,6 +1,5 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
-    MAT_DIALOG_DATA,
     MatDialogRef,
     MatDialogContent,
     MatDialogActions,
@@ -11,9 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
-import { AcessorialCost } from '../../../../model/shipment';
-import { ShipmentOptionsResult as ShipmentOptionsResult } from './model/shipment-options-result';
+import { EntityType } from '../../../../model/entityType';
 
 @Component({
     selector: 'create-option-dialog',
@@ -34,14 +31,12 @@ import { ShipmentOptionsResult as ShipmentOptionsResult } from './model/shipment
 
 export class CreateOptionDialog {
     readonly dialogRef = inject(MatDialogRef<CreateOptionDialog>);
-    readonly data = inject<AcessorialCost>(MAT_DIALOG_DATA);
-    readonly action = model(this.data.costValue);
 
     public onNoClick(): void {
         this.dialogRef.close();
     }
 
-    public returnCreateShipment(): ShipmentOptionsResult {
-        return new ShipmentOptionsResult('shipment', []);
+    public returnCreateShipment(): EntityType {
+        return EntityType.Shipment;
     }
 }

@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, FormsModule, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    FormArray,
+    FormsModule,
+    ReactiveFormsModule,
+    ControlValueAccessor,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
@@ -102,7 +111,7 @@ export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestr
         if (value)
             this.tableForm.setValue(value, { emitEvent: false });
     }
-        
+
     public ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
             sub.unsubscribe();

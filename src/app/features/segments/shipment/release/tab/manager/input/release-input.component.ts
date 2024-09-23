@@ -1,5 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
@@ -15,16 +21,16 @@ import { CostInputComponent } from '../../../../../../shared/cost-input/cost-inp
     styleUrl: 'release-input.component.scss',
     standalone: true,
     imports: [
-    RefnumComponent,
-    OrderMovementComponent,
-    CostInputComponent,
-    CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormField,
-    MatLabel,
-    MatCheckbox
-],
+        RefnumComponent,
+        OrderMovementComponent,
+        CostInputComponent,
+        CommonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormField,
+        MatLabel,
+        MatCheckbox
+    ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -43,7 +49,7 @@ export class ReleaseInputComponent implements ControlValueAccessor, OnDestroy {
     public enableCostInputs(): void {
         this.enableCost = !this.enableCost;
     }
-    
+
     //#region Form
 
     public releaseForm: FormGroup = this.formBuilder.group({

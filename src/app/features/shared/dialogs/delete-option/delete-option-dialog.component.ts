@@ -1,4 +1,4 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
     MAT_DIALOG_DATA,
     MatDialogRef,
@@ -12,8 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-import { AcessorialCost } from '../../../../model/shipment';
-import { ShipmentOptionsResult as ShipmentOptionsResult } from './model/shipment-options-result';
 import { EntityTypeLabel, SendEntity } from '../../../../model/entityType';
 import { CommonModule } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -43,7 +41,6 @@ export class DeleteOptionDialog {
     readonly entities = inject<SendEntity[]>(MAT_DIALOG_DATA);
 
     public selectedRows: number[] = [];
-
 
     constructor(){
         this.selectedRows = [];

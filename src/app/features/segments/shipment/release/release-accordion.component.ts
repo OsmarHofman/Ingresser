@@ -1,6 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ReleaseTabComponent } from './tab/release-tab.component';
 
@@ -26,13 +32,13 @@ import { ReleaseTabComponent } from './tab/release-tab.component';
 export class ReleaseAccordionComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
-    
+
     //#region Form
 
     public accordionForm: FormGroup = this.formBuilder.group({
         tab: ['']
     });
-    
+
     public onTouched: Function = () => { };
 
     public onChangeSubs: Subscription[] = [];
@@ -57,7 +63,7 @@ export class ReleaseAccordionComponent implements ControlValueAccessor, OnDestro
         if (value)
             this.accordionForm.setValue(value, { emitEvent: false });
     }
-    
+
     public ngOnDestroy(): void {
         this.onChangeSubs.forEach(sub => {
             sub.unsubscribe();

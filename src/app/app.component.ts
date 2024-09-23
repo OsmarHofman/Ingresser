@@ -1,9 +1,8 @@
-import { Component, Injectable, signal, model, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Injectable, signal, model, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateOptionDialog as CreateOptionDialog } from './features/shared/dialogs/create-option/create-option-dialog.component';
-import { ShipmentOptionsResult } from './features/shared/dialogs/create-option/model/shipment-options-result';
 import { ShipmentComponent } from './features/segments/shipment/shipment.component';
 import { EntityType, SendEntity } from './model/entityType';
 import { DeleteOptionDialog } from './features/shared/dialogs/delete-option/delete-option-dialog.component';
@@ -82,10 +81,10 @@ export class AppComponent {
     });
   }
 
-  public createEntityByAction(result: ShipmentOptionsResult) {
+  public createEntityByAction(result: EntityType) {
 
-    switch (result.action) {
-      case 'shipment':
+    switch (result) {
+      case EntityType.Shipment:
 
         let shipmentIndex: number = 0;
 
@@ -93,14 +92,6 @@ export class AppComponent {
 
         if (shipmentList) {
           shipmentIndex = shipmentList.length;
-        }
-
-        const shipmentWithSameIndexNumber = this.entitiesToBeSent.filter((entityToBeSent: SendEntity) => {
-          entityToBeSent.entityListIndex == shipmentIndex
-        });
-
-        if (shipmentWithSameIndexNumber) {
-
         }
 
         this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, shipmentIndex));

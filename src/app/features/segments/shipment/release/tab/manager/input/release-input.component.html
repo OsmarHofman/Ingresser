@@ -34,7 +34,7 @@
     <hr>
 
     <div class="component">
-      <refnum formControlName="refnums" [colClass]="'col-md-7'" [defaultRowCount]="0"/>
+      <refnum formControlName="refnums" [colClass]="'col-md-7'" [defaultRowCount]="0" />
     </div>
 
     <hr>
@@ -45,7 +45,8 @@
 
     <hr>
 
-    <mat-checkbox class="checkbox" [checked]="true" (change)="enableCostInputs()">Usar mesmos custos do embarque</mat-checkbox>
+    <mat-checkbox class="checkbox" [checked]="true" (change)="enableCostInputs()">Usar mesmos custos do
+      embarque</mat-checkbox>
 
     <div class="component" *ngIf="enableCost == false">
       <cost-input formControlName="releaseCost" />
