@@ -108,8 +108,11 @@ export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestr
     }
 
     public writeValue(value: any): void {
-        if (value)
+        if (value) {
+            if (typeof (value) === "object" && value.length === 0) return;
+            
             this.tableForm.setValue(value, { emitEvent: false });
+        }
     }
 
     public ngOnDestroy(): void {

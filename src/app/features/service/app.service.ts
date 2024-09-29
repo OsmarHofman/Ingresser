@@ -1,5 +1,5 @@
 import { FormGroup } from "@angular/forms";
-import { Shipment, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
+import { OrderMovement, Shipment, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
@@ -354,7 +354,7 @@ export class AppService {
                                     }],
                                 },
                                 refnums: "",
-                                releaseCost: ''
+                                releaseCost: ""
                             }
                         }]
                     },
@@ -364,5 +364,234 @@ export class AppService {
             }
 
         };
+    }
+
+    public getNewShipmentByExistent(existentShipment: any): any {
+
+        //ShipmentHeader
+        var shipmentHeaderTab = existentShipment.shipmentHeader.tab;
+
+        var shipmentHeaderContent = shipmentHeaderTab.inputContent;
+
+        var shipmentHeaderCarrier = shipmentHeaderContent.shipmentCarrier;
+
+        var shipmentHeaderCost = shipmentHeaderContent.shipmentCost;
+
+        //ShipmentHeader2
+        var shipmentHeader2Tab = existentShipment.shipmentHeader2.tab;
+
+        var shipmentHeader2Content = shipmentHeader2Tab.inputContent;
+
+        //ShipmentStop
+        var shipmentStopTab = existentShipment.shipmentStop.tab;
+
+        var shipmentStopContent = shipmentStopTab.inputContent;
+
+        //Location
+        var shipmentLocationTab = existentShipment.location.tab;
+
+        var shipmentLocationContent = shipmentLocationTab.inputContent;
+
+        //Release
+        var shipmentReleaseTab = existentShipment.release.tab;
+
+        var shipmentReleaseContent = shipmentReleaseTab.inputContent;
+
+        var newShipment = {
+            shipmentHeader: {
+                tab: {
+                    inputContent: {
+                        emissionStatus: shipmentHeaderContent.emissionStatus,
+                        shipmentCarrier: {
+                            domainName: shipmentHeaderCarrier.domainName,
+                            xid: shipmentHeaderCarrier.xid
+                        },
+                        shipmentCost: {
+                            acessorialCost: shipmentHeaderCost.acessorialCost,
+                            baseCost: shipmentHeaderCost.baseCost,
+                            totalCost: shipmentHeaderCost.totalCost
+                        },
+                        shipmentDomainName: shipmentHeaderContent.shipmentDomainName,
+                        shipmentRefnums: {
+                            Refnums: [{}],
+                        },
+                        shipmentTaker: shipmentHeaderContent.shipmentTaker,
+                        shipmentXid: shipmentHeaderContent.shipmentXid,
+                        travelStatus: shipmentHeaderContent.travelStatus
+                    },
+                    tabSelected: shipmentHeaderTab.tabSelected,
+                    xmlContent: shipmentHeaderTab.xmlContent
+                }
+            },
+            shipmentHeader2: {
+                tab: {
+                    inputContent: {
+                        perspective: shipmentHeader2Content.perspective
+                    },
+                    tabSelected: shipmentHeader2Tab.tabSelected,
+                    xmlContent: shipmentHeader2Tab.xmlContent
+                }
+            },
+            shipmentStop: {
+                tab: {
+                    inputContent: {
+                        stops: [{}]
+                    },
+                    tabSelected: shipmentHeader2Tab.tabSelected,
+                    xmlContent: shipmentHeader2Tab.xmlContent
+                }
+            },
+            location: {
+                tab: {
+                    inputContent: {
+                        locations: [{}]
+                    },
+                    tabSelected: shipmentLocationTab.tabSelected,
+                    xmlContent: shipmentLocationTab.xmlContent
+                }
+            },
+            release: {
+                tab: {
+                    inputContent: {
+                        Releases: [{}]
+                    },
+                    tabSelected: shipmentReleaseTab.tabSelected,
+                    xmlContent: shipmentReleaseTab.xmlContent
+                }
+            }
+        };
+
+        /*Colocar listas (refnums, releases)
+            location.locations
+            release.Releases
+        */
+        const newShipmentHeaderRefnums = newShipment.shipmentHeader.tab.inputContent.shipmentRefnums.Refnums;
+
+        newShipmentHeaderRefnums.pop();
+
+        shipmentHeaderContent.shipmentRefnums.Refnums.forEach((refnum: any) => {
+            newShipmentHeaderRefnums.push({
+                domainName: refnum.domainName,
+                xid: refnum.xid,
+                refnumValue: refnum.refnumValue,
+            })
+        });
+
+        const newShipmentStops = newShipment.shipmentStop.tab.inputContent.stops;
+
+        newShipmentStops.pop();
+
+        shipmentStopContent.stops.forEach((stop: any) => {
+            newShipmentStops.push({
+                locationDomainName: stop.locationDomainName,
+                locationXid: stop.locationXid,
+                stopSequence: stop.stopSequence,
+                stopType: stop.stopType,
+            })
+        });
+
+        const newShipmentLocations = newShipment.location.tab.inputContent.locations;
+
+        newShipmentLocations.pop();
+
+        shipmentLocationContent.locations.forEach((contentLocation: any) => {
+
+            const location = contentLocation.location;
+
+            const newLocation = {
+                location: {
+                    domainName: location.domainName,
+                    xid: location.xid,
+                    city: location.city,
+                    uf: location.uf,
+                    refnums: {
+                        Refnums: [{}]
+                    }
+                }
+            };
+
+            const newLocationRefnums = newLocation.location.refnums.Refnums;
+
+            newLocationRefnums.pop();
+
+            location.refnums.Refnums.forEach((refnum: any) => {
+                newLocationRefnums.push({
+                    domainName: refnum.domainName,
+                    xid: refnum.xid,
+                    refnumValue: refnum.refnumValue,
+                });
+            });
+
+            newShipmentLocations.push(newLocation);
+        });
+
+        const newShipmentReleases = newShipment.release.tab.inputContent.Releases;
+
+        newShipmentReleases.pop();
+
+        shipmentReleaseContent.Releases.forEach((contentRelease: any) => {
+
+            const release = contentRelease.release;
+
+            const newRelease = {
+                release: {
+                    releaseDomainName: release.releaseDomainName,
+                    releaseXid: release.releaseXid,
+                    shipFrom: release.shipFrom,
+                    shipTo: release.shipTo,
+                    taker: release.taker,
+                    orderMovement: {
+                        Movements: [{}]
+                    },
+                    refnums: {
+                        Refnums: [{}]
+                    },
+                    releaseCost: {
+                        acessorialCost: [{}],
+                        baseCost: "",
+                        totalCost: ""
+                    }
+                }
+            };
+
+            const newReleaseOrderMovements = newRelease.release.orderMovement.Movements;
+
+            newReleaseOrderMovements.pop();
+
+            release.orderMovement.Movements.forEach((movement: any) => {
+                newReleaseOrderMovements.push({
+                    shipFrom: movement.shipFrom,
+                    shipTo: movement.shipTo,
+                });
+            });
+
+            const newReleaseRefnums = newRelease.release.refnums.Refnums;
+
+            newReleaseRefnums.pop();
+
+            if (release.refnums) {
+                release.refnums.Refnums.forEach((refnum: any) => {
+                    newReleaseRefnums.push({
+                        domainName: refnum.domainName,
+                        xid: refnum.xid,
+                        refnumValue: refnum.refnumValue,
+                    });
+                });
+            }
+
+            const newReleaseCost = newRelease.release.releaseCost;
+
+            newReleaseCost.acessorialCost.pop();
+
+            if (release.releaseCost) {
+                const releaseCost = release.release.releaseCost;
+                newReleaseCost.baseCost = releaseCost.baseCost;
+                newReleaseCost.totalCost = releaseCost.totalCost;
+            }
+
+            newShipmentReleases.push(newRelease);
+        });
+
+        return newShipment;
     }
 }

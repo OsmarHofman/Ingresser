@@ -126,10 +126,12 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
   }
 
   public duplicateShipmentByIndex(index: number): void {
-    const shipmentToBeDuplicated = this.shipments.controls[index];
+    const shipmentToBeDuplicated = this.shipments.controls[index].value;
 
     //TODO: Ajustar para não usar referencia de memória
-    this.shipments.push(shipmentToBeDuplicated);
+    this.shipments.push(
+      this.formBuilder.group(this.appService.getNewShipmentByExistent(shipmentToBeDuplicated))
+    )
   }
 
   public getShipmentXidByIndex(index: number): string {

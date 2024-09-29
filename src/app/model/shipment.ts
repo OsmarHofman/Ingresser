@@ -685,6 +685,8 @@ export class Cost {
 
             if (formCost.acessorialCost) {
 
+                if (typeof (formCost.acessorialCost) === "object" && formCost.acessorialCost.length === 0) return;
+
                 for (let index = 0; index < formCost.acessorialCost.costs.length; index++) {
                     const formAcessorialCost = formCost.acessorialCost.costs[index];
 
