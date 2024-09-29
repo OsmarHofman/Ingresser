@@ -61,10 +61,10 @@ button {
 
 .float {
   position: fixed;
-  width: 60px;
+  width: 82px;
   height: 60px;
   bottom: 40px; //fixa o botão à 40px do fim da página
-  right: 10px; //fixa o botão a 10px da borda direita da página
+  right: 0px; //fixa o botão a 0px da borda direita da página
   background-color: rgb(13, 110, 253);
   color: #fff;
   border: 1px dotted rgba(130, 130, 130, 0.3);
@@ -72,6 +72,9 @@ button {
   text-align: center;
   z-index: 1000; //posiciona o botão acima dos demais componentes da página
   animation: bot-to-top 2s ease-out; //animação executada quando a página é carregada
+  box-shadow:
+    0 8px 16px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 ul {
@@ -80,6 +83,7 @@ ul {
   padding-bottom: 20px;
   bottom: 80px;
   z-index: 100;
+  margin-right: 12px;
 }
 
 ul li {
@@ -96,7 +100,7 @@ ul li button {
     0 8px 16px 0 rgba(0, 0, 0, 0.2),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border: 1px solid rgba(130, 130, 130, 0.3);
-  width: fit-content;
+  width: 100%;
   height: 60px;
   display: block;
 }
@@ -109,6 +113,10 @@ ul li button {
 .btn-icon {
   font-size: 24px;
   margin-top: 18px;
+}
+
+#menu-share {
+  margin-right: 22px;
 }
 
 button#menu-share + ul {
