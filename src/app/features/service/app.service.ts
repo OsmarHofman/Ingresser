@@ -1,8 +1,9 @@
 import { FormGroup } from "@angular/forms";
-import { OrderMovement, Shipment, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
+import { Shipment, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
+import { ValuesConfiguration } from "../../model/values-configuration";
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -14,13 +15,17 @@ const httpOptions = {
 @Injectable()
 export class AppService {
 
-    public wsUrl = 'pr.nddfrete.com.br/1046/tmsExchangeMessage/TMSExchangeMessage'
+    public wsUrl = 'pr.nddfrete.com.br/1046/tmsExchangeMessage/TMSExchangeMessage';
+
+    private configuration: ValuesConfiguration = new ValuesConfiguration();
 
     constructor(private http: HttpClient) {
-
-    }
+        this.getConfigurationFromFile();
+     }
 
     public convertFormToXml(form: FormGroup): void {
+
+        if(!this.configuration) return;
 
         let xmlsToSend: string[] = [];
 
@@ -593,5 +598,13 @@ export class AppService {
         });
 
         return newShipment;
+    }
+
+    public getConfigurationFromFile(): void {
+        this.http.get('./assets/values-configuration.json').subscribe(configurationData => {
+            if (configurationData) {
+                this.configuration = configurationData as ValuesConfiguration;
+            }
+        });
     }
 }
