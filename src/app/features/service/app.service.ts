@@ -176,10 +176,16 @@ export class AppService {
             xmlsToSend.push(finalXml);
         });
 
-        xmlsToSend.forEach((xmlToSend: string) => {
+        xmlsToSend.forEach(async (xmlToSend: string) => {
             let response = this.http.post(this.wsUrl, xmlToSend, httpOptions);
+
+            await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
         })
     }
+
+    private sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    } 
 
     public getShipmentDefaultFormValues(): any {
         return {
