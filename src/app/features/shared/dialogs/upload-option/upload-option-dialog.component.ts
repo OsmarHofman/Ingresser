@@ -30,6 +30,8 @@ import { EntityType } from '../../../../model/entityType';
 })
 
 export class UploadOptionDialog {
+    public fileName = '';
+
     readonly dialogRef = inject(MatDialogRef<UploadOptionDialog>);
 
     public onNoClick(): void {
@@ -43,16 +45,18 @@ export class UploadOptionDialog {
     public onFileSelected(event: any): void {
 
         const file: File = event.target.files[0];
-    
+
         if (file) {
-    
-          let fileReader = new FileReader();
-    
-          fileReader.onload = (e) => {
-            console.log(fileReader.result);
-          }
-    
-          fileReader.readAsText(file);
+            this.fileName = file.name;
+
+            let fileReader = new FileReader();
+
+            fileReader.onload = (e) => {
+                console.log(fileReader.result);
+            }
+
+            fileReader.readAsText(file);
         }
-      }
+
+    }
 }
