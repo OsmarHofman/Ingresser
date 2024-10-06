@@ -1,7 +1,25 @@
+.content {
+    width: 500px;
+    overflow: hidden;
+}
+
 h2 {
     text-align: center;
 }
 
 .file-input {
     display: none;
-  }
+}
+
+.upload-button {
+    margin-left: 14px;
+}
+
+.upload-type-label {
+    margin-left: 12px;
+    font-size: larger;
+}
+
+.file-name-label {
+    margin-top: 5px;
+}

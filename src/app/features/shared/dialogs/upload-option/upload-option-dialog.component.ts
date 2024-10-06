@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { EntityType } from '../../../../model/entityType';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
     selector: 'upload-option-dialog',
@@ -26,11 +27,13 @@ import { EntityType } from '../../../../model/entityType';
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
+        MatRadioModule
     ]
 })
 
 export class UploadOptionDialog {
-    public fileName = '';
+    public fileName = '...';
+    public uploadType = 'entity';
 
     readonly dialogRef = inject(MatDialogRef<UploadOptionDialog>);
 
@@ -40,6 +43,12 @@ export class UploadOptionDialog {
 
     public returnCreateShipment(): EntityType {
         return EntityType.Shipment;
+    }
+
+    public onUploadTypeChange(event: any): void {
+        this.uploadType = event.source.id;
+
+        this.fileName = '...';
     }
 
     public onFileSelected(event: any): void {
