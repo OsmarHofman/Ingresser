@@ -29,7 +29,8 @@ export const appConfig: ApplicationConfig = {
     ReactiveFormsModule,
     ShipmentComponent,
     MatSidenavModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],

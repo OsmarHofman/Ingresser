@@ -8,6 +8,7 @@ import { EntityType, SendEntity } from './model/entityType';
 import { DeleteOptionDialog } from './features/shared/dialogs/delete-option/delete-option-dialog.component';
 import { DuplicateOptionDialog } from './features/shared/dialogs/duplicate-option/duplicate-option-dialog.component';
 import { UploadOptionDialog } from './features/shared/dialogs/upload-option/upload-option-dialog.component';
+import { DownloadOptionDialog } from './features/shared/dialogs/download-option/download-option-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -106,7 +107,6 @@ export class AppComponent {
 
   //#endregion
 
-
   //#region Upload Options
 
   public showUploadOptions(): void {
@@ -120,6 +120,33 @@ export class AppComponent {
 
   }
 
+
+  //#endregion
+
+  //#region Download Options
+
+  public showDownloadOptions(): void {
+    if (!this.form.value.shipment) {
+      alert("Não há nada para ser baixado!");
+
+      return;
+    }
+
+    const dialogRef = this.dialog.open(DownloadOptionDialog, {
+      data: {
+        formValues: this.form.value,
+        entitiesOrder: this.entitiesToBeSent
+      }
+    }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        //this.createEntityByAction(result);
+      }
+    });
+
+  }
 
   //#endregion
 
