@@ -7,6 +7,7 @@ import { ShipmentComponent } from './features/segments/shipment/shipment.compone
 import { EntityType, SendEntity } from './model/entityType';
 import { DeleteOptionDialog } from './features/shared/dialogs/delete-option/delete-option-dialog.component';
 import { DuplicateOptionDialog } from './features/shared/dialogs/duplicate-option/duplicate-option-dialog.component';
+import { UploadOptionDialog } from './features/shared/dialogs/upload-option/upload-option-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -105,6 +106,59 @@ export class AppComponent {
 
   //#endregion
 
+
+  //#region Upload Options
+
+  public showUploadOptions(): void {
+    const dialogRef = this.dialog.open(UploadOptionDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        //this.createEntityByAction(result);
+      }
+    });
+
+  }
+
+
+  //#endregion
+
+  //#region Duplicate Options
+  public showDuplicateOptions(): void {
+    if (this.entitiesToBeSent.length === 0) {
+      alert("Não há nada para ser duplicado!");
+
+      return;
+    }
+
+    const dialogRef = this.dialog.open(DuplicateOptionDialog, {
+      data: this.entitiesToBeSent,
+    }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.duplicateEntityByIndex(result);
+      }
+    });
+  }
+
+  public duplicateEntityByIndex(sendEntityToBeDuplicated: SendEntity) {
+
+    switch (sendEntityToBeDuplicated.type) {
+      case EntityType.Shipment:
+        this.shipmentComponent.duplicateShipmentByIndex(sendEntityToBeDuplicated.entityListIndex);
+
+        break;
+
+      default:
+        break;
+    }
+
+  }
+
+  //#endregion  
+
   //#region Delete Options
   public showDeleteOptions(): void {
     if (this.entitiesToBeSent.length === 0) {
@@ -168,42 +222,6 @@ export class AppComponent {
     }
   }
   //#endregion
-
-  //#region Create Options
-  public showDuplicateOptions(): void {
-    if (this.entitiesToBeSent.length === 0) {
-      alert("Não há nada para ser duplicado!");
-
-      return;
-    }
-
-    const dialogRef = this.dialog.open(DuplicateOptionDialog, {
-      data: this.entitiesToBeSent,
-    }
-    );
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.duplicateEntityByIndex(result);
-      }
-    });
-  }
-
-  public duplicateEntityByIndex(sendEntityToBeDuplicated: SendEntity) {
-
-    switch (sendEntityToBeDuplicated.type) {
-      case EntityType.Shipment:
-        this.shipmentComponent.duplicateShipmentByIndex(sendEntityToBeDuplicated.entityListIndex);
-
-        break;
-
-      default:
-        break;
-    }
-
-  }
-
-  //#endregion  
 
   //#endregion
 }
