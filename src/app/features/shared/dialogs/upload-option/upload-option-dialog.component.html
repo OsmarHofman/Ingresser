@@ -4,8 +4,9 @@
     <label class="upload-type-label">Tipo de Upload:</label>
 
     <mat-radio-group class="radio-group" (change)="onUploadTypeChange($event)">
-      <mat-radio-button class="col-md-12" id="entity" value="1" [checked]="true">Entidades (Campos para preenchimento)</mat-radio-button>
-      <mat-radio-button class="col-md-12" id="xml" value="2">Xml</mat-radio-button>
+      <mat-radio-button class="col-md-12" id="entity" value="1" [checked]="true">Entidades (Campos para
+        preenchimento)</mat-radio-button>
+      <mat-radio-button class="col-md-12" id="xml" value="2" disabled="true">XML (Em breve!)</mat-radio-button>
     </mat-radio-group>
     <hr>
   </div>
@@ -19,11 +20,9 @@
     </button>
     <label class="col-md-4 file-name-label">{{fileName}}</label>
 
-    <div class="progress">
-
-
-    </div>
   </div>
+  <hr>
+  <label class="preview">Progresso da análise do documento (Em breve!)</label>
 
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancelar</button>

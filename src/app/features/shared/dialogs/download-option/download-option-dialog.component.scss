@@ -12,7 +12,7 @@ h2 {
 }
 
 .download-button,
-.radio-group{
+.radio-group {
     margin-left: 14px;
 }
 
@@ -22,11 +22,18 @@ h2 {
     font-size: larger;
 }
 
-.download-name-label{
+.download-name-label {
     margin-top: 8px;
 }
 
 .download-name-input {
     margin-left: 24px;
     margin-top: 12px;
+}
+
+.preview {
+    width: 100%;
+    color: gray;
+    margin-left: 14px;
+    font-size: larger;
 }

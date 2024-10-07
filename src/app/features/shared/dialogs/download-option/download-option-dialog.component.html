@@ -5,7 +5,7 @@
 
     <mat-radio-group class="radio-group" (change)="onDownloadTypeChange($event)">
       <mat-radio-button class="col-md-6" id="json" value="1" [checked]="true">JSON</mat-radio-button>
-      <mat-radio-button class="col-md-6" id="xml" value="2">XML</mat-radio-button>
+      <mat-radio-button class="col-md-6" id="xml" value="2" disabled="true">XML (Em breve!)</mat-radio-button>
     </mat-radio-group>
   </div>
   <div class="row">
@@ -17,6 +17,8 @@
     </mat-form-field>
 
   </div>
+  <hr>
+  <label class="preview">Seletor de itens a serem serializados (Em breve!)</label>
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancelar</button>
     <button mat-button (click)="downloadCallsAsFile()">Salvar</button>
