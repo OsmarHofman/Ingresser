@@ -21,11 +21,11 @@ export class AppService {
 
     constructor(private http: HttpClient) {
         this.getConfigurationFromFile();
-     }
+    }
 
-    public convertFormToXml(form: FormGroup): void {
+    public convertShipmentFormToXml(form: FormGroup): string[] {
 
-        if(!this.configuration) return;
+        if (!this.configuration) return [];
 
         let xmlsToSend: string[] = [];
 
@@ -33,15 +33,6 @@ export class AppService {
 
         formShipments.forEach((formShipment: any) => {
             const shipment: Shipment = new Shipment(formShipment);
-
-            const currentTime = new Date();
-
-            const gLogDate: string = String(currentTime.getFullYear()) +
-                String(currentTime.getMonth()).padStart(2, '0') +
-                String(currentTime.getDate()).padStart(2, '0') +
-                String(currentTime.getHours()).padStart(2, '0') +
-                String(currentTime.getMinutes()).padStart(2, '0') +
-                String(currentTime.getSeconds()).padStart(2, '0');
 
             let shipmentXml: string = '';
 
@@ -105,6 +96,31 @@ export class AppService {
             }
 
             shipmentXml += "\n";
+
+            xmlsToSend.push(shipmentXml);
+        });
+
+        return xmlsToSend;
+
+    }
+
+    public sendXmlsToWS(form: FormGroup): void {
+
+        let xmlsToSend: string[] = [];
+
+        const xmlsShipment:string[] = this.convertShipmentFormToXml(form);
+
+        xmlsShipment.forEach((shipmentXml: string) => {
+
+            const currentTime = new Date();
+
+            const gLogDate: string = String(currentTime.getFullYear()) +
+                String(currentTime.getMonth()).padStart(2, '0') +
+                String(currentTime.getDate()).padStart(2, '0') +
+                String(currentTime.getHours()).padStart(2, '0') +
+                String(currentTime.getMinutes()).padStart(2, '0') +
+                String(currentTime.getSeconds()).padStart(2, '0');
+
 
             let finalXml: string = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tms="http://tempuri.org/tms">
         <soap:Header/>
@@ -185,7 +201,7 @@ export class AppService {
 
     private sleep(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
-    } 
+    }
 
     public getShipmentDefaultFormValues(): any {
         return {

@@ -1,17 +1,24 @@
 <div class="content">
-  <h2 mat-dialog-title>Criação de entidades</h2>
+  <h2 mat-dialog-title>Download de entidades</h2>
   <div class="row">
-    <label class="upload-type-label">Download como:</label>
+    <label class="download-type-label">Download como:</label>
 
     <mat-radio-group class="radio-group" (change)="onDownloadTypeChange($event)">
-      <mat-radio-button class="col-md-12" id="json" value="1" [checked]="true">JSON</mat-radio-button>
-      <mat-radio-button class="col-md-12" id="xml" value="2">Xml</mat-radio-button>
+      <mat-radio-button class="col-md-6" id="json" value="1" [checked]="true">JSON</mat-radio-button>
+      <mat-radio-button class="col-md-6" id="xml" value="2">XML</mat-radio-button>
     </mat-radio-group>
   </div>
+  <div class="row">
+    <label class="download-name-label">Nome do arquivo:</label>
 
+    <mat-form-field appearance="outline" fxFill id="name" class="col-md-6 download-name-input" subscriptSizing="dynamic">
+      <mat-label>Nome</mat-label>
+      <input matInput #input placeholder="Ingresser" [(ngModel)]="fileName"/>
+    </mat-form-field>
 
+  </div>
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button (click)="downloadCallsAsFile()" >Salvar</button>
+    <button mat-button (click)="downloadCallsAsFile()">Salvar</button>
   </mat-dialog-actions>
 </div>

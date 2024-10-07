@@ -9,6 +9,7 @@ import { DeleteOptionDialog } from './features/shared/dialogs/delete-option/dele
 import { DuplicateOptionDialog } from './features/shared/dialogs/duplicate-option/duplicate-option-dialog.component';
 import { UploadOptionDialog } from './features/shared/dialogs/upload-option/upload-option-dialog.component';
 import { DownloadOptionDialog } from './features/shared/dialogs/download-option/download-option-dialog.component';
+import { DownloadModel } from './model/downloadModel';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,7 @@ export class AppComponent {
     console.log('Formulario:', this.form.value);
 
     // if (this.validateForm())
-    this.appService.convertFormToXml(this.form);
+    this.appService.sendXmlsToWS(this.form);
     // else
     //   alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
   }
@@ -132,12 +133,10 @@ export class AppComponent {
       return;
     }
 
-    const dialogRef = this.dialog.open(DownloadOptionDialog, {
-      data: {
-        formValues: this.form.value,
-        entitiesOrder: this.entitiesToBeSent
+    const dialogRef = this.dialog.open(DownloadOptionDialog,
+      {
+        data: new DownloadModel(this.form, this.entitiesToBeSent)
       }
-    }
     );
 
     dialogRef.afterClosed().subscribe(result => {

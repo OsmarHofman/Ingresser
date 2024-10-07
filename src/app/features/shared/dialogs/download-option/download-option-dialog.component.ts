@@ -11,9 +11,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { EntityType } from '../../../../model/entityType';
+import { EntityType, SendEntity } from '../../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
 import fileSaver from 'file-saver';
+import { DownloadModel } from '../../../../model/downloadModel';
+import { Shipment } from '../../../../model/shipment';
 
 @Component({
     selector: 'download-option-dialog',
@@ -35,9 +37,10 @@ import fileSaver from 'file-saver';
 
 export class DownloadOptionDialog {
     public downloadType = 'json';
+    public fileName = 'Ingresser';
 
     readonly dialogRef = inject(MatDialogRef<DownloadOptionDialog>);
-    readonly entitiesToDownload = inject<any>(MAT_DIALOG_DATA);
+    readonly entitiesToDownload = inject<DownloadModel>(MAT_DIALOG_DATA);
 
     public onNoClick(): void {
         this.dialogRef.close();
@@ -52,8 +55,49 @@ export class DownloadOptionDialog {
     }
 
     public downloadCallsAsFile(): void {
-        var blob = new Blob(["Hello, world!"], { type: "text/plain;charset=utf-8" });
-        fileSaver.saveAs(blob, "hello world.txt");
+        if (this.downloadType === 'json')
+            this.downloadFileAsJson();
+        else
+            this.downloadFileAsXml();
+
         this.dialogRef.close();
+    }
+
+    private downloadFileAsJson() {
+        let jsonToBeDownloaded: string = '[';
+
+        this.entitiesToDownload.entitiesOrder.forEach((entityOrder: SendEntity, index) => {
+
+            if (index > 0)
+                jsonToBeDownloaded += ',\n';
+
+            switch (entityOrder.type) {
+
+                case EntityType.Shipment:
+                    const formShipment = this.entitiesToDownload.formValue.controls['shipment'].value.shipments[entityOrder.entityListIndex];
+
+                    const shipment: Shipment = new Shipment(formShipment);
+
+                    jsonToBeDownloaded += JSON.stringify(shipment);
+
+                    break;
+
+                default:
+                    break;
+            }
+
+        });
+
+        jsonToBeDownloaded += ']'
+
+        var blob = new Blob([jsonToBeDownloaded], { type: "application/json;charset=utf-8" });
+        fileSaver.saveAs(blob, `${this.fileName}.json`);
+    }
+
+    private downloadFileAsXml() {
+
+
+        var blob = new Blob(["Hello, world!"], { type: "application/xml;charset=utf-8" });
+        fileSaver.saveAs(blob, `${this.fileName}.xml`);
     }
 }

@@ -11,15 +11,22 @@ h2 {
     display: none;
 }
 
-.upload-button {
+.download-button,
+.radio-group{
     margin-left: 14px;
 }
 
-.upload-type-label {
+.download-type-label,
+.download-name-label {
     margin-left: 12px;
     font-size: larger;
 }
 
-.file-name-label {
-    margin-top: 5px;
+.download-name-label{
+    margin-top: 8px;
+}
+
+.download-name-input {
+    margin-left: 24px;
+    margin-top: 12px;
 }
