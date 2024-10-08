@@ -10,6 +10,8 @@ export class Shipment {
 
     constructor(shipmentValue: any) {
 
+        //TODO: Colocar separação entre lido do JSON e vindo do Form
+
         const shipmentHeaderTab = shipmentValue.shipmentHeader.tab;
 
         this.shipmentHeader = new ShipmentHeader(shipmentHeaderTab);
@@ -258,8 +260,8 @@ export class ShipmentHeader {
             xml.indexOf('CLL_STATUS_VIAGEM'),
             xml.lastIndexOf('</otm:StatusValueGid>')
         )
-        
-        const statusViagemValue =  statusViagemTag.slice(
+
+        const statusViagemValue = statusViagemTag.slice(
             statusViagemTag.indexOf('<otm:StatusValueGid>'),
             statusViagemTag.lastIndexOf('</otm:Gid>')
         );
@@ -890,3 +892,6 @@ export class AcessorialCost {
         return finalCostXml;
     }
 }
+
+
+

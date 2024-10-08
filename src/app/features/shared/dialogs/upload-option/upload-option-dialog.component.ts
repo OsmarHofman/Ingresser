@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { EntityType } from '../../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
+import { Shipment } from '../../../../model/shipment';
 
 @Component({
     selector: 'upload-option-dialog',
@@ -34,6 +35,8 @@ import { MatRadioModule } from '@angular/material/radio';
 export class UploadOptionDialog {
     public fileName = '...';
     public uploadType = 'entity';
+
+    private uploadedShipments: Shipment[] = [];
 
     readonly dialogRef = inject(MatDialogRef<UploadOptionDialog>);
 
@@ -60,8 +63,21 @@ export class UploadOptionDialog {
 
             let fileReader = new FileReader();
 
-            fileReader.onload = (e) => {
-                console.log(fileReader.result);
+            fileReader.onload = () => {
+                if (fileReader.result) {
+
+                    const convertedFileObjects = JSON.parse(fileReader.result.toString());
+
+                    if (convertedFileObjects) {
+
+                        convertedFileObjects.forEach((convertedFileObject: any) => {
+                            const shipment: Shipment = new Shipment(convertedFileObject);
+
+                            this.uploadedShipments.push(shipment);
+
+                        });
+                    }
+                }
             }
 
             fileReader.readAsText(file);

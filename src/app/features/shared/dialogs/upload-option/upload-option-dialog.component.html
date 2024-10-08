@@ -15,7 +15,7 @@
 
     <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
 
-    <button mat-button class="col-md-4 upload-button" (click)="fileUpload.click()" cdkFocusInitial>
+    <button mat-button class="col-md-4 upload-button" (click)="fileUpload.click()">
       Upload
     </button>
     <label class="col-md-4 file-name-label">{{fileName}}</label>
