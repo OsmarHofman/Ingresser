@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { EntityType } from '../../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
-import { Shipment } from '../../../../model/shipment';
+import { Shipment, CreationSource, ShipmentIndex } from '../../../../model/shipment';
 
 @Component({
     selector: 'upload-option-dialog',
@@ -36,7 +36,7 @@ export class UploadOptionDialog {
     public fileName = '...';
     public uploadType = 'entity';
 
-    private uploadedShipments: Shipment[] = [];
+    private uploadedShipments: ShipmentIndex[] = [];
 
     readonly dialogRef = inject(MatDialogRef<UploadOptionDialog>);
 
@@ -70,12 +70,31 @@ export class UploadOptionDialog {
 
                     if (convertedFileObjects) {
 
-                        convertedFileObjects.forEach((convertedFileObject: any) => {
-                            const shipment: Shipment = new Shipment(convertedFileObject);
+                        let indexesWithError: string = "";
 
-                            this.uploadedShipments.push(shipment);
+                        convertedFileObjects.forEach((convertedFileObject: any, index: number) => {
 
+                            if (!isNaN(convertedFileObject.sendSequenceIndex) && convertedFileObject.shipment) {
+
+                                const shipment: Shipment = new Shipment(convertedFileObject, CreationSource.JSON);
+
+                                this.uploadedShipments.push(new ShipmentIndex(convertedFileObject.sendSequenceIndex, shipment));
+                            }
+                            else {
+
+                                indexesWithError += `${index}, `;
+                                return;
+                            }
                         });
+
+                        indexesWithError = indexesWithError.substring(0, indexesWithError.length - 2);
+
+                        alert(`Erro ao tentar fazer upload do arquivo: entidades nas posições ${indexesWithError} do Json não identificadas!`);
+
+                    } else {
+                        alert("Erro ao tentar fazer upload do arquivo: não conseguido converter arquivo JSON!");
+
+                        return;
                     }
                 }
             }

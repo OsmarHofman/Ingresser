@@ -1,5 +1,5 @@
 import { FormGroup } from "@angular/forms";
-import { Shipment, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
+import { Shipment, CreationSource, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
@@ -32,7 +32,7 @@ export class AppService {
         const formShipments = form.controls['shipment'].value.shipments;
 
         formShipments.forEach((formShipment: any) => {
-            const shipment: Shipment = new Shipment(formShipment);
+            const shipment: Shipment = new Shipment(formShipment, CreationSource.Form);
 
             let shipmentXml: string = '';
 

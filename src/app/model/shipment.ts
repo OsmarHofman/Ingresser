@@ -1,6 +1,21 @@
 import { RefnumType } from "./refnumType";
 import { CostType } from "./costType";
 
+export class ShipmentIndex {
+    public sendSequenceIndex: number;
+    public shipment: Shipment;
+
+    constructor(sequenceSendIndex: number, shipment: Shipment) {
+        this.sendSequenceIndex = sequenceSendIndex;
+        this.shipment = shipment;
+    }
+}
+
+export enum CreationSource {
+    Form,
+    JSON
+}
+
 export class Shipment {
     public shipmentHeader: ShipmentHeader;
     public shipmentHeader2: ShipmentHeader2;
@@ -8,20 +23,67 @@ export class Shipment {
     public locations: Location[];
     public releases: Release[];
 
-    constructor(shipmentValue: any) {
+    constructor(shipmentValue: any, source: CreationSource) {
 
         //TODO: Colocar separação entre lido do JSON e vindo do Form
 
-        const shipmentHeaderTab = shipmentValue.shipmentHeader.tab;
-
-        this.shipmentHeader = new ShipmentHeader(shipmentHeaderTab);
-
-        const shipmentHeader2Tab = shipmentValue.shipmentHeader2.tab;
-
-        this.shipmentHeader2 = new ShipmentHeader2(shipmentHeader2Tab);
-
+        let shipmentHeaderTab;
+        let shipmentHeader2Tab;
         this.stops = [];
+        this.locations = [];
+        this.releases = [];
 
+        switch (source) {
+            case CreationSource.Form:
+                shipmentHeaderTab = shipmentValue.shipmentHeader.tab;
+                shipmentHeader2Tab = shipmentValue.shipmentHeader2.tab;
+
+                this.createStopsByForm(shipmentValue);
+
+                this.createLocationsByForm(shipmentValue);
+
+                this.createReleasesByForm(shipmentValue);
+
+                break;
+
+            default:
+                break;
+        }
+
+        this.shipmentHeader = new ShipmentHeader(shipmentHeaderTab, source);
+
+        this.shipmentHeader2 = new ShipmentHeader2(shipmentHeader2Tab, source);
+    }
+
+    private createReleasesByForm(shipmentValue: any) {
+        if (shipmentValue.release.tab.tabSelected === 0) {
+
+            const formReleases = shipmentValue.release.tab.inputContent.Releases;
+
+            formReleases.forEach((formRelease: any) => {
+
+                const release = new Release(formRelease.release, CreationSource.Form);
+
+                this.releases.push(release);
+
+            });
+        }
+    }
+
+    private createLocationsByForm(shipmentValue: any) {
+        if (shipmentValue.location.tab.tabSelected === 0) {
+
+            const formLocations = shipmentValue.location.tab.inputContent.locations;
+
+            formLocations.forEach((formLocation: any) => {
+                const location = new Location(formLocation.location, CreationSource.Form);
+
+                this.locations.push(location);
+            });
+        }
+    }
+
+    private createStopsByForm(shipmentValue: any) {
         if (shipmentValue.shipmentStop.tab.tabSelected === 0) {
 
             const formStops = shipmentValue.shipmentStop.tab.inputContent.stops;
@@ -30,39 +92,13 @@ export class Shipment {
                 const shipmentStop = new ShipmentStop(formStop.stopSequence,
                     formStop.locationDomainName,
                     formStop.locationXid,
-                    formStop.stopType
+                    formStop.stopType,
+                    CreationSource.Form
                 );
 
                 this.stops.push(shipmentStop);
             });
 
-        }
-
-        this.locations = [];
-
-        if (shipmentValue.location.tab.tabSelected === 0) {
-
-            const formLocations = shipmentValue.location.tab.inputContent.locations;
-
-            formLocations.forEach((formLocation: any) => {
-                const location = new Location(formLocation.location);
-                this.locations.push(location);
-            });
-        }
-
-        this.releases = [];
-
-        if (shipmentValue.release.tab.tabSelected === 0) {
-
-            const formReleases = shipmentValue.release.tab.inputContent.Releases;
-
-            formReleases.forEach((formRelease: any) => {
-
-                const release = new Release(formRelease.release);
-
-                this.releases.push(release);
-
-            });
         }
     }
 
@@ -139,25 +175,37 @@ export class ShipmentHeader {
     public refnums: Refnum[] = [];
     public cost: Cost = new Cost(null);
 
-    constructor(tabFormContent: any) {
-        if (tabFormContent.tabSelected === 0) {
-            const inputContent = tabFormContent.inputContent;
+    constructor(content: any, source: CreationSource) {
 
-            this.shipmentDomainName = inputContent.shipmentDomainName;
-            this.shipmentXid = inputContent.shipmentXid;
-            this.travelStatus = inputContent.travelStatus;
-            this.emissionStatus = inputContent.emissionStatus;
-            this.taker = inputContent.shipmentTaker;
+        switch (source) {
+            case CreationSource.Form:
 
-            const shipmentCarrier = inputContent.shipmentCarrier;
-            this.carrierDomainName = shipmentCarrier.domainName;
-            this.carrierXid = shipmentCarrier.xid;
+                if (content.tabSelected === 0) {
+                    const inputContent = content.inputContent;
 
-            if (inputContent.shipmentRefnums)
-                this.refnums = inputContent.shipmentRefnums.Refnums as Refnum[];
+                    this.shipmentDomainName = inputContent.shipmentDomainName;
+                    this.shipmentXid = inputContent.shipmentXid;
+                    this.travelStatus = inputContent.travelStatus;
+                    this.emissionStatus = inputContent.emissionStatus;
+                    this.taker = inputContent.shipmentTaker;
 
-            this.cost = new Cost(inputContent.shipmentCost);
+                    const shipmentCarrier = inputContent.shipmentCarrier;
+                    this.carrierDomainName = shipmentCarrier.domainName;
+                    this.carrierXid = shipmentCarrier.xid;
+
+                    if (inputContent.shipmentRefnums)
+                        this.refnums = inputContent.shipmentRefnums.Refnums as Refnum[];
+
+                    this.cost = new Cost(inputContent.shipmentCost);
+                }
+
+                break;
+
+            default:
+                break;
         }
+
+
     }
 
     public convertToXml(): string {
@@ -290,10 +338,21 @@ export class ShipmentHeader {
 export class ShipmentHeader2 {
     public perspective: string = "Buy";
 
-    constructor(tabFormContent: any) {
-        if (tabFormContent.tabSelected === 0) {
-            this.perspective = tabFormContent.inputContent.perspective;
+    constructor(tabFormContent: any, source: CreationSource) {
+
+        switch (source) {
+            case CreationSource.Form:
+
+                if (tabFormContent.tabSelected === 0) {
+                    this.perspective = tabFormContent.inputContent.perspective;
+                }
+
+                break;
+
+            default:
+                break;
         }
+
     }
 
     public convertToXml(): string {
@@ -319,11 +378,21 @@ export class ShipmentStop {
     public locationXid: string = "XID";
     public stopType: string = "P";
 
-    constructor(stopSequence: string, locationDomainName: string, locationXid: string, stopType: string) {
-        this.stopSequence = stopSequence;
-        this.locationDomainName = locationDomainName;
-        this.locationXid = locationXid;
-        this.stopType = stopType;
+    constructor(stopSequence: string, locationDomainName: string, locationXid: string, stopType: string, source: CreationSource) {
+
+        switch (source) {
+            case CreationSource.Form:
+
+                this.stopSequence = stopSequence;
+                this.locationDomainName = locationDomainName;
+                this.locationXid = locationXid;
+                this.stopType = stopType;
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     public convertToXml(): string {
@@ -371,13 +440,23 @@ export class Location {
     public uf: string = "SC";
     public refnums: Refnum[] = [];
 
-    constructor(formLocation: any) {
-        this.domainName = formLocation.domainName;
-        this.xid = formLocation.xid;
-        this.city = formLocation.city;
-        this.uf = formLocation.uf;
+    constructor(formLocation: any, source: CreationSource) {
 
-        this.refnums = formLocation.refnums.Refnums as Refnum[];
+        switch (source) {
+            case CreationSource.Form:
+
+                this.domainName = formLocation.domainName;
+                this.xid = formLocation.xid;
+                this.city = formLocation.city;
+                this.uf = formLocation.uf;
+
+                this.refnums = formLocation.refnums.Refnums as Refnum[];
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     public convertToXml(): string {
@@ -427,23 +506,37 @@ export class Release {
     public cost: Cost = new Cost('');
     public useShipmentCost: boolean = false;
 
-    constructor(formRelease: any) {
-        this.domainName = formRelease.releaseDomainName;
-        this.xid = formRelease.releaseXid;
-        this.shipFrom = formRelease.shipFrom;
-        this.shipTo = formRelease.shipTo;
-        this.taker = formRelease.taker;
-
-        this.refnums = formRelease.refnums.Refnums as Refnum[];
-
-        if (formRelease.releaseCost) {
-            this.cost = new Cost(formRelease.releaseCost);
-        } else {
-            this.useShipmentCost = true;
-        }
+    constructor(formRelease: any, source: CreationSource) {
 
         this.orderMovements = [];
 
+        switch (source) {
+            case CreationSource.Form:
+
+                this.domainName = formRelease.releaseDomainName;
+                this.xid = formRelease.releaseXid;
+                this.shipFrom = formRelease.shipFrom;
+                this.shipTo = formRelease.shipTo;
+                this.taker = formRelease.taker;
+
+                this.refnums = formRelease.refnums.Refnums as Refnum[];
+
+                if (formRelease.releaseCost) {
+                    this.cost = new Cost(formRelease.releaseCost);
+                } else {
+                    this.useShipmentCost = true;
+                }
+
+                this.createOrderMovementsByForm(formRelease);
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private createOrderMovementsByForm(formRelease: any) {
         for (let index = 0; index < formRelease.orderMovement.Movements.length; index++) {
             const formOrderMovement = formRelease.orderMovement.Movements[index];
 
@@ -892,6 +985,3 @@ export class AcessorialCost {
         return finalCostXml;
     }
 }
-
-
-

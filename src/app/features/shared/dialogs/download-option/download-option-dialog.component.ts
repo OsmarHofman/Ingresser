@@ -15,7 +15,7 @@ import { EntityType, SendEntity } from '../../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
 import fileSaver from 'file-saver';
 import { DownloadModel } from '../../../../model/downloadModel';
-import { Shipment } from '../../../../model/shipment';
+import { Shipment, CreationSource, ShipmentIndex } from '../../../../model/shipment';
 
 @Component({
     selector: 'download-option-dialog',
@@ -76,9 +76,11 @@ export class DownloadOptionDialog {
                 case EntityType.Shipment:
                     const formShipment = this.entitiesToDownload.formValue.controls['shipment'].value.shipments[entityOrder.entityListIndex];
 
-                    const shipment: Shipment = new Shipment(formShipment);
+                    const shipment: Shipment = new Shipment(formShipment, CreationSource.Form);
 
-                    jsonToBeDownloaded += JSON.stringify(shipment);
+                    const shipmentIndex: ShipmentIndex = new ShipmentIndex(entityOrder.entityListIndex, shipment);
+
+                    jsonToBeDownloaded += JSON.stringify(shipmentIndex);
 
                     break;
 
