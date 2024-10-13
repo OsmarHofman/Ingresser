@@ -25,8 +25,6 @@ export class Shipment {
 
     constructor(shipmentValue: any, source: CreationSource) {
 
-        //TODO: Colocar separação entre lido do JSON e vindo do Form
-
         let shipmentHeaderTab;
         let shipmentHeader2Tab;
         this.stops = [];
@@ -43,6 +41,18 @@ export class Shipment {
                 this.createLocationsByForm(shipmentValue);
 
                 this.createReleasesByForm(shipmentValue);
+
+                break;
+
+            case CreationSource.JSON:
+                shipmentHeaderTab = shipmentValue.shipmentHeader;
+                shipmentHeader2Tab = shipmentValue.shipmentHeader2;
+
+                this.createStopsByJSON(shipmentValue.stops);
+
+                this.createLocationsByJSON(shipmentValue.locations);
+
+                this.createReleasesByJSON(shipmentValue.releases);
 
                 break;
 
@@ -70,6 +80,17 @@ export class Shipment {
         }
     }
 
+    private createReleasesByJSON(releases: any) {
+
+        releases.forEach((JSONRelease: any) => {
+
+            const release = new Release(JSONRelease, CreationSource.JSON);
+
+            this.releases.push(release);
+
+        });
+    }
+
     private createLocationsByForm(shipmentValue: any) {
         if (shipmentValue.location.tab.tabSelected === 0) {
 
@@ -81,6 +102,14 @@ export class Shipment {
                 this.locations.push(location);
             });
         }
+    }
+
+    private createLocationsByJSON(locations: any) {
+        locations.forEach((JSONlocation: any) => {
+            const location = new Location(JSONlocation, CreationSource.JSON);
+
+            this.locations.push(location);
+        });
     }
 
     private createStopsByForm(shipmentValue: any) {
@@ -100,6 +129,19 @@ export class Shipment {
             });
 
         }
+    }
+
+    private createStopsByJSON(stops: any) {
+        stops.forEach((stop: any) => {
+            const shipmentStop = new ShipmentStop(stop.stopSequence,
+                stop.locationDomainName,
+                stop.locationXid,
+                stop.stopType,
+                CreationSource.JSON
+            );
+
+            this.stops.push(shipmentStop);
+        });
     }
 
     public convertShipmentHeaderToXml(): string {
@@ -173,7 +215,7 @@ export class ShipmentHeader {
     public carrierDomainName: string = "EMBDEV";
     public carrierXid: string = 'XID_TRANSPORTADOR';
     public refnums: Refnum[] = [];
-    public cost: Cost = new Cost(null);
+    public cost: Cost = new Cost(null, CreationSource.Form);
 
     constructor(content: any, source: CreationSource) {
 
@@ -196,16 +238,31 @@ export class ShipmentHeader {
                     if (inputContent.shipmentRefnums)
                         this.refnums = inputContent.shipmentRefnums.Refnums as Refnum[];
 
-                    this.cost = new Cost(inputContent.shipmentCost);
+                    this.cost = new Cost(inputContent.shipmentCost, source);
                 }
+
+                break;
+
+            case CreationSource.JSON:
+                this.shipmentDomainName = content.shipmentDomainName;
+                this.shipmentXid = content.shipmentXid;
+                this.travelStatus = content.travelStatus;
+                this.emissionStatus = content.emissionStatus;
+                this.taker = content.taker;
+                this.carrierDomainName = content.carrierDomainName;
+                this.carrierXid = content.carrierXid;
+
+                if (content.refnums) {
+                    this.refnums = content.refnums as Refnum[];
+                }
+
+                this.cost = new Cost(content.cost, source)
 
                 break;
 
             default:
                 break;
         }
-
-
     }
 
     public convertToXml(): string {
@@ -338,14 +395,20 @@ export class ShipmentHeader {
 export class ShipmentHeader2 {
     public perspective: string = "Buy";
 
-    constructor(tabFormContent: any, source: CreationSource) {
+    constructor(content: any, source: CreationSource) {
 
         switch (source) {
             case CreationSource.Form:
 
-                if (tabFormContent.tabSelected === 0) {
-                    this.perspective = tabFormContent.inputContent.perspective;
+                if (content.tabSelected === 0) {
+                    this.perspective = content.inputContent.perspective;
                 }
+
+                break;
+
+            case CreationSource.JSON:
+
+                this.perspective = content.perspective;
 
                 break;
 
@@ -382,6 +445,7 @@ export class ShipmentStop {
 
         switch (source) {
             case CreationSource.Form:
+            case CreationSource.JSON:
 
                 this.stopSequence = stopSequence;
                 this.locationDomainName = locationDomainName;
@@ -440,17 +504,23 @@ export class Location {
     public uf: string = "SC";
     public refnums: Refnum[] = [];
 
-    constructor(formLocation: any, source: CreationSource) {
+    constructor(location: any, source: CreationSource) {
+
+        this.domainName = location.domainName;
+        this.xid = location.xid;
+        this.city = location.city;
+        this.uf = location.uf;
 
         switch (source) {
             case CreationSource.Form:
 
-                this.domainName = formLocation.domainName;
-                this.xid = formLocation.xid;
-                this.city = formLocation.city;
-                this.uf = formLocation.uf;
+                this.refnums = location.refnums.Refnums as Refnum[];
 
-                this.refnums = formLocation.refnums.Refnums as Refnum[];
+                break;
+
+            case CreationSource.JSON:
+
+                this.refnums = location.refnums as Refnum[];
 
                 break;
 
@@ -503,31 +573,47 @@ export class Release {
     public refnums: Refnum[] = [];
     public orderMovements: OrderMovement[] = [];
     public taker: string = "XID_TOMADOR";
-    public cost: Cost = new Cost('');
+    public cost: Cost = new Cost('', CreationSource.Form);
     public useShipmentCost: boolean = false;
 
-    constructor(formRelease: any, source: CreationSource) {
+    constructor(release: any, source: CreationSource) {
+
+        this.shipFrom = release.shipFrom;
+        this.shipTo = release.shipTo;
+        this.taker = release.taker;
 
         this.orderMovements = [];
 
         switch (source) {
             case CreationSource.Form:
 
-                this.domainName = formRelease.releaseDomainName;
-                this.xid = formRelease.releaseXid;
-                this.shipFrom = formRelease.shipFrom;
-                this.shipTo = formRelease.shipTo;
-                this.taker = formRelease.taker;
+                this.domainName = release.releaseDomainName;
+                this.xid = release.releaseXid;
 
-                this.refnums = formRelease.refnums.Refnums as Refnum[];
+                this.refnums = release.refnums.Refnums as Refnum[];
 
-                if (formRelease.releaseCost) {
-                    this.cost = new Cost(formRelease.releaseCost);
+                if (release.releaseCost) {
+                    this.cost = new Cost(release.releaseCost, source);
                 } else {
                     this.useShipmentCost = true;
                 }
 
-                this.createOrderMovementsByForm(formRelease);
+                this.createOrderMovementsByForm(release);
+
+                break;
+
+            case CreationSource.JSON:
+
+                this.domainName = release.domainName;
+                this.xid = release.xid;
+
+                this.refnums = release.refnums as Refnum[];
+
+                this.useShipmentCost = release.useShipmentCost;
+
+                this.cost = new Cost(release.cost, source);
+
+                this.createOrderMovementsByJSON(release.orderMovements);
 
                 break;
 
@@ -541,6 +627,16 @@ export class Release {
             const formOrderMovement = formRelease.orderMovement.Movements[index];
 
             const orderMovement = new OrderMovement(formOrderMovement.shipFrom, formOrderMovement.shipTo);
+
+            this.orderMovements.push(orderMovement);
+        }
+    }
+
+    private createOrderMovementsByJSON(orderMovements: any) {
+        for (let index = 0; index < orderMovements.length; index++) {
+            const jsonOrderMovement = orderMovements[index];
+
+            const orderMovement = new OrderMovement(jsonOrderMovement.shipFrom, jsonOrderMovement.shipTo);
 
             this.orderMovements.push(orderMovement);
         }
@@ -773,27 +869,50 @@ export class Cost {
     public acessorialCosts: AcessorialCost[] = [];
     public totalCost: string = "100.00";
 
-    constructor(formCost: any) {
-        if (formCost) {
+    constructor(cost: any, source: CreationSource) {
+        if (cost) {
 
-            this.baseCost = formCost.baseCost;
+            this.baseCost = cost.baseCost;
 
-            if (formCost.acessorialCost) {
+            this.totalCost = cost.totalCost;
 
-                if (typeof (formCost.acessorialCost) === "object" && formCost.acessorialCost.length === 0) return;
+            switch (source) {
+                case CreationSource.Form:
 
-                for (let index = 0; index < formCost.acessorialCost.costs.length; index++) {
-                    const formAcessorialCost = formCost.acessorialCost.costs[index];
+                    if (cost.acessorialCost) {
 
-                    const acessorialCost: AcessorialCost = new AcessorialCost(formAcessorialCost.xid, formAcessorialCost.costValue);
+                        if (typeof (cost.acessorialCost) === "object" && cost.acessorialCost.length === 0) return;
 
-                    this.acessorialCosts.push(acessorialCost);
+                        for (let index = 0; index < cost.acessorialCost.costs.length; index++) {
+                            const formAcessorialCost = cost.acessorialCost.costs[index];
 
-                }
+                            const acessorialCost: AcessorialCost = new AcessorialCost(formAcessorialCost.xid, formAcessorialCost.costValue);
 
+                            this.acessorialCosts.push(acessorialCost);
+                        }
+                    }
+
+                    break;
+
+                case CreationSource.JSON:
+
+                    if (cost.acessorialCosts) {
+
+                        if (typeof (cost.acessorialCosts) === "object" && cost.acessorialCosts.length === 0) return;
+
+                        for (let index = 0; index < cost.acessorialCosts.length; index++) {
+                            const jsonAcessorialCost = cost.acessorialCosts[index];
+
+                            const acessorialCost: AcessorialCost = new AcessorialCost(jsonAcessorialCost.costXid, jsonAcessorialCost.costValue);
+
+                            this.acessorialCosts.push(acessorialCost);
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
             }
-
-            this.totalCost = formCost.totalCost;
         }
     }
 

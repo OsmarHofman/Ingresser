@@ -54,6 +54,8 @@ export class UploadOptionDialog {
         this.fileName = '...';
     }
 
+    //TODO: Criar ação do botão "Importar"
+
     public onFileSelected(event: any): void {
 
         const file: File = event.target.files[0];
@@ -76,7 +78,7 @@ export class UploadOptionDialog {
 
                             if (!isNaN(convertedFileObject.sendSequenceIndex) && convertedFileObject.shipment) {
 
-                                const shipment: Shipment = new Shipment(convertedFileObject, CreationSource.JSON);
+                                const shipment: Shipment = new Shipment(convertedFileObject.shipment, CreationSource.JSON);
 
                                 this.uploadedShipments.push(new ShipmentIndex(convertedFileObject.sendSequenceIndex, shipment));
                             }
@@ -87,9 +89,12 @@ export class UploadOptionDialog {
                             }
                         });
 
-                        indexesWithError = indexesWithError.substring(0, indexesWithError.length - 2);
+                        if (indexesWithError) {
 
-                        alert(`Erro ao tentar fazer upload do arquivo: entidades nas posições ${indexesWithError} do Json não identificadas!`);
+                            indexesWithError = indexesWithError.substring(0, indexesWithError.length - 2);
+
+                            alert(`Erro ao tentar fazer upload do arquivo: entidades nas posições ${indexesWithError} do Json não identificadas!`);
+                        }
 
                     } else {
                         alert("Erro ao tentar fazer upload do arquivo: não conseguido converter arquivo JSON!");
