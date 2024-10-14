@@ -10,6 +10,7 @@ import { DuplicateOptionDialog } from './features/shared/dialogs/duplicate-optio
 import { UploadOptionDialog } from './features/shared/dialogs/upload-option/upload-option-dialog.component';
 import { DownloadOptionDialog } from './features/shared/dialogs/download-option/download-option-dialog.component';
 import { DownloadModel } from './model/downloadModel';
+import { ShipmentIndex } from './model/shipment';
 
 @Component({
   selector: 'app-root',
@@ -97,7 +98,7 @@ export class AppComponent {
 
         this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, shipmentIndex));
 
-        this.shipmentComponent.addShipment();
+        this.shipmentComponent.addDefaultShipment();
 
         break;
 
@@ -115,12 +116,28 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        //this.createEntityByAction(result);
+        this.createEntitiesFromUpload(result);
       }
     });
 
   }
 
+  public createEntitiesFromUpload(entitiesFromUpload: ShipmentIndex[]): void {
+
+    if (entitiesFromUpload) {
+
+      entitiesFromUpload.forEach((entity: ShipmentIndex) => {
+
+        this.form.reset();
+
+        this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, entity.sendSequenceIndex));
+
+        this.shipmentComponent.addShipment(entity.shipment);
+
+      });
+
+    }
+  }
 
   //#endregion
 

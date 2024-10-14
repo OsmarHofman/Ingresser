@@ -26,6 +26,6 @@
 
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button>Importar</button>
+    <button mat-button (click)="dialogRef.close(returnShipments())">Importar</button>
   </mat-dialog-actions>
 </div>

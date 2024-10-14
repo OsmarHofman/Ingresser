@@ -54,8 +54,6 @@ export class UploadOptionDialog {
         this.fileName = '...';
     }
 
-    //TODO: Criar ação do botão "Importar"
-
     public onFileSelected(event: any): void {
 
         const file: File = event.target.files[0];
@@ -107,5 +105,9 @@ export class UploadOptionDialog {
             fileReader.readAsText(file);
         }
 
+    }
+
+    public returnShipments(): ShipmentIndex[] {
+        return this.uploadedShipments;
     }
 }

@@ -15,7 +15,7 @@ import { ShipmentStopAccordionComponent } from './shipment-stop/shipment-stop-ac
 import { LocationAccordionComponent } from './location/location-accordion.component';
 import { ReleaseAccordionComponent } from './release/release-accordion.component';
 import { Subscription } from 'rxjs';
-import { ShipmentHeader } from '../../../model/shipment';
+import { Shipment, ShipmentHeader } from '../../../model/shipment';
 import { AppService } from '../../service/app.service';
 
 @Component({
@@ -115,9 +115,15 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
 
   //#endregion
 
-  public addShipment() {
+  public addDefaultShipment() {
     this.shipments.push(
       this.formBuilder.group(this.appService.getShipmentDefaultFormValues())
+    )
+  }
+
+  public addShipment(shipment: Shipment) {
+    this.shipments.push(
+      this.formBuilder.group(this.appService.addShipmentFromEntity(shipment))
     )
   }
 

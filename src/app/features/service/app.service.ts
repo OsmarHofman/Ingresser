@@ -14,6 +14,7 @@ const httpOptions = {
 
 @Injectable()
 export class AppService {
+    
 
     public wsUrl = 'pr.nddfrete.com.br/1046/tmsExchangeMessage/TMSExchangeMessage';
 
@@ -202,6 +203,10 @@ export class AppService {
     private sleep(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    public addShipmentFromEntity(shipment: Shipment): any {
+        //TODO: Adicionar criação de um control no form pela entidade Shipment
+      }
 
     public getShipmentDefaultFormValues(): any {
         return {
