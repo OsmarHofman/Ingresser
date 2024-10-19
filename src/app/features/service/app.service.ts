@@ -1,5 +1,5 @@
 import { FormGroup } from "@angular/forms";
-import { Shipment, CreationSource, ShipmentHeader, ShipmentHeader2 } from "../../model/shipment";
+import { Shipment, CreationSource, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
@@ -14,7 +14,7 @@ const httpOptions = {
 
 @Injectable()
 export class AppService {
-    
+
 
     public wsUrl = 'pr.nddfrete.com.br/1046/tmsExchangeMessage/TMSExchangeMessage';
 
@@ -109,7 +109,7 @@ export class AppService {
 
         let xmlsToSend: string[] = [];
 
-        const xmlsShipment:string[] = this.convertShipmentFormToXml(form);
+        const xmlsShipment: string[] = this.convertShipmentFormToXml(form);
 
         xmlsShipment.forEach((shipmentXml: string) => {
 
@@ -205,8 +205,195 @@ export class AppService {
     }
 
     public addShipmentFromEntity(shipment: Shipment): any {
-        //TODO: Adicionar criação de um control no form pela entidade Shipment
-      }
+        let newFormShipment: any = {
+            shipmentHeader: {
+                tab: {
+                    inputContent: {
+                        emissionStatus: shipment.shipmentHeader.emissionStatus,
+                        shipmentCarrier: {
+                            domainName: shipment.shipmentHeader.carrierDomainName,
+                            xid: shipment.shipmentHeader.carrierXid
+                        },
+                        shipmentCost: {
+                            acessorialCost: shipment.shipmentHeader.cost.acessorialCosts,
+                            baseCost: shipment.shipmentHeader.cost.baseCost,
+                            totalCost: shipment.shipmentHeader.cost.totalCost
+                        },
+                        shipmentDomainName: shipment.shipmentHeader.shipmentDomainName,
+                        shipmentRefnums: {
+                            Refnums: [{}],
+                        },
+                        shipmentTaker: shipment.shipmentHeader.taker,
+                        shipmentXid: shipment.shipmentHeader.shipmentXid,
+                        travelStatus: shipment.shipmentHeader.travelStatus
+                    },
+                    tabSelected: 0,
+                    xmlContent: 'CONVERTER_PARA_XML'
+                }
+            },
+            shipmentHeader2: {
+                tab: {
+                    inputContent: {
+                        perspective: shipment.shipmentHeader2.perspective
+                    },
+                    tabSelected: 0,
+                    xmlContent: 'CONVERTER_PARA_XML'
+                }
+            },
+            shipmentStop: {
+                tab: {
+                    inputContent: {
+                        stops: [{}]
+                    },
+                    tabSelected: 0,
+                    xmlContent: 'CONVERTER_PARA_XML'
+                }
+            },
+            location: {
+                tab: {
+                    inputContent: {
+                        locations: [{}]
+                    },
+                    tabSelected: 0,
+                    xmlContent: 'CONVERTER_PARA_XML'
+                }
+            },
+            release: {
+                tab: {
+                    inputContent: {
+                        Releases: [{}]
+                    },
+                    tabSelected: 0,
+                    xmlContent: 'CONVERTER_PARA_XML'
+                }
+            }
+        };
+
+        const newShipmentHeaderRefnums = newFormShipment.shipmentHeader.tab.inputContent.shipmentRefnums.Refnums;
+
+        newShipmentHeaderRefnums.pop();
+
+        shipment.shipmentHeader.refnums.forEach((refnum: Refnum) => {
+            newShipmentHeaderRefnums.push({
+                domainName: refnum.domainName,
+                xid: refnum.xid,
+                refnumValue: refnum.refnumValue,
+            })
+        });
+
+        const newShipmentStops = newFormShipment.shipmentStop.tab.inputContent.stops;
+
+        newShipmentStops.pop();
+
+        shipment.stops.forEach((stop: ShipmentStop) => {
+            newShipmentStops.push({
+                locationDomainName: stop.locationDomainName,
+                locationXid: stop.locationXid,
+                stopSequence: stop.stopSequence,
+                stopType: stop.stopType,
+            })
+        });
+
+        const newShipmentLocations = newFormShipment.location.tab.inputContent.locations;
+
+        newShipmentLocations.pop();
+
+        shipment.locations.forEach((location: Location) => {
+
+            const newLocation = {
+                location: {
+                    domainName: location.domainName,
+                    xid: location.xid,
+                    city: location.city,
+                    uf: location.uf,
+                    refnums: {
+                        Refnums: [{}]
+                    }
+                }
+            };
+
+            const newLocationRefnums = newLocation.location.refnums.Refnums;
+
+            newLocationRefnums.pop();
+
+            location.refnums.forEach((refnum: Refnum) => {
+                newLocationRefnums.push({
+                    domainName: refnum.domainName,
+                    xid: refnum.xid,
+                    refnumValue: refnum.refnumValue,
+                });
+            });
+
+            newShipmentLocations.push(newLocation);
+        });
+
+        const newShipmentReleases = newFormShipment.release.tab.inputContent.Releases;
+
+        newShipmentReleases.pop();
+
+        shipment.releases.forEach((release: Release) => {
+
+            const newRelease = {
+                release: {
+                    releaseDomainName: release.domainName,
+                    releaseXid: release.xid,
+                    shipFrom: release.shipFrom,
+                    shipTo: release.shipTo,
+                    taker: release.taker,
+                    orderMovement: {
+                        Movements: [{}]
+                    },
+                    refnums: {
+                        Refnums: [{}]
+                    },
+                    releaseCost: {
+                        acessorialCost: [{}],
+                        baseCost: "",
+                        totalCost: ""
+                    }
+                }
+            };
+
+            const newReleaseOrderMovements = newRelease.release.orderMovement.Movements;
+
+            newReleaseOrderMovements.pop();
+
+            release.orderMovements.forEach((movement: OrderMovement) => {
+                newReleaseOrderMovements.push({
+                    shipFrom: movement.shipFrom,
+                    shipTo: movement.shipTo,
+                });
+            });
+
+            const newReleaseRefnums = newRelease.release.refnums.Refnums;
+
+            newReleaseRefnums.pop();
+
+            if (release.refnums) {
+                release.refnums.forEach((refnum: Refnum) => {
+                    newReleaseRefnums.push({
+                        domainName: refnum.domainName,
+                        xid: refnum.xid,
+                        refnumValue: refnum.refnumValue,
+                    });
+                });
+            }
+
+            const newReleaseCost = newRelease.release.releaseCost;
+
+            newReleaseCost.acessorialCost.pop();
+
+            if (release.cost) {
+                const releaseCost = release.cost;
+                newReleaseCost.baseCost = releaseCost.baseCost;
+                newReleaseCost.totalCost = releaseCost.totalCost;
+            }
+
+            newShipmentReleases.push(newRelease);
+        });
+
+        return newFormShipment;
+    }
 
     public getShipmentDefaultFormValues(): any {
         return {
@@ -229,7 +416,7 @@ export class AppService {
                                 {
                                     domainName: "EMBDEV",
                                     xid: "CLL_IMPOSTO_SOMADO",
-                                    refnumValue: "N"
+                                    refnumValue: "S"
                                 },
                                 {
                                     domainName: "EMBDEV",
@@ -401,35 +588,35 @@ export class AppService {
     public getNewShipmentByExistent(existentShipment: any): any {
 
         //ShipmentHeader
-        var shipmentHeaderTab = existentShipment.shipmentHeader.tab;
+        const shipmentHeaderTab = existentShipment.shipmentHeader.tab;
 
-        var shipmentHeaderContent = shipmentHeaderTab.inputContent;
+        const shipmentHeaderContent = shipmentHeaderTab.inputContent;
 
-        var shipmentHeaderCarrier = shipmentHeaderContent.shipmentCarrier;
+        const shipmentHeaderCarrier = shipmentHeaderContent.shipmentCarrier;
 
-        var shipmentHeaderCost = shipmentHeaderContent.shipmentCost;
+        const shipmentHeaderCost = shipmentHeaderContent.shipmentCost;
 
         //ShipmentHeader2
-        var shipmentHeader2Tab = existentShipment.shipmentHeader2.tab;
+        const shipmentHeader2Tab = existentShipment.shipmentHeader2.tab;
 
-        var shipmentHeader2Content = shipmentHeader2Tab.inputContent;
+        const shipmentHeader2Content = shipmentHeader2Tab.inputContent;
 
         //ShipmentStop
-        var shipmentStopTab = existentShipment.shipmentStop.tab;
+        const shipmentStopTab = existentShipment.shipmentStop.tab;
 
-        var shipmentStopContent = shipmentStopTab.inputContent;
+        const shipmentStopContent = shipmentStopTab.inputContent;
 
         //Location
-        var shipmentLocationTab = existentShipment.location.tab;
+        const shipmentLocationTab = existentShipment.location.tab;
 
-        var shipmentLocationContent = shipmentLocationTab.inputContent;
+        const shipmentLocationContent = shipmentLocationTab.inputContent;
 
         //Release
-        var shipmentReleaseTab = existentShipment.release.tab;
+        const shipmentReleaseTab = existentShipment.release.tab;
 
-        var shipmentReleaseContent = shipmentReleaseTab.inputContent;
+        const shipmentReleaseContent = shipmentReleaseTab.inputContent;
 
-        var newShipment = {
+        const newShipment = {
             shipmentHeader: {
                 tab: {
                     inputContent: {
@@ -493,10 +680,6 @@ export class AppService {
             }
         };
 
-        /*Colocar listas (refnums, releases)
-            location.locations
-            release.Releases
-        */
         const newShipmentHeaderRefnums = newShipment.shipmentHeader.tab.inputContent.shipmentRefnums.Refnums;
 
         newShipmentHeaderRefnums.pop();
