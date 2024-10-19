@@ -205,6 +205,13 @@ export class AppService {
     }
 
     public addShipmentFromEntity(shipment: Shipment): any {
+
+        const shipmentHeaderXml = shipment.convertShipmentHeaderToXml();
+        const shipmentHeader2Xml = shipment.convertShipmentHeader2ToXml();
+        const shipmentStopXml = shipment.convertShipmentStopToXml();
+        const shipmentLocationXml = shipment.convertLocationToXml();
+        const shipmentReleaseXml = shipment.convertReleaseToXmlByShipment();
+
         let newFormShipment: any = {
             shipmentHeader: {
                 tab: {
@@ -228,7 +235,7 @@ export class AppService {
                         travelStatus: shipment.shipmentHeader.travelStatus
                     },
                     tabSelected: 0,
-                    xmlContent: 'CONVERTER_PARA_XML'
+                    xmlContent: shipmentHeaderXml
                 }
             },
             shipmentHeader2: {
@@ -237,7 +244,7 @@ export class AppService {
                         perspective: shipment.shipmentHeader2.perspective
                     },
                     tabSelected: 0,
-                    xmlContent: 'CONVERTER_PARA_XML'
+                    xmlContent: shipmentHeader2Xml
                 }
             },
             shipmentStop: {
@@ -246,7 +253,7 @@ export class AppService {
                         stops: [{}]
                     },
                     tabSelected: 0,
-                    xmlContent: 'CONVERTER_PARA_XML'
+                    xmlContent: shipmentStopXml
                 }
             },
             location: {
@@ -255,7 +262,7 @@ export class AppService {
                         locations: [{}]
                     },
                     tabSelected: 0,
-                    xmlContent: 'CONVERTER_PARA_XML'
+                    xmlContent: shipmentLocationXml
                 }
             },
             release: {
@@ -264,7 +271,7 @@ export class AppService {
                         Releases: [{}]
                     },
                     tabSelected: 0,
-                    xmlContent: 'CONVERTER_PARA_XML'
+                    xmlContent: shipmentReleaseXml
                 }
             }
         };

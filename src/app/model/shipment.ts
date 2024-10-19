@@ -188,6 +188,23 @@ export class Shipment {
         return '';
     }
 
+    public convertReleaseToXmlByShipment(): string {
+        if (this.releases) {
+            let releaseXml: string = '';
+
+            this.releases.forEach(release => {
+                if (release.useShipmentCost)
+                    releaseXml += release.convertToXml(this.shipmentHeader.shipmentXid, this.shipmentHeader2.perspective, this.shipmentHeader.carrierXid, this.shipmentHeader.cost);
+                else
+                    releaseXml += release.convertToXml(this.shipmentHeader.shipmentXid, this.shipmentHeader2.perspective, this.shipmentHeader.carrierXid);
+            });
+
+            return releaseXml;
+        }
+
+        return '';
+    }
+
     public convertReleaseToXml(shipmentXid: string, perspective: string, carrierXid: string): string {
         if (this.releases) {
             let releaseXml: string = '';
