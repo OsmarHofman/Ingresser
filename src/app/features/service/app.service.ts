@@ -16,7 +16,7 @@ const httpOptions = {
 export class AppService {
 
 
-    public wsUrl = 'pr.nddfrete.com.br/1046/tmsExchangeMessage/TMSExchangeMessage';
+    public wsUrl = 'https://pr.dev.nddfrete.com.br:1064/tmsExchangeMessage/TMSExchangeMessage.asmx';
 
     private configuration: ValuesConfiguration = new ValuesConfiguration();
 
@@ -123,9 +123,9 @@ export class AppService {
                 String(currentTime.getSeconds()).padStart(2, '0');
 
 
-            let finalXml: string = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tms="http://tempuri.org/tms">
-        <soap:Header/>
-        <soap:Body>
+            let finalXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+        <soapenv:Header/>
+        <soapenv:Body>
             <Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
                 <otm:TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
                     xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
@@ -187,8 +187,8 @@ export class AppService {
                     </GLogXMLElement>
                 </TransmissionBody>
             </Transmission>
-        </soap:Body>
-    </soap:Envelope>`.replace('[[Shipment]]', shipmentXml);
+        </soapenv:Body>
+    </soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
 
             xmlsToSend.push(finalXml);
         });
