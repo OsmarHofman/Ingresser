@@ -16,7 +16,7 @@ const httpOptions = {
 export class AppService {
 
 
-    public wsUrl = 'https://pr.dev.nddfrete.com.br:1064/tmsExchangeMessage/TMSExchangeMessage.asmx';
+    public wsUrl = 'https://pr.dev.nddfrete.com.br:1081/tmsExchangeMessage/TMSExchangeMessage.asmx';
 
     private configuration: ValuesConfiguration = new ValuesConfiguration();
 
@@ -194,7 +194,8 @@ export class AppService {
         });
 
         xmlsToSend.forEach(async (xmlToSend: string) => {
-            let response = this.http.post(this.wsUrl, xmlToSend, httpOptions);
+            this.http.post(this.wsUrl, xmlToSend, httpOptions)
+                .subscribe(x => console.log(x));
 
             await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
         })
