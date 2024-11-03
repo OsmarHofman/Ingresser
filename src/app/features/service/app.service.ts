@@ -593,6 +593,12 @@ export class AppService {
         };
     }
 
+    public getNFeDefaultFormValues(): any {
+        return {
+
+        };
+    }
+
     public getNewShipmentByExistent(existentShipment: any): any {
 
         //ShipmentHeader

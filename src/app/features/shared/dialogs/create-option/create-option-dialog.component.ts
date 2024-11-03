@@ -39,4 +39,8 @@ export class CreateOptionDialog {
     public returnCreateShipment(): EntityType {
         return EntityType.Shipment;
     }
+    
+    public returnCreateNFe(): EntityType {
+        return EntityType.NFe;
+    }
 }

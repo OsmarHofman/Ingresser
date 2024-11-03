@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Criação de entidades</h2>
   <button mat-button (click)="dialogRef.close(returnCreateShipment())">Criar novo embarque</button>
-  <button mat-button disabled="true">Criar nova NF-e (Em breve!)</button>
+  <button mat-button (click)="dialogRef.close(returnCreateNFe())">Criar nova NF-e</button>
   <button mat-button disabled="true">Criar novo CT-e (Em breve!)</button>
   <button mat-button disabled="true">Criar nova CT-e Complementar(Em breve!)</button>
   <button mat-button disabled="true">Criar novo CT-e de Subcontratação(Em breve!)</button>

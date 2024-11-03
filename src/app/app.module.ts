@@ -12,6 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
 import { ShipmentComponent } from './features/segments/shipment/shipment.component';
+import { NFeComponent } from "./features/segments/nfe/nfe.component";
+import { NFeEmitAccordionComponent } from "./features/segments/nfe/emit/nfe-emit-accordion.component";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,8 +32,9 @@ export const appConfig: ApplicationConfig = {
     ShipmentComponent,
     MatSidenavModule,
     BrowserAnimationsModule,
-    
-  ],
+    NFeComponent,
+    NFeEmitAccordionComponent
+],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: [provideHttpClient()]

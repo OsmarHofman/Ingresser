@@ -56,12 +56,15 @@
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
     <div>
       <shipment #shipment formControlName="shipment" />
-
+      <nfe #nfe formControlName="nfe" />
       <hr>
 
       <button class="btn btn-primary submit" type="submit">Enviar</button>
     </div>
   </form>
+
+  <nfe-emit-accordion/>
+
 
 
 </main>

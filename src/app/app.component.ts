@@ -11,6 +11,8 @@ import { UploadOptionDialog } from './features/shared/dialogs/upload-option/uplo
 import { DownloadOptionDialog } from './features/shared/dialogs/download-option/download-option-dialog.component';
 import { DownloadModel } from './model/downloadModel';
 import { ShipmentIndex } from './model/shipment';
+import { NFeComponent } from './features/segments/nfe/nfe.component';
+import { NFeEmitAccordionComponent } from './features/segments/nfe/emit/nfe-emit-accordion.component';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +34,8 @@ export class AppComponent {
   //#region Form
 
   public form: FormGroup = this.formBuilder.group({
-    shipment: ['']
+    shipment: [''],
+    nfe: [''],
   },);
 
   public submitForm(): void {
@@ -71,6 +74,7 @@ export class AppComponent {
   //#region Menu Options
 
   @ViewChild(ShipmentComponent) shipmentComponent!: ShipmentComponent;
+  @ViewChild(NFeComponent) nfeComponent!: NFeComponent;
 
   //#region Create Options
   public showCreateOptions(): void {
@@ -99,6 +103,22 @@ export class AppComponent {
         this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, shipmentIndex));
 
         this.shipmentComponent.addDefaultShipment();
+
+        break;
+
+      case EntityType.NFe:
+
+        let nfeIndex: number = 0;
+
+        const nfeList: any = this.form.controls['nfe'].value.nfes;
+
+        if (nfeList) {
+          nfeIndex = nfeList.length;
+        }
+
+        this.entitiesToBeSent.push(new SendEntity(EntityType.NFe, nfeIndex));
+
+        this.nfeComponent.addDefaultNFe();
 
         break;
 
@@ -144,7 +164,7 @@ export class AppComponent {
   //#region Download Options
 
   public showDownloadOptions(): void {
-    if (!this.form.value.shipment) {
+    if (!this.form.value.shipment && !this.form.value.nfe) {
       alert("Não há nada para ser baixado!");
 
       return;

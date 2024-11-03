@@ -1,5 +1,6 @@
 export enum EntityType {
     Shipment,
+    NFe
 }
 
 export const EntityTypeLabel = new Map<number, string>([

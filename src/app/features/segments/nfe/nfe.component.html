@@ -1,0 +1,25 @@
+<form [formGroup]="form">
+
+    <br>
+    <div class="bd-main container-fluid">
+      <table class="col-md-12">
+        <tbody>
+          <ng-container formArrayName="nfes">
+            <ng-container *ngFor="
+            let control of nfes.controls;
+            let i = index
+          ">
+  
+              <tr [formGroupName]="i" class="row nfes">
+                <td>
+                  <h4>NF-e -</h4>
+                  <nfe-emit-accordion>Emitente</nfe-emit-accordion>
+                  <hr>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </form>
