@@ -11,7 +11,9 @@ import {
 } from '@angular/forms';
 import { AppService } from '../../service/app.service';
 import { Subscription } from 'rxjs';
-import { NFeEmitAccordionComponent } from "./emit/nfe-emit-accordion.component";
+import { NFeParticipantAccordionComponent } from './participant/nfe-participant-accordion.component';
+import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
+import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
 
 @Component({
     selector: 'nfe',
@@ -22,7 +24,9 @@ import { NFeEmitAccordionComponent } from "./emit/nfe-emit-accordion.component";
     CdkAccordionModule,
     CommonModule,
     ReactiveFormsModule,
-    NFeEmitAccordionComponent
+    NFeParticipantAccordionComponent,
+    NFeIdeAccordionComponent,
+    NFeInfAdicAccordionComponent
 ],
     providers: [
         {
@@ -85,5 +89,9 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
         this.nfes.push(
             this.formBuilder.group(this.appService.getNFeDefaultFormValues())
         )
+    }
+
+    public exchangeParticipants() {
+        //TODO: Colocar um dialog que seleciona quais os participantes a serem invertidos
     }
 }

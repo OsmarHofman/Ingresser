@@ -1,7 +1,7 @@
 <form [formGroup]="inputForm">
     <br>
     <div class="row inputs">
-        <mat-form-field appearance="outline" fxFill id="cnpj" class="col-md-3" subscriptSizing="dynamic">
+        <mat-form-field appearance="outline" fxFill id="cnpj" class="col-md-2" subscriptSizing="dynamic">
             <mat-label>CNPJ</mat-label>
             <input matInput #input placeholder="05257045000160" formControlName="cnpj" />
         </mat-form-field>
@@ -10,5 +10,13 @@
             <mat-label>Nome</mat-label>
             <input matInput #input placeholder="EMITENTE DA NF-e" formControlName="name" />
         </mat-form-field>
+    </div>
+
+    <hr>
+
+    <div class="row g-3">
+        <div class="col-md-11">
+            <document-address formControlName="address" />
+        </div>
     </div>
 </form>

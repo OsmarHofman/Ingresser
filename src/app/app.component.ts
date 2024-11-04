@@ -12,7 +12,6 @@ import { DownloadOptionDialog } from './features/shared/dialogs/download-option/
 import { DownloadModel } from './model/downloadModel';
 import { ShipmentIndex } from './model/shipment';
 import { NFeComponent } from './features/segments/nfe/nfe.component';
-import { NFeEmitAccordionComponent } from './features/segments/nfe/emit/nfe-emit-accordion.component';
 
 @Component({
   selector: 'app-root',

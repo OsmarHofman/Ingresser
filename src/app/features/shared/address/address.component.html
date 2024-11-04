@@ -1,0 +1,28 @@
+<div [formGroup]="addressForm" class="inputs">
+    <fieldset class="input-container col-md-4">
+        <legend>Endereço</legend>
+        <div class="fields">
+            <div class="row g-12">
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline" fxFill id="ibgeCode" class="col-md-12"
+                        subscriptSizing="dynamic">
+                        <mat-label>Código do município</mat-label>
+                        <input matInput class="ibgeCode" placeholder="4209300" formControlName="ibgeCode" />
+                    </mat-form-field>
+                </div>
+                <div class="col-md-5">
+                    <mat-form-field appearance="outline" fxFill id="name" class="col-md-12" subscriptSizing="dynamic">
+                        <mat-label>Nome do município</mat-label>
+                        <input matInput class="name" placeholder="LAGES" formControlName="name" />
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field appearance="outline" fxFill id="uf" class="col-md-12" subscriptSizing="dynamic">
+                        <mat-label>UF</mat-label>
+                        <input matInput class="uf" placeholder="SC" formControlName="uf" />
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

@@ -8,28 +8,28 @@ import {
     NG_VALUE_ACCESSOR
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { NFeEmitTabComponent } from './tab/nfe-emit-tab.component';
+import { NFeIdeTabComponent } from "./tab/nfe-ide-tab.component";
 
 @Component({
-    selector: 'nfe-emit-accordion',
-    templateUrl: 'nfe-emit-accordion.component.html',
-    styleUrl: 'nfe-emit-accordion.component.scss',
+    selector: 'nfe-ide-accordion',
+    templateUrl: 'nfe-ide-accordion.component.html',
+    styleUrl: 'nfe-ide-accordion.component.scss',
     standalone: true,
     imports: [
         CdkAccordionModule,
         ReactiveFormsModule,
-        NFeEmitTabComponent
+        NFeIdeTabComponent
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: NFeEmitAccordionComponent
+            useExisting: NFeIdeAccordionComponent
         }
     ]
 })
 
-export class NFeEmitAccordionComponent implements ControlValueAccessor, OnDestroy {
+export class NFeIdeAccordionComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 

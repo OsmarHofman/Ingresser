@@ -1,25 +1,29 @@
 <form [formGroup]="form">
-
-    <br>
-    <div class="bd-main container-fluid">
-      <table class="col-md-12">
-        <tbody>
-          <ng-container formArrayName="nfes">
-            <ng-container *ngFor="
+  <br>
+  <div class="bd-main container-fluid">
+    <table class="col-md-12">
+      <tbody>
+        <ng-container formArrayName="nfes">
+          <ng-container *ngFor="
             let control of nfes.controls;
             let i = index
           ">
-  
-              <tr [formGroupName]="i" class="row nfes">
-                <td>
-                  <h4>NF-e -</h4>
-                  <nfe-emit-accordion>Emitente</nfe-emit-accordion>
-                  <hr>
-                </td>
-              </tr>
-            </ng-container>
+
+            <tr [formGroupName]="i" class="row nfes">
+              <h4>NF-e -</h4>
+              <button class="btn btn-primary btn-exchange col-md-3" (click)="exchangeParticipants()">Inverter
+                participantes</button>
+              <td>
+                <nfe-ide-accordion />
+                <nfe-participant-accordion [participantName]="'Emitente'" />
+                <nfe-participant-accordion [participantName]="'Destinatário'" />
+                <nfe-infAdic-accordion />
+                <hr>
+              </td>
+            </tr>
           </ng-container>
-        </tbody>
-      </table>
-    </div>
-  </form>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</form>

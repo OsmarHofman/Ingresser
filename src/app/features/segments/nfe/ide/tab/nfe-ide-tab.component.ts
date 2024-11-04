@@ -12,29 +12,29 @@ import {
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { NFeEmitInputComponent } from "./input/nfe-emit-input.component";
+import { NFeIdeInputComponent } from "./input/nfe-ide-input.component";
 
 @Component({
-    selector: 'nfe-emit-tab',
-    templateUrl: 'nfe-emit-tab.component.html',
-    styleUrl: 'nfe-emit-tab.component.scss',
+    selector: 'nfe-ide-tab',
+    templateUrl: 'nfe-ide-tab.component.html',
+    styleUrl: 'nfe-ide-tab.component.scss',
     standalone: true,
     imports: [
     CommonModule,
     MatTabsModule,
     ReactiveFormsModule,
-    NFeEmitInputComponent
+    NFeIdeInputComponent
 ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: NFeEmitTabComponent
+            useExisting: NFeIdeTabComponent
         }
     ]
 })
 
-export class NFeEmitTabComponent implements ControlValueAccessor, OnDestroy {
+export class NFeIdeTabComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 

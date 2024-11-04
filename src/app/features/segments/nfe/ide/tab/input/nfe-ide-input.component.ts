@@ -9,36 +9,37 @@ import {
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
+import { AddressComponent } from '../../../../../shared/address/address.component';
 
 @Component({
-    selector: 'nfe-emit-input',
-    templateUrl: 'nfe-emit-input.component.html',
-    styleUrl: 'nfe-emit-input.component.scss',
+    selector: 'nfe-ide-input',
+    templateUrl: 'nfe-ide-input.component.html',
+    styleUrl: 'nfe-ide-input.component.scss',
     standalone: true,
     imports: [
         ReactiveFormsModule,
         MatInputModule,
         MatFormField,
         MatLabel,
+        AddressComponent,
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: NFeEmitInputComponent
+            useExisting: NFeIdeInputComponent
         }
     ]
 })
 
-export class NFeEmitInputComponent implements ControlValueAccessor, OnDestroy {
+export class NFeIdeInputComponent implements ControlValueAccessor, OnDestroy {
 
     constructor(private formBuilder: FormBuilder) { }
 
     //#region Form
 
     public inputForm: FormGroup = this.formBuilder.group({
-        cnpj: [''],
-        name: [''],
+        number: [''],
     });
 
     public onTouched: Function = () => { };
