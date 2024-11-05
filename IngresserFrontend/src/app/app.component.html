@@ -16,7 +16,7 @@
 
   <ul>
     <li>
-      <button class="fab-btn preview" disabled="true">
+      <button class="fab-btn" (click)="showConfigsOptions()">
         Configs
       </button>
     </li>
@@ -59,7 +59,17 @@
       <nfe #nfe formControlName="nfe" />
       <hr>
 
-      <button class="btn btn-primary submit" type="submit">Enviar</button>
+      <div *ngIf="xmlsToSendPort != 0; else elseBlock">
+        <label class="send-data-label-title">Dados do envio:</label>
+        <br>
+        <label class="send-data-label">Porta {{xmlsToSendPort}}</label>
+        <br>
+        <button class="btn btn-primary submit" type="submit">Enviar</button>
+      </div>
+      <ng-template #elseBlock>
+        <label class="attention">Preencha a opção "Configs" no Menu para habilitar o botão de Enviar</label>
+      </ng-template>
+        
     </div>
   </form>
 </main>

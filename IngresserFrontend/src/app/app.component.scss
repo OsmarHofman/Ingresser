@@ -105,7 +105,7 @@ ul li button {
   display: block;
 }
 
-.preview{
+.preview {
   background-color: gray !important;
 }
 
@@ -155,6 +155,20 @@ button.fab-btn > div.label-container {
   transition:
     visibility 0s,
     opacity 0.5s ease;
+}
+
+.attention {
+  color: yellow;
+  font-size: larger;
+}
+
+.send-data-label-title {
+  font-size: large;
+  color: white;
+}
+
+.send-data-label {
+  color: aquamarine;
 }
 
 //animações aplicadas aos botões

@@ -12,6 +12,8 @@ import { DownloadOptionDialog } from './features/shared/dialogs/download-option/
 import { DownloadModel } from './model/downloadModel';
 import { ShipmentIndex } from './model/shipment';
 import { NFeComponent } from './features/segments/nfe/nfe.component';
+import { ConfigsOptionDialog } from './features/shared/dialogs/configs-option/configs-option-dialog.component';
+import { Configs } from './features/shared/dialogs/configs-option/configs';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +25,8 @@ import { NFeComponent } from './features/segments/nfe/nfe.component';
 
 @Injectable()
 export class AppComponent {
+
+  public xmlsToSendPort: number = 0;
 
   public entitiesToBeSent: SendEntity[] = [];
 
@@ -41,7 +45,7 @@ export class AppComponent {
     console.log('Formulario:', this.form.value);
 
     // if (this.validateForm())
-    this.appService.sendXmlsToWS(this.form);
+    this.appService.sendXmlsToWS(this.form, this.xmlsToSendPort);
     // else
     //   alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
   }
@@ -283,6 +287,24 @@ export class AppComponent {
       });
     }
   }
+  //#endregion
+
+  //#region Configs Options
+  public showConfigsOptions(): void {
+    const dialogRef = this.dialog.open(ConfigsOptionDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.setConfigs(result);
+      }
+    });
+  }
+  
+  
+  private setConfigs(result: Configs) {
+    this.xmlsToSendPort = result.port;
+  }
+
   //#endregion
 
   //#endregion

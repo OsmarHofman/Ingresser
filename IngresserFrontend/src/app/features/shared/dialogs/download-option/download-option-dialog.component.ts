@@ -97,8 +97,6 @@ export class DownloadOptionDialog {
     }
 
     private downloadFileAsXml() {
-
-
         var blob = new Blob(["Hello, world!"], { type: "application/xml;charset=utf-8" });
         fileSaver.saveAs(blob, `${this.fileName}.xml`);
     }

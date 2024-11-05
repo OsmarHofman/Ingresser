@@ -4,16 +4,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
 import { ValuesConfiguration } from "../../model/values-configuration";
-import { Observable, catchError, throwError } from "rxjs";
+import { catchError, throwError } from "rxjs";
 import { ResultMessage } from "../shared/result-message";
 import { _ErrorStateTracker } from "@angular/material/core";
 
-const httpOptions = {
-    headers: new HttpHeaders({
-        'content-type': 'application/json',
-        'accept': '*/*',
-    })
-};
+const backendUrl = "http://localhost:5181/sendXml";
 
 @Injectable()
 export class AppService {
@@ -108,7 +103,7 @@ export class AppService {
 
     }
 
-    public sendXmlsToWS(form: FormGroup): void {
+    public sendXmlsToWS(form: FormGroup, xmlsToSendPort: number): void {
 
         let xmlsToSend: string[] = [];
 
@@ -197,7 +192,7 @@ export class AppService {
         });
 
         xmlsToSend.forEach(async (xmlToSend: string) => {
-            this.sendXml(xmlToSend);
+            this.sendXml(xmlToSend, xmlsToSendPort);
 
             // await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
         })
@@ -207,13 +202,13 @@ export class AppService {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    public sendXml(xmlToSend: string): void {
+    public sendXml(xmlToSend: string, port: number): void {
         const soapRequest = {
-            url: "https://pr.dev.nddfrete.com.br:1062/tmsExchangeMessage/TMSExchangeMessage.asmx",
+            url: `https://pr.dev.nddfrete.com.br:${port}/tmsExchangeMessage/TMSExchangeMessage.asmx`,
             xml: xmlToSend
         }
 
-        this.http.post("http://localhost:5181/sendXml", soapRequest)
+        this.http.post(backendUrl, soapRequest)
             .pipe(
                 catchError((error) => {
                     console.error('Erro na requisição:', error);

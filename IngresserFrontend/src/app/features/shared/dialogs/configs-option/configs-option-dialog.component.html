@@ -1,0 +1,19 @@
+<div class="content">
+  <h2 mat-dialog-title>Download de entidades</h2>
+  <div class="row">
+    <label class="name-label">Nome do arquivo:</label>
+
+    <mat-form-field appearance="outline" fxFill id="name" class="col-md-6 name-input" subscriptSizing="dynamic">
+      <mat-label>Porta para envio</mat-label>
+      <input matInput #input placeholder="1081" [(ngModel)]="port" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <label class="preview">Config de URLs fora do padrão dos PRs (Em breve!)</label>
+    <label class="preview">Obter o EnterpriseId e Token automaticamente (Em breve!)</label>
+  </div>
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button (click)="dialogRef.close(returnConfigurations())">Salvar</button>
+  </mat-dialog-actions>
+</div>
