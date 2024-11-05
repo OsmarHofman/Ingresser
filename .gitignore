@@ -38,6 +38,10 @@ yarn-error.log
 testem.log
 /typings
 
+#DotNet
+/IngresserBackend/bin/*.*
+/IngresserBackend/obj/*.*
+
 # System files
 .DS_Store
 Thumbs.db
