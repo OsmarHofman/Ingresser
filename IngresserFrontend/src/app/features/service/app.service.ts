@@ -4,11 +4,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
 import { ValuesConfiguration } from "../../model/values-configuration";
+import { Observable, catchError, throwError } from "rxjs";
 
 const httpOptions = {
     headers: new HttpHeaders({
-        'Content-Type': 'text/xml; charset=utf-8',
-        'SOAPAction': 'ReceiveTransmission'
+        'content-type': 'application/json',
+        'accept': '*/*',
     })
 };
 
@@ -194,15 +195,33 @@ export class AppService {
         });
 
         xmlsToSend.forEach(async (xmlToSend: string) => {
-            this.http.post(this.wsUrl, xmlToSend, httpOptions)
-                .subscribe(x => console.log(x));
+            this.sendXml(xmlToSend);
 
-            await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
+            // await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
         })
     }
 
     private sleep(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    public sendXml(xmlToSend: string): void {
+        const soapRequest = { url: "https://pr.dev.nddfrete.com.br:1081/tmsExchangeMessage/TMSExchangeMessage.asmx",
+            xml: xmlToSend
+        }
+
+        const json = JSON.stringify(soapRequest);
+
+        this.http.post("http://localhost:5181/sendXml", soapRequest)
+            .pipe(
+                catchError((error) => {
+                    console.error('Erro na solicitação:', error);
+                    return throwError(() => error);
+                })
+            )
+            .subscribe((response) => {
+                console.log(response);
+            });
     }
 
     public addShipmentFromEntity(shipment: Shipment): any {
