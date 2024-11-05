@@ -12,15 +12,15 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-import { EntityTypeLabel, SendEntity } from '../../../../model/entityType';
+import { EntityTypeLabel, SendEntity } from '../../../model/entityType';
 import { CommonModule } from '@angular/common';
-import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 
 @Component({
-    selector: 'duplicate-option-dialog',
-    templateUrl: 'duplicate-option-dialog.component.html',
-    styleUrl: 'duplicate-option-dialog.component.scss',
+    selector: 'delete-option-dialog',
+    templateUrl: 'delete-option-dialog.component.html',
+    styleUrl: 'delete-option-dialog.component.scss',
     standalone: true,
     imports: [
         MatFormFieldModule,
@@ -31,18 +31,20 @@ import { MatRadioModule } from '@angular/material/radio';
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatRadioModule,
+        MatCheckbox,
         CommonModule
     ]
 })
 
-export class DuplicateOptionDialog {
-    readonly dialogRef = inject(MatDialogRef<DuplicateOptionDialog>);
+export class DeleteOptionDialog {
+    readonly dialogRef = inject(MatDialogRef<DeleteOptionDialog>);
     readonly entities = inject<SendEntity[]>(MAT_DIALOG_DATA);
 
-    public selectedEntity: SendEntity = this.entities[0];
+    public selectedRows: number[] = [];
 
-    constructor() { }
+    constructor(){
+        this.selectedRows = [];
+    }
 
     public onNoClick(): void {
         this.dialogRef.close();
@@ -52,5 +54,12 @@ export class DuplicateOptionDialog {
         const entity: SendEntity = this.entities[index];
 
         return `${EntityTypeLabel.get(entity.type)} no índice: ${index}`;
+    }
+
+    public markRowAsSelected(selectedIndex: number) {
+        if (this.selectedRows.includes(selectedIndex))
+            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
+        else
+            this.selectedRows.push(selectedIndex);
     }
 }

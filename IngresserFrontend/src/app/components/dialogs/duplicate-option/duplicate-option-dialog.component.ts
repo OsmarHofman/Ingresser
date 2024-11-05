@@ -12,15 +12,15 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
-import { EntityTypeLabel, SendEntity } from '../../../../model/entityType';
+import { EntityTypeLabel, SendEntity } from '../../../model/entityType';
 import { CommonModule } from '@angular/common';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @Component({
-    selector: 'delete-option-dialog',
-    templateUrl: 'delete-option-dialog.component.html',
-    styleUrl: 'delete-option-dialog.component.scss',
+    selector: 'duplicate-option-dialog',
+    templateUrl: 'duplicate-option-dialog.component.html',
+    styleUrl: 'duplicate-option-dialog.component.scss',
     standalone: true,
     imports: [
         MatFormFieldModule,
@@ -31,20 +31,18 @@ import { MatCheckbox } from '@angular/material/checkbox';
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatCheckbox,
+        MatRadioModule,
         CommonModule
     ]
 })
 
-export class DeleteOptionDialog {
-    readonly dialogRef = inject(MatDialogRef<DeleteOptionDialog>);
+export class DuplicateOptionDialog {
+    readonly dialogRef = inject(MatDialogRef<DuplicateOptionDialog>);
     readonly entities = inject<SendEntity[]>(MAT_DIALOG_DATA);
 
-    public selectedRows: number[] = [];
+    public selectedEntity: SendEntity = this.entities[0];
 
-    constructor(){
-        this.selectedRows = [];
-    }
+    constructor() { }
 
     public onNoClick(): void {
         this.dialogRef.close();
@@ -54,12 +52,5 @@ export class DeleteOptionDialog {
         const entity: SendEntity = this.entities[index];
 
         return `${EntityTypeLabel.get(entity.type)} no índice: ${index}`;
-    }
-
-    public markRowAsSelected(selectedIndex: number) {
-        if (this.selectedRows.includes(selectedIndex))
-            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
-        else
-            this.selectedRows.push(selectedIndex);
     }
 }

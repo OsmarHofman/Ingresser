@@ -10,9 +10,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { EntityType } from '../../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
-import { Shipment, CreationSource, ShipmentIndex } from '../../../../model/shipment';
+import { Shipment, CreationSource, ShipmentIndex } from '../../../model/shipment';
+import { EntityType } from '../../../model/entityType';
 
 @Component({
     selector: 'upload-option-dialog',

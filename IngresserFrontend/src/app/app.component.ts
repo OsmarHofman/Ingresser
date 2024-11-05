@@ -2,18 +2,18 @@ import { Component, Injectable, signal, model, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateOptionDialog as CreateOptionDialog } from './features/shared/dialogs/create-option/create-option-dialog.component';
 import { ShipmentComponent } from './features/segments/shipment/shipment.component';
 import { EntityType, SendEntity } from './model/entityType';
-import { DeleteOptionDialog } from './features/shared/dialogs/delete-option/delete-option-dialog.component';
-import { DuplicateOptionDialog } from './features/shared/dialogs/duplicate-option/duplicate-option-dialog.component';
-import { UploadOptionDialog } from './features/shared/dialogs/upload-option/upload-option-dialog.component';
-import { DownloadOptionDialog } from './features/shared/dialogs/download-option/download-option-dialog.component';
+import { DeleteOptionDialog } from './components/dialogs/delete-option/delete-option-dialog.component';
+import { DuplicateOptionDialog } from './components/dialogs/duplicate-option/duplicate-option-dialog.component';
+import { UploadOptionDialog } from './components/dialogs/upload-option/upload-option-dialog.component';
+import { DownloadOptionDialog } from './components/dialogs/download-option/download-option-dialog.component';
+import { ConfigsOptionDialog } from './components/dialogs/configs-option/configs-option-dialog.component';
+import { Configs } from './components/dialogs/configs-option/configs';
+import { CreateOptionDialog } from './components/dialogs/create-option/create-option-dialog.component';
 import { DownloadModel } from './model/downloadModel';
 import { ShipmentIndex } from './model/shipment';
 import { NFeComponent } from './features/segments/nfe/nfe.component';
-import { ConfigsOptionDialog } from './features/shared/dialogs/configs-option/configs-option-dialog.component';
-import { Configs } from './features/shared/dialogs/configs-option/configs';
 
 @Component({
   selector: 'app-root',
@@ -299,8 +299,8 @@ export class AppComponent {
       }
     });
   }
-  
-  
+
+
   private setConfigs(result: Configs) {
     this.xmlsToSendPort = result.port;
   }

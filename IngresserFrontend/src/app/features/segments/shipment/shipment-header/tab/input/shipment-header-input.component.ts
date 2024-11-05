@@ -10,8 +10,8 @@ import {
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
-import { RefnumComponent } from '../../../../../shared/refnum/refnum.component';
-import { CostInputComponent } from '../../../../../shared/cost-input/cost-input.component';
+import { CostInputComponent } from '../../../../../../components/cost-input/cost-input.component';
+import { RefnumComponent } from '../../../../../../components/refnum/refnum.component';
 
 @Component({
     selector: 'shipment-header-input',
