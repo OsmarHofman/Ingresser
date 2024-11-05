@@ -39,8 +39,18 @@ testem.log
 /typings
 
 #DotNet
-/IngresserBackend/bin/*.*
-/IngresserBackend/obj/*.*
+**/[Dd]ebug/
+**/[Dd]ebugPublic/
+**/[Rr]elease/
+**/[Rr]eleases/
+**/[Xx]64/
+**/[Xx]86/
+**/[Bb]uild/
+**/bld/
+**/[Bb]in/
+**/[Oo]bj/
+**/[Bb]in/[Dd]ebug/
+**/*.pdb
 
 # System files
 .DS_Store
