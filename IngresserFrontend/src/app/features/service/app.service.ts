@@ -1,6 +1,6 @@
 import { FormGroup } from "@angular/forms";
 import { Shipment, CreationSource, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
 import { ValuesConfiguration } from "../../model/values-configuration";

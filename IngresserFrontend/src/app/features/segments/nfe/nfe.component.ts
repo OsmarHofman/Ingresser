@@ -21,13 +21,13 @@ import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.co
     styleUrl: 'nfe.component.scss',
     standalone: true,
     imports: [
-    CdkAccordionModule,
-    CommonModule,
-    ReactiveFormsModule,
-    NFeParticipantAccordionComponent,
-    NFeIdeAccordionComponent,
-    NFeInfAdicAccordionComponent
-],
+        CdkAccordionModule,
+        CommonModule,
+        ReactiveFormsModule,
+        NFeParticipantAccordionComponent,
+        NFeIdeAccordionComponent,
+        NFeInfAdicAccordionComponent
+    ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -39,6 +39,9 @@ import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.co
 })
 
 export class NFeComponent implements ControlValueAccessor, OnDestroy {
+
+    public hasRetirada: boolean = false;
+    public hasEntrega: boolean = false;
 
     constructor(private formBuilder: FormBuilder, private appService: AppService) { }
 
@@ -89,6 +92,28 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
         this.nfes.push(
             this.formBuilder.group(this.appService.getNFeDefaultFormValues())
         )
+    }
+
+    public getRetiradaState(): string {
+        if (this.hasRetirada)
+            return "Remover";
+
+        return "Adicionar";
+    }
+
+    public changeRetiradaState() {
+        this.hasRetirada = !this.hasRetirada;
+    }
+
+    public getEntregaState(): string {
+        if (this.hasEntrega)
+            return "Remover";
+
+        return "Adicionar";
+    }
+
+    public changeEntregaState() {
+        this.hasEntrega = !this.hasEntrega;
     }
 
     public exchangeParticipants() {
