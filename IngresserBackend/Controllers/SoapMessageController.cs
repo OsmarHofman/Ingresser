@@ -1,6 +1,7 @@
 using IngresserBackend.Domain;
 using IngresserBackend.Service;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace IngresserBackend.Controllers
 {
@@ -23,11 +24,15 @@ namespace IngresserBackend.Controllers
             {
                 _soapCallService.CallShipmentWebService(soapRequest);
 
-                return Ok($"url: {soapRequest.Url}, com xml enviado com sucesso!");
+                var resultMessage = new ResultMessage("Xml enviado com sucesso!", successful: true);
+
+                return Ok(JsonConvert.SerializeObject(resultMessage));
             }
             catch (Exception e)
             {
-                return Problem(e.Message, null, 512, "IngresserProcessingError");
+                var resultMessage = new ResultMessage($"Erro ao tentar enviar o Xml!: {e.Message}", successful: false);
+
+                return Problem(resultMessage.Message, null, 512, "IngresserProcessingError");
             }
         }
     }

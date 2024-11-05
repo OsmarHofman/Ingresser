@@ -5,6 +5,8 @@ import { Injectable } from "@angular/core";
 import { ShipmentBaseTag } from "../../model/xml-base-tags";
 import { ValuesConfiguration } from "../../model/values-configuration";
 import { Observable, catchError, throwError } from "rxjs";
+import { ResultMessage } from "../shared/result-message";
+import { _ErrorStateTracker } from "@angular/material/core";
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -206,21 +208,29 @@ export class AppService {
     }
 
     public sendXml(xmlToSend: string): void {
-        const soapRequest = { url: "https://pr.dev.nddfrete.com.br:1081/tmsExchangeMessage/TMSExchangeMessage.asmx",
+        const soapRequest = {
+            url: "https://pr.dev.nddfrete.com.br:1062/tmsExchangeMessage/TMSExchangeMessage.asmx",
             xml: xmlToSend
         }
-
-        const json = JSON.stringify(soapRequest);
 
         this.http.post("http://localhost:5181/sendXml", soapRequest)
             .pipe(
                 catchError((error) => {
-                    console.error('Erro na solicitação:', error);
+                    console.error('Erro na requisição:', error);
                     return throwError(() => error);
                 })
             )
-            .subscribe((response) => {
-                console.log(response);
+            .subscribe((response: Object) => {
+                if (response) {
+                    const result: ResultMessage = response as ResultMessage;
+
+                    if (result){
+                        alert(result.Message);
+                        return;
+                    }
+                }
+                
+                alert('Ocorreu algo erro na resposta do backend!');
             });
     }
 
