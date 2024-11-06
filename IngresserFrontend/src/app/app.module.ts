@@ -11,9 +11,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { ShipmentComponent } from './features/segments/shipment/shipment.component';
-import { NFeComponent } from "./features/segments/nfe/nfe.component";
-import { NFeParticipantAccordionComponent } from "./features/segments/nfe/participant/nfe-participant-accordion.component";
+import { ShipmentComponent } from './features/entities/shipment/shipment.component';
+import { NFeComponent } from "./features/entities/nfe/nfe.component";
+import { NFeParticipantAccordionComponent } from "./features/entities/nfe/participant/nfe-participant-accordion.component";
 
 export const appConfig: ApplicationConfig = {
   providers: [

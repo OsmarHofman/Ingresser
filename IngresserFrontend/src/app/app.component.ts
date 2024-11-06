@@ -2,7 +2,7 @@ import { Component, Injectable, signal, model, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ShipmentComponent } from './features/segments/shipment/shipment.component';
+import { ShipmentComponent } from './features/entities/shipment/shipment.component';
 import { EntityType, SendEntity } from './model/entityType';
 import { DeleteOptionDialog } from './components/dialogs/delete-option/delete-option-dialog.component';
 import { DuplicateOptionDialog } from './components/dialogs/duplicate-option/duplicate-option-dialog.component';
@@ -13,7 +13,7 @@ import { Configs } from './components/dialogs/configs-option/configs';
 import { CreateOptionDialog } from './components/dialogs/create-option/create-option-dialog.component';
 import { DownloadModel } from './model/downloadModel';
 import { ShipmentIndex } from './model/shipment';
-import { NFeComponent } from './features/segments/nfe/nfe.component';
+import { NFeComponent } from './features/entities/nfe/nfe.component';
 
 @Component({
   selector: 'app-root',
