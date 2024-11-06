@@ -15,7 +15,8 @@ import { EntityType, SendEntity } from '../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
 import fileSaver from 'file-saver';
 import { DownloadModel } from '../../../model/downloadModel';
-import { Shipment, CreationSource, ShipmentIndex } from '../../../model/shipment';
+import { Shipment, ShipmentIndex } from '../../../model/shipment';
+import { CreationSource } from '../../../model/enums/creation-source';
 
 @Component({
     selector: 'download-option-dialog',

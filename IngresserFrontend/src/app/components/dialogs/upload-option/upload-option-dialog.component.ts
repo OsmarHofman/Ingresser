@@ -11,8 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
-import { Shipment, CreationSource, ShipmentIndex } from '../../../model/shipment';
+import { Shipment, ShipmentIndex } from '../../../model/shipment';
 import { EntityType } from '../../../model/entityType';
+import { CreationSource } from '../../../model/enums/creation-source';
 
 @Component({
     selector: 'upload-option-dialog',

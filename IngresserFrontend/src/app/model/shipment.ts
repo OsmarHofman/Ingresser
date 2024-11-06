@@ -1,5 +1,6 @@
-import { RefnumType } from "./refnumType";
-import { CostType } from "./costType";
+import { RefnumType } from "./enums/refnumType";
+import { CostType } from "./enums/costType";
+import { CreationSource } from "./enums/creation-source";
 
 export class ShipmentIndex {
     public sendSequenceIndex: number;
@@ -9,11 +10,6 @@ export class ShipmentIndex {
         this.sendSequenceIndex = sequenceSendIndex;
         this.shipment = shipment;
     }
-}
-
-export enum CreationSource {
-    Form,
-    JSON
 }
 
 export class Shipment {

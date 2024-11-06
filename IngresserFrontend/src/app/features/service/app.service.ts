@@ -1,5 +1,5 @@
 import { FormGroup } from "@angular/forms";
-import { Shipment, CreationSource, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
+import { Shipment, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { NFeBaseTag, ShipmentBaseTag } from "../../model/xml-base-tags";
@@ -7,6 +7,9 @@ import { ValuesConfiguration } from "../../model/values-configuration";
 import { catchError, throwError } from "rxjs";
 import { ResultMessage } from "../shared/result-message";
 import { _ErrorStateTracker } from "@angular/material/core";
+import { NFe } from "../../model/nfe";
+import { CreationSource } from "../../model/enums/creation-source";
+import { SendRequest, WsType } from "../../model/send-request";
 
 const backendUrl = "http://localhost:5181/sendXml";
 
@@ -103,9 +106,90 @@ export class AppService {
 
     }
 
-    public sendXmlsToWS(form: FormGroup, xmlsToSendPort: number): void {
+    public convertNFeFormToXml(form: FormGroup): string[] {
+
+        if (!this.configuration) return [];
 
         let xmlsToSend: string[] = [];
+
+        const formNFes = form.controls['nfe'].value.nfes;
+
+        formNFes.forEach((formNFe: any) => {
+            const nfe: NFe = new NFe(formNFe, CreationSource.Form);
+
+            let nfeXml: string = '';
+
+            const nfeIdeTab = formNFe.ide.tab;
+
+            if (nfeIdeTab.tabSelected === 0) {
+                nfeXml += nfe.convertIdeToXml();
+            } else {
+                nfeXml += nfeIdeTab.xmlContent;
+            }
+
+            nfeXml += "\n";
+
+            const nfeEmitTab = formNFe.emit.tab;
+
+            if (nfeEmitTab.tabSelected === 0) {
+                nfeXml += nfe.convertEmitToXml();
+            } else {
+                nfeXml += nfeEmitTab.xmlContent;
+            }
+
+            nfeXml += "\n";
+
+            const nfeDestTab = formNFe.dest.tab;
+
+            if (nfeDestTab.tabSelected === 0) {
+                nfeXml += nfe.convertDestToXml();
+            } else {
+                nfeXml += nfeDestTab.xmlContent;
+            }
+
+            nfeXml += "\n";
+
+            const nfeRetiradaTab = formNFe.retirada.tab;
+
+            if (nfeRetiradaTab.tabSelected === 0) {
+                nfeXml += nfe.convertRetiradaToXml();
+            } else {
+                nfeXml += nfeRetiradaTab.xmlContent;
+            }
+
+            nfeXml += "\n";
+
+            const nfeEntregaTab = formNFe.entrega.tab;
+
+            if (nfeEntregaTab.tabSelected === 0) {
+                nfeXml += nfe.convertEntregaToXml();
+            } else {
+                nfeXml += nfeEntregaTab.xmlContent;
+            }
+
+            nfeXml += "\n";
+
+            nfeXml += `${nfe.otherTags}\n`;
+
+            const nfeInfAdicTab = formNFe.infAdic.tab;
+
+            if (nfeInfAdicTab.tabSelected === 0) {
+                nfeXml += nfe.convertInfAdicToXml();
+            } else {
+                nfeXml += nfeInfAdicTab.xmlContent;
+            }
+
+            nfeXml += "\n";
+
+            xmlsToSend.push(nfeXml);
+        });
+
+        return xmlsToSend;
+    }
+
+    public sendXmlsToWS(form: FormGroup, xmlsToSendPort: number): void {
+
+        let xmlsToSend: SendRequest[] = [];
 
         if (form.controls['shipment'].value) {
 
@@ -190,14 +274,14 @@ export class AppService {
         </soapenv:Body>
     </soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
 
-                xmlsToSend.push(finalShipmentXml);
+                xmlsToSend.push(new SendRequest(finalShipmentXml, WsType.ShipmentWS));
             });
 
         }
 
         if (form.controls['nfe'].value) {
 
-            const xmlsNFe: string[] = this.convertShipmentFormToXml(form);
+            const xmlsNFe: string[] = this.convertNFeFormToXml(form);
 
             xmlsNFe.forEach((NFeXml: string) => {
 
@@ -241,11 +325,11 @@ export class AppService {
 	</protNFe>
 </nfeProc>`.replace('[[NFe]]', NFeXml);
 
-                xmlsToSend.push(finalNFeXml);
+                xmlsToSend.push(new SendRequest(finalNFeXml, WsType.DocumentsWS));
             });
         }
 
-        xmlsToSend.forEach(async (xmlToSend: string) => {
+        xmlsToSend.forEach(async (xmlToSend: SendRequest) => {
             this.sendXml(xmlToSend, xmlsToSendPort);
 
             // await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
@@ -256,10 +340,14 @@ export class AppService {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    public sendXml(xmlToSend: string, port: number): void {
+    public sendXml(sendRequest: SendRequest, port: number): void {
+        let wsUrl = sendRequest.wsType === WsType.ShipmentWS 
+        ? `https://pr.dev.nddfrete.com.br:${port}/tmsExchangeMessage/TMSExchangeMessage.asmx`
+        : `https://pr.dev.nddfrete.com.br:${port}/exchangeMessage/WSExchangeMessage.asmx`;
+
         const soapRequest = {
-            url: `https://pr.dev.nddfrete.com.br:${port}/tmsExchangeMessage/TMSExchangeMessage.asmx`,
-            xml: xmlToSend
+            url: wsUrl,
+            xml: sendRequest.xml
         }
 
         this.http.post(backendUrl, soapRequest)
