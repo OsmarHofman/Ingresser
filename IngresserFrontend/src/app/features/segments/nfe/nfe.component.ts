@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import {
     ControlValueAccessor,
     FormBuilder,
@@ -9,11 +10,12 @@ import {
     ReactiveFormsModule,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { AppService } from '../../service/app.service';
 import { Subscription } from 'rxjs';
+import { AppService } from '../../service/app.service';
 import { NFeParticipantAccordionComponent } from './participant/nfe-participant-accordion.component';
 import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
 import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
+import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
 
 @Component({
     selector: 'nfe',
@@ -43,7 +45,9 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
     public hasRetirada: boolean = false;
     public hasEntrega: boolean = false;
 
-    constructor(private formBuilder: FormBuilder, private appService: AppService) { }
+    constructor(private formBuilder: FormBuilder,
+        private appService: AppService,
+        private dialog: MatDialog) { }
 
     //#region Form
 
@@ -117,6 +121,23 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
     }
 
     public exchangeParticipants() {
-        //TODO: Colocar um dialog que seleciona quais os participantes a serem invertidos
+        let participants: string[] = ['Emitente', 'Destinatário'];
+
+        if(this.hasRetirada)
+            participants.push('Retirada');
+
+        if(this.hasEntrega)
+            participants.push('Entrega');
+
+        const dialogRef = this.dialog.open(ExchangeParticipantsDialog, {
+            data: participants,
+        }
+        );
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result !== undefined) {
+                console.log("Trocou");
+            }
+        });
     }
 }

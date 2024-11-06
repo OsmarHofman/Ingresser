@@ -12,9 +12,9 @@
             <tr [formGroupName]="i" class="row nfes">
               <h4>NF-e -</h4>
               <div class="row">
-                <button class="btn btn-primary btn-exchange col-md-3" (click)="exchangeParticipants()">Inverter participantes</button>
-                <button class="btn btn-primary btn-exchange col-md-3" (click)="changeRetiradaState()">{{getRetiradaState()}} Retirada</button>
-                <button class="btn btn-primary btn-exchange col-md-3" (click)="changeEntregaState()">{{getEntregaState()}} Entrega</button>
+                <button class="btn btn-primary btn-exchange col-md-2" (click)="exchangeParticipants()">Inverter participantes</button>
+                <button class="btn btn-primary btn-exchange col-md-2" (click)="changeRetiradaState()">{{getRetiradaState()}} Retirada</button>
+                <button class="btn btn-primary btn-exchange col-md-2" (click)="changeEntregaState()">{{getEntregaState()}} Entrega</button>
               </div>
               <td>
                 <nfe-ide-accordion />
