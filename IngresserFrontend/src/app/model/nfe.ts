@@ -115,7 +115,7 @@ export class NFe {
     }
 
     public static generateNFeIdByIdeTag(ideTag: string): string {
-        
+
         const cUF = ideTag.slice(
             ideTag.indexOf('<cUF>') + '<cUF>'.length,
             ideTag.indexOf('</cUF>')
@@ -123,7 +123,7 @@ export class NFe {
 
         const today: Date = new Date();
 
-        const yearLastDigits = today.getFullYear().toString().substring(2,4);
+        const yearLastDigits = today.getFullYear().toString().substring(2, 4);
 
         const month = (today.getMonth() + 1).toString().padStart(2, '0');
 
@@ -394,8 +394,10 @@ export class Address {
     public uf: string = 'SP';
 
     constructor(addressValue: any) {
-        this.city = addressValue.city;
-        this.ibgeCode = addressValue.ibgeCode;
-        this.uf = addressValue.uf;
+        if (addressValue) {
+            this.city = addressValue.city;
+            this.ibgeCode = addressValue.ibgeCode;
+            this.uf = addressValue.uf;
+        }
     }
 }
