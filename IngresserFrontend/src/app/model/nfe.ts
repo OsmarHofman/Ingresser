@@ -7,6 +7,16 @@ export enum ParticipantType {
     Entrega
 }
 
+export class NFesAndId {
+    public nfeXml: string;
+    public id: string;
+
+    constructor(nfeXml: string, id: string) {
+        this.nfeXml = nfeXml;
+        this.id = id;
+    }
+}
+
 export class NFe {
 
     public ide: Ide;
@@ -96,13 +106,62 @@ export class NFe {
         return '';
     }
 
-    
     public convertInfAdicToXml(): string {
         if (this.infAdic) {
             return this.infAdic.convertToXml();
         }
 
         return '';
+    }
+
+    public static generateNFeIdByIdeTag(ideTag: string): string {
+        
+        const cUF = ideTag.slice(
+            ideTag.indexOf('<cUF>') + '<cUF>'.length,
+            ideTag.indexOf('</cUF>')
+        );
+
+        const today: Date = new Date();
+
+        const yearLastDigits = today.getFullYear().toString().substring(2,4);
+
+        const month = (today.getMonth() + 1).toString().padStart(2, '0');
+
+        const yearAndMonth = `${yearLastDigits}${month}`;
+
+        const emit = '05257045000160';
+
+        const mod = ideTag.slice(
+            ideTag.indexOf('<mod>') + '<mod>'.length,
+            ideTag.indexOf('</mod>')
+        );
+
+        const serie = ideTag.slice(
+            ideTag.indexOf('<serie>') + '<serie>'.length,
+            ideTag.indexOf('</serie>')
+        ).padStart(3, '0');
+
+        const nNF = ideTag.slice(
+            ideTag.indexOf('<nNF>') + '<nNF>'.length,
+            ideTag.indexOf('</nNF>')
+        ).padStart(9, '0');
+
+        const tpEmis = ideTag.slice(
+            ideTag.indexOf('<tpEmis>') + '<tpEmis>'.length,
+            ideTag.indexOf('</tpEmis>')
+        );
+
+        const cNF = ideTag.slice(
+            ideTag.indexOf('<cNF>') + '<cNF>'.length,
+            ideTag.indexOf('</cNF>')
+        ).padStart(8, '0');
+
+        const cDV = ideTag.slice(
+            ideTag.indexOf('<cDV>') + '<cDV>'.length,
+            ideTag.indexOf('</cDV>')
+        );
+
+        return `${cUF}${yearAndMonth}${emit}${mod}${serie}${nNF}${tpEmis}${cNF}${cDV}`;
     }
 }
 

@@ -7,7 +7,7 @@ import { ValuesConfiguration } from "../../model/values-configuration";
 import { catchError, throwError } from "rxjs";
 import { ResultMessage } from "../shared/result-message";
 import { _ErrorStateTracker } from "@angular/material/core";
-import { NFe } from "../../model/nfe";
+import { NFe, NFesAndId } from "../../model/nfe";
 import { CreationSource } from "../../model/enums/creation-source";
 import { SendRequest, WsType } from "../../model/send-request";
 
@@ -106,11 +106,11 @@ export class AppService {
 
     }
 
-    public convertNFeFormToXml(form: FormGroup): string[] {
+    public convertNFeFormToXml(form: FormGroup): NFesAndId[] {
 
         if (!this.configuration) return [];
 
-        let xmlsToSend: string[] = [];
+        let xmlsToSend: NFesAndId[] = [];
 
         const formNFes = form.controls['nfe'].value.nfes;
 
@@ -121,10 +121,18 @@ export class AppService {
 
             const nfeIdeTab = formNFe.ide.tab;
 
+            let nfeId: string = '';
+
             if (nfeIdeTab.tabSelected === 0) {
                 nfeXml += nfe.convertIdeToXml();
+                const nfeNumber: string = nfe.ide.number.padStart(9, '0');
+
+                nfeId = `3520060766314000027055031${nfeNumber}1819146465`;
             } else {
+
                 nfeXml += nfeIdeTab.xmlContent;
+
+                nfeId = NFe.generateNFeIdByIdeTag(nfeIdeTab.xmlContent);
             }
 
             nfeXml += "\n";
@@ -181,7 +189,7 @@ export class AppService {
 
             nfeXml += "\n";
 
-            xmlsToSend.push(nfeXml);
+            xmlsToSend.push(new NFesAndId(nfeXml, nfeId));
         });
 
         return xmlsToSend;
@@ -281,13 +289,13 @@ export class AppService {
 
         if (form.controls['nfe'].value) {
 
-            const xmlsNFe: string[] = this.convertNFeFormToXml(form);
+            const NFeXmlsAndId: NFesAndId[] = this.convertNFeFormToXml(form);
 
-            xmlsNFe.forEach((NFeXml: string) => {
+            NFeXmlsAndId.forEach((NFeXmlAndId: NFesAndId) => {
 
                 let finalNFeXml: string = `<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
 	<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
-		<infNFe Id="NFe35200607663140000270550310001234561819146465" versao="4.00">
+		<infNFe Id="NFe[[NFeId]]" versao="4.00">
         [[NFe]]
         </infNFe>
 		<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -323,7 +331,7 @@ export class AppService {
 			<xMotivo>Autorizado o uso da NF-e</xMotivo>
 		</infProt>
 	</protNFe>
-</nfeProc>`.replace('[[NFe]]', NFeXml);
+</nfeProc>`.replace('[[NFeId]]', NFeXmlAndId.id).replace('[[NFe]]', NFeXmlAndId.nfeXml);
 
                 xmlsToSend.push(new SendRequest(finalNFeXml, WsType.DocumentsWS));
             });
@@ -341,9 +349,9 @@ export class AppService {
     }
 
     public sendXml(sendRequest: SendRequest, port: number): void {
-        let wsUrl = sendRequest.wsType === WsType.ShipmentWS 
-        ? `https://pr.dev.nddfrete.com.br:${port}/tmsExchangeMessage/TMSExchangeMessage.asmx`
-        : `https://pr.dev.nddfrete.com.br:${port}/exchangeMessage/WSExchangeMessage.asmx`;
+        let wsUrl = sendRequest.wsType === WsType.ShipmentWS
+            ? `https://pr.dev.nddfrete.com.br:${port}/tmsExchangeMessage/TMSExchangeMessage.asmx`
+            : `https://pr.dev.nddfrete.com.br:${port}/exchangeMessage/WSExchangeMessage.asmx`;
 
         const soapRequest = {
             url: wsUrl,
