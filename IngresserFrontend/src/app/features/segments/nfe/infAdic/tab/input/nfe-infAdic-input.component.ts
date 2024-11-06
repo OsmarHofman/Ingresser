@@ -39,7 +39,7 @@ export class NFeInfAdicInputComponent implements ControlValueAccessor, OnDestroy
     //#region Form
 
     public inputForm: FormGroup = this.formBuilder.group({
-        number: [''],
+        idor: [''],
     });
 
     public onTouched: Function = () => { };

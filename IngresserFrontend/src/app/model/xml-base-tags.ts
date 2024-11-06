@@ -21,3 +21,29 @@ export class ShipmentBaseTag {
         { collapseContent: true }
     );
 }
+
+export class NFeBaseTag {
+    public static Ide: string = xmlFormat(`<ide><cUF>35</cUF><cNF>53900839</cNF><natOp>VENDA ADQUIRIDAS E OU TER</natOp><mod>55</mod><serie>3</serie><nNF>123456</nNF><dhEmi>2019-10-19T21:58:45-02:00</dhEmi><dhSaiEnt>2019-10-19T22:13:50-02:00</dhSaiEnt><tpNF>1</tpNF><idDest>2</idDest><cMunFG>3515004</cMunFG><tpImp>2</tpImp><tpEmis>1</tpEmis><cDV>0</cDV><tpAmb>1</tpAmb><finNFe>1</finNFe><indFinal>0</indFinal><indPres>9</indPres><procEmi>0</procEmi><verProc>SynchroDFe_3.2.4.4</verProc></ide>`,
+        { collapseContent: true }
+    );
+
+    public static Emit: string = xmlFormat(`<emit><CNPJ>96973902000183</CNPJ><xNome>Emitente da NF-e</xNome><xFant>Fantasia Emitente da NF-e</xFant><enderEmit><xLgr>Rua do Emitente</xLgr><nro>1481</nro><xCpl>Info Complementaria do Logradouro</xCpl><xBairro>Bairro Emitente</xBairro><cMun>3550308</cMun><xMun>SAO PAULO</xMun><UF>SP</UF><CEP>06845070</CEP><cPais>1058</cPais><xPais>BRASIL</xPais></enderEmit><IE>298280913119</IE><CRT>3</CRT></emit>`,
+        { collapseContent: true }
+    );
+
+    public static Dest: string = xmlFormat(`<dest><CNPJ>05257045000160</CNPJ><xNome>Destinatario da NF-e</xNome><enderDest><xLgr>Rua do Destinatario</xLgr><nro>1003</nro><xBairro>Bairro Destinatario</xBairro><cMun>4209300</cMun><xMun>LAGES</xMun><UF>SC</UF><CEP>32183680</CEP><cPais>1058</cPais><xPais>BRASIL</xPais><fone>2124722123</fone></enderDest><indIEDest>1</indIEDest><IE>3671539868959</IE></dest>`,
+        { collapseContent: true }
+    );
+
+    public static Retirada: string = xmlFormat(`<retirada><CNPJ>96973902000183</CNPJ><xNome>NOME RETIRADA</xNome><xLgr>LOG RETIRADA</xLgr><nro>100</nro><xBairro>BAIRRO RETIRADA</xBairro><cMun>3550308</cMun><xMun>SAO PAULO</xMun><UF>SP</UF><CEP>32183680</CEP><cPais>1058</cPais><xPais>BRASIL</xPais><fone>2124722123</fone><IE>3671539868959</IE></retirada>`,
+        { collapseContent: true }
+    );
+
+    public static Entrega: string = xmlFormat(`<entrega><CNPJ>05257045000160</CNPJ><xNome>NOME ENTREGA</xNome><xLgr>LOG ENTREGA</xLgr><nro>100</nro><xBairro>BAIRRO ENTREGA</xBairro><cMun>4209300</cMun><xMun>LAGES</xMun><UF>SC</UF><CEP>32183680</CEP><cPais>1058</cPais><xPais>BRASIL</xPais><fone>2124722123</fone><IE>3671539868959</IE></entrega>`,
+        { collapseContent: true }
+    );
+
+    public static InfAdic: string = xmlFormat(`<infAdic><infCpl>IDOR|EMBDEV.ORDEM1|IDOR</infCpl></infAdic>`,
+        { collapseContent: true }
+    );
+}

@@ -41,7 +41,7 @@ export class AddressComponent implements ControlValueAccessor, OnDestroy {
 
     public addressForm: FormGroup = this.formBuilder.group({
         ibgeCode: [''],
-        name: [''],
+        city: [''],
         uf: ['']
     });
 

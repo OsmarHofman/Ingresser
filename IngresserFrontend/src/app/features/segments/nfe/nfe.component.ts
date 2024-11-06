@@ -16,6 +16,7 @@ import { NFeParticipantAccordionComponent } from './participant/nfe-participant-
 import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
 import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
 import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
+import { Ide } from '../../../model/nfe';
 
 @Component({
     selector: 'nfe',
@@ -140,4 +141,21 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
             }
         });
     }
+
+    public getNFeNumberByIndex(index: number): string {
+        const nfe: any = this.form.controls['nfes'].value[index].ide.tab;
+    
+        let nfeNumber = '';
+    
+        if (nfe) {
+    
+          if (nfe.tabSelected === 0) {
+            nfeNumber = nfe.inputContent.number;
+          } else {
+            nfeNumber = Ide.getNFeNumberFromXml(nfe.xmlContent);
+          }
+        }
+    
+        return nfeNumber;
+      }
 }

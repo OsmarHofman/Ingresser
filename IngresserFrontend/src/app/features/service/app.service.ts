@@ -2,7 +2,7 @@ import { FormGroup } from "@angular/forms";
 import { Shipment, CreationSource, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { ShipmentBaseTag } from "../../model/xml-base-tags";
+import { NFeBaseTag, ShipmentBaseTag } from "../../model/xml-base-tags";
 import { ValuesConfiguration } from "../../model/values-configuration";
 import { catchError, throwError } from "rxjs";
 import { ResultMessage } from "../shared/result-message";
@@ -219,12 +219,12 @@ export class AppService {
                 if (response) {
                     const result: ResultMessage = response as ResultMessage;
 
-                    if (result){
+                    if (result) {
                         alert(result.Message);
                         return;
                     }
                 }
-                
+
                 alert('Ocorreu algo erro na resposta do backend!');
             });
     }
@@ -619,7 +619,84 @@ export class AppService {
 
     public getNFeDefaultFormValues(): any {
         return {
-
+            ide: {
+                tab: {
+                    inputContent: {
+                        number: "123456"
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Ide
+                }
+            },
+            emit: {
+                tab: {
+                    inputContent: {
+                        cnpj: "96973902000183",
+                        name: "Emitente da NF-e",
+                        address: {
+                            ibgeCode: "3550308",
+                            city: "SAO PAULO",
+                            uf: "SP"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Emit
+                }
+            },
+            dest: {
+                tab: {
+                    inputContent: {
+                        cnpj: "05257045000160",
+                        name: "Destinatario da NF-e",
+                        address: {
+                            ibgeCode: "4209300",
+                            city: "LAGES",
+                            uf: "SC"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Dest
+                }
+            },
+            retirada: {
+                tab: {
+                    inputContent: {
+                        cnpj: "96973902000183",
+                        name: "Retirada da NF-e",
+                        address: {
+                            ibgeCode: "3550308",
+                            city: "SAO PAULO",
+                            uf: "SP"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Retirada
+                }
+            },
+            entrega: {
+                tab: {
+                    inputContent: {
+                        cnpj: "05257045000160",
+                        name: "Entrega da NF-e",
+                        address: {
+                            ibgeCode: "4209300",
+                            city: "LAGES",
+                            uf: "SC"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Entrega
+                }
+            },
+            infAdic: {
+                tab: {
+                    inputContent: {
+                        idor: "EMBDEV.ORDEM1"
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.InfAdic
+                }
+            }
         };
     }
 

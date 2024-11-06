@@ -10,23 +10,23 @@
           ">
 
             <tr [formGroupName]="i" class="row nfes">
-              <h4>NF-e -</h4>
+              <h4>NF-e - {{getNFeNumberByIndex(i)}}</h4>
               <div class="row">
                 <button class="btn btn-primary btn-exchange col-md-2" (click)="exchangeParticipants()">Inverter participantes</button>
                 <button class="btn btn-primary btn-exchange col-md-2" (click)="changeRetiradaState()">{{getRetiradaState()}} Retirada</button>
                 <button class="btn btn-primary btn-exchange col-md-2" (click)="changeEntregaState()">{{getEntregaState()}} Entrega</button>
               </div>
               <td>
-                <nfe-ide-accordion />
-                <nfe-participant-accordion [participantName]="'Emitente'" />
-                <nfe-participant-accordion [participantName]="'Destinatário'" />
+                <nfe-ide-accordion formControlName="ide"/>
+                <nfe-participant-accordion formControlName="emit" [participantName]="'Emitente'" />
+                <nfe-participant-accordion formControlName="dest" [participantName]="'Destinatário'" />
                 <div *ngIf="hasRetirada">
-                  <nfe-participant-accordion [participantName]="'Retirada'" />
+                  <nfe-participant-accordion formControlName="retirada" [participantName]="'Retirada'" />
                 </div>
                 <div *ngIf="hasEntrega">
-                  <nfe-participant-accordion [participantName]="'Entrega'" />
+                  <nfe-participant-accordion formControlName="entrega" [participantName]="'Entrega'" />
                 </div>
-                <nfe-infAdic-accordion />
+                <nfe-infAdic-accordion formControlName="infAdic"/>
                 <hr>
               </td>
             </tr>
