@@ -8,28 +8,28 @@ import {
     NG_VALUE_ACCESSOR
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { NFeParticipantTabComponent } from './tab/nfe-participant-tab.component';
+import { NFeOtherTagsTabComponent } from "./tab/nfe-other-tags-tab.component";
 
 @Component({
-    selector: 'nfe-participant-accordion',
-    templateUrl: 'nfe-participant-accordion.component.html',
-    styleUrl: 'nfe-participant-accordion.component.scss',
+    selector: 'nfe-other-tags-accordion',
+    templateUrl: 'nfe-other-tags-accordion.component.html',
+    styleUrl: 'nfe-other-tags-accordion.component.scss',
     standalone: true,
     imports: [
         CdkAccordionModule,
         ReactiveFormsModule,
-        NFeParticipantTabComponent
+        NFeOtherTagsTabComponent
     ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: NFeParticipantAccordionComponent
+            useExisting: NFeOtherTagsAccordionComponent
         }
     ]
 })
 
-export class NFeParticipantAccordionComponent implements ControlValueAccessor, OnDestroy {
+export class NFeOtherTagsAccordionComponent implements ControlValueAccessor, OnDestroy {
 
     @Input() public participantName: string = '';
 

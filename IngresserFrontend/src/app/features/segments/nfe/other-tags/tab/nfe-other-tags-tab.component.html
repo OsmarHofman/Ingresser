@@ -1,0 +1,7 @@
+<form [formGroup]="tabForm">
+    <mat-tab-group dynamicHeight class="mat-tab-group" (selectedTabChange)="tabChanged($event)">
+        <mat-tab label="Xml">
+            <textarea formControlName="xmlContent"></textarea>
+        </mat-tab>
+    </mat-tab-group>
+</form>

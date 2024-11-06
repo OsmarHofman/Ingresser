@@ -17,6 +17,7 @@ import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
 import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
 import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
 import { Ide } from '../../../model/nfe';
+import { NFeOtherTagsAccordionComponent } from "./other-tags/nfe-other-tags-accordion.component";
 
 @Component({
     selector: 'nfe',
@@ -29,7 +30,8 @@ import { Ide } from '../../../model/nfe';
         ReactiveFormsModule,
         NFeParticipantAccordionComponent,
         NFeIdeAccordionComponent,
-        NFeInfAdicAccordionComponent
+        NFeInfAdicAccordionComponent,
+        NFeOtherTagsAccordionComponent
     ],
     providers: [
         {
@@ -124,10 +126,10 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
     public exchangeParticipants() {
         let participants: string[] = ['Emitente', 'Destinatário'];
 
-        if(this.hasRetirada)
+        if (this.hasRetirada)
             participants.push('Retirada');
 
-        if(this.hasEntrega)
+        if (this.hasEntrega)
             participants.push('Entrega');
 
         const dialogRef = this.dialog.open(ExchangeParticipantsDialog, {
@@ -144,18 +146,18 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
 
     public getNFeNumberByIndex(index: number): string {
         const nfe: any = this.form.controls['nfes'].value[index].ide.tab;
-    
+
         let nfeNumber = '';
-    
+
         if (nfe) {
-    
-          if (nfe.tabSelected === 0) {
-            nfeNumber = nfe.inputContent.number;
-          } else {
-            nfeNumber = Ide.getNFeNumberFromXml(nfe.xmlContent);
-          }
+
+            if (nfe.tabSelected === 0) {
+                nfeNumber = nfe.inputContent.number;
+            } else {
+                nfeNumber = Ide.getNFeNumberFromXml(nfe.xmlContent);
+            }
         }
-    
+
         return nfeNumber;
-      }
+    }
 }
