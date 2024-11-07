@@ -22,7 +22,14 @@ namespace IngresserBackend.Controllers
         {
             try
             {
-                _soapCallService.CallShipmentWebService(soapRequest);
+                if (soapRequest == null)
+                    throw new BadHttpRequestException("Requisição não preenchida!");
+
+                if (soapRequest.IsShipment)
+                    _soapCallService.CallShipmentWebService(soapRequest);
+                else
+                    _soapCallService.CallDocumentWebService(soapRequest);
+
 
                 var resultMessage = new ResultMessage("Xml enviado com sucesso!", successful: true);
 
