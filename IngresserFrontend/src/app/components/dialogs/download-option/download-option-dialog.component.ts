@@ -67,29 +67,29 @@ export class DownloadOptionDialog {
     private downloadFileAsJson() {
         let jsonToBeDownloaded: string = '[';
 
-        this.entitiesToDownload.entitiesOrder.forEach((entityOrder: SendEntity, index) => {
+        // this.entitiesToDownload.entitiesTypes.forEach((entityOrder: EntityType, index) => {
 
-            if (index > 0)
-                jsonToBeDownloaded += ',\n';
+        //     if (index > 0)
+        //         jsonToBeDownloaded += ',\n';
 
-            switch (entityOrder.type) {
+        //     switch (entityOrder) {
 
-                case EntityType.Shipment:
-                    const formShipment = this.entitiesToDownload.formValue.controls['shipment'].value.shipments[entityOrder.entityListIndex];
+        //         case EntityType.Shipment:
+        //             const formShipment = this.entitiesToDownload.formValue.controls['shipment'].value.shipments[entityOrder.entityListIndex];
 
-                    const shipment: Shipment = new Shipment(formShipment, CreationSource.Form);
+        //             const shipment: Shipment = new Shipment(formShipment, CreationSource.Form);
 
-                    const shipmentIndex: ShipmentIndex = new ShipmentIndex(entityOrder.entityListIndex, shipment);
+        //             const shipmentIndex: ShipmentIndex = new ShipmentIndex(entityOrder.entityListIndex, shipment);
 
-                    jsonToBeDownloaded += JSON.stringify(shipmentIndex);
+        //             jsonToBeDownloaded += JSON.stringify(shipmentIndex);
 
-                    break;
+        //             break;
 
-                default:
-                    break;
-            }
+        //         default:
+        //             break;
+        //     }
 
-        });
+        // });
 
         jsonToBeDownloaded += ']'
 

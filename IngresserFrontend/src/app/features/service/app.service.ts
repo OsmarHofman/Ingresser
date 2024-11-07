@@ -1,7 +1,7 @@
 import { FormGroup } from "@angular/forms";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { catchError, throwError } from "rxjs";
+import { catchError, config, throwError } from "rxjs";
 import { ResultMessage } from "../shared/result-message";
 import { Shipment, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
 import { NFeBaseTag, ShipmentBaseTag } from "../../model/xml-base-tags";
@@ -10,6 +10,7 @@ import { NFe, NFesAndId } from "../../model/nfe";
 import { CreationSource } from "../../model/enums/creation-source";
 import { SendRequest } from "../../model/send-request";
 import { EntityType } from "../../model/entityType";
+import { Configs } from "../../components/dialogs/configs-option/configs";
 
 const backendUrl = "http://localhost:5181/sendXml";
 
@@ -177,7 +178,7 @@ export class AppService {
         return new NFesAndId(nfeXml, nfeId);
     }
 
-    public sendXmlsToWS(form: FormGroup, entitiesTypes: EntityType[], xmlsToSendPort: number): void {
+    public sendXmlsToWS(form: FormGroup, entitiesTypes: EntityType[], configs: Configs): void {
 
         let xmlsToSend: SendRequest[] = [];
 
@@ -271,7 +272,7 @@ export class AppService {
         </soapenv:Body>
     </soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
 
-                        xmlsToSend.push(new SendRequest(finalShipmentXml, entityType));
+                        xmlsToSend.push(new SendRequest(finalShipmentXml, entityType, configs));
 
                         break;
 
@@ -289,8 +290,8 @@ export class AppService {
             <ProcessCode>6002</ProcessCode>
             <MessageType>100</MessageType>
             <ExchangePattern>7</ExchangePattern>
-            <EnterpriseId>85c8732d-4140-4795-91a2-127159f4ee78</EnterpriseId>
-            <Token>f5f0280c-0ed9-4f48-b01c-a39d7f79a2ca</Token> 
+            <EnterpriseId>[[EnterpriseId]]</EnterpriseId>
+            <Token>[[Token]]</Token> 
             <ContentEncoding>utf-8</ContentEncoding>
             <ContentType>text/xml</ContentType>
           </CrosstalkHeader>
@@ -337,9 +338,13 @@ export class AppService {
 </nfeProc>]]></ndd:rawdata>
       </ndd:Send>
    </soapenv:Body>
-</soapenv:Envelope>`.replace('[[NFeId]]', NFeXmlAndId.id).replace('[[NFe]]', NFeXmlAndId.nfeXml);
+</soapenv:Envelope>`
+                            .replace('[[EnterpriseId]]', configs.enterpriseId)
+                            .replace('[[Token]]', configs.token)
+                            .replace('[[NFeId]]', NFeXmlAndId.id)
+                            .replace('[[NFe]]', NFeXmlAndId.nfeXml);
 
-                        xmlsToSend.push(new SendRequest(finalNFeXml, entityType));
+                        xmlsToSend.push(new SendRequest(finalNFeXml, entityType, configs));
 
                         break;
 
@@ -349,8 +354,8 @@ export class AppService {
             }
         }
 
-        xmlsToSend.forEach(async (xmlToSend: SendRequest) => {
-            this.sendXml(xmlToSend, xmlsToSendPort);
+        xmlsToSend.forEach(async (sendRequest: SendRequest) => {
+            this.sendXml(sendRequest);
 
             // await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
         })
@@ -360,18 +365,13 @@ export class AppService {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    public sendXml(sendRequest: SendRequest, port: number): void {
-        const soapRequest = {
-            url: sendRequest.getUrlWithPort(port),
-            xml: sendRequest.xml,
-            isShipment: sendRequest.entityType === EntityType.Shipment
-        }
+    public sendXml(sendRequest: SendRequest): void {
 
-        this.http.post(backendUrl, soapRequest)
+        this.http.post(backendUrl, sendRequest)
             .pipe(
-                catchError((error) => {
-                    console.error('Erro na requisição:', error);
-                    return throwError(() => error);
+                catchError((httpErrorResponse: HttpErrorResponse) => {
+                    alert(`Erro na requisição:\nURL: ${httpErrorResponse.url}\nStatus: ${httpErrorResponse.status} (${httpErrorResponse.error.title})\nErro: ${httpErrorResponse.error.detail}` );
+                    return throwError(() => httpErrorResponse.error.detail);
                 })
             )
             .subscribe((response: Object) => {

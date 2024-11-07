@@ -1,11 +1,21 @@
 <div class="content">
-  <h2 mat-dialog-title>Download de entidades</h2>
+  <h2 mat-dialog-title>Configurações</h2>
   <div class="row">
-    <label class="name-label">Nome do arquivo:</label>
-
-    <mat-form-field appearance="outline" fxFill id="name" class="col-md-6 name-input" subscriptSizing="dynamic">
+    <mat-form-field appearance="outline" fxFill id="name" class="col-md-4 name-input" subscriptSizing="dynamic">
       <mat-label>Porta para envio</mat-label>
       <input matInput #input placeholder="1081" [(ngModel)]="port" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="outline" fxFill id="enterpriseId" class="col-md-10 name-input" subscriptSizing="dynamic">
+      <mat-label>EnterpriseId</mat-label>
+      <input matInput #input placeholder="85c8732d-4140-4795-91a2-127159f4ee78" [(ngModel)]="enterpriseId" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="outline" fxFill id="token" class="col-md-10 name-input" subscriptSizing="dynamic">
+      <mat-label>Token</mat-label>
+      <input matInput #input placeholder="f5f0280c-0ed9-4f48-b01c-a39d7f79a2ca" [(ngModel)]="token" />
     </mat-form-field>
   </div>
   <div class="row">

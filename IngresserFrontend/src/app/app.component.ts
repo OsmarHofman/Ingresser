@@ -40,7 +40,7 @@ export class AppComponent {
   #shipmentComponentRef?: ComponentRef<ShipmentComponent>;
   #nfeComponentRef?: ComponentRef<NFeComponent>;
 
-  public xmlsToSendPort: number = 0;
+  public sendConfigs: Configs = new Configs(0,'','');
 
   public entitiesTypes: EntityType[] = [];
 
@@ -58,7 +58,7 @@ export class AppComponent {
     console.log('Formulario:', this.form.value);
 
     // if (this.validateForm())
-    this.appService.sendXmlsToWS(this.form, this.entitiesTypes, this.xmlsToSendPort);
+    this.appService.sendXmlsToWS(this.form, this.entitiesTypes, this.sendConfigs);
     // else
     //   alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
   }
@@ -173,17 +173,17 @@ export class AppComponent {
       return;
     }
 
-    // const dialogRef = this.dialog.open(DownloadOptionDialog,
-    //   {
-    //     data: new DownloadModel(this.form, this.entitiesToBeSent)
-    //   }
-    // );
+    const dialogRef = this.dialog.open(DownloadOptionDialog,
+      {
+        data: new DownloadModel(this.form, this.entitiesTypes)
+      }
+    );
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result !== undefined) {
-    //     //this.createEntityByAction(result);
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.createEntityByAction(result);
+      }
+    });
 
   }
 
@@ -277,7 +277,7 @@ export class AppComponent {
 
 
   private setConfigs(result: Configs) {
-    this.xmlsToSendPort = result.port;
+    this.sendConfigs = result;
   }
 
   //#endregion

@@ -60,10 +60,10 @@
       </ng-container>
       <hr>
 
-      <div *ngIf="xmlsToSendPort != 0; else elseBlock">
+      <div *ngIf="sendConfigs.port != 0; else elseBlock">
         <label class="send-data-label-title">Dados do envio:</label>
         <br>
-        <label class="send-data-label">Porta {{xmlsToSendPort}}</label>
+        <label class="send-data-label">Porta {{sendConfigs.port}}</label>
         <br>
         <button class="btn btn-primary submit" type="submit">Enviar</button>
         <label class="preview-label">Acompanhar envios (Em Breve!)</label>

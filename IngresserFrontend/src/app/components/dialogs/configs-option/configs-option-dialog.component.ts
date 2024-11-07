@@ -31,6 +31,8 @@ import { Configs } from './configs';
 
 export class ConfigsOptionDialog {
     public port: number = 10;
+    public enterpriseId: string = '';
+    public token: string = '';
 
     readonly dialogRef = inject(MatDialogRef<ConfigsOptionDialog>);
 
@@ -39,7 +41,7 @@ export class ConfigsOptionDialog {
     }
 
     public returnConfigurations(): Configs {
-        return new Configs(this.port);
+        return new Configs(this.port, this.enterpriseId, this.token);
     }
 
 }

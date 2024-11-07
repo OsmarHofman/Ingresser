@@ -1,12 +1,12 @@
 import { FormGroup } from "@angular/forms";
-import { SendEntity } from "./entityType";
+import { EntityType } from "./entityType";
 
 export class DownloadModel {
     public formValue: FormGroup<any>;
-    public entitiesOrder: SendEntity[];
+    public entitiesTypes: EntityType[];
 
-    constructor(formValue: FormGroup<any>, entitiesOrder: SendEntity[]){
+    constructor(formValue: FormGroup<any>, entitiesTypes: EntityType[]){
         this.formValue = formValue;
-        this.entitiesOrder = entitiesOrder;
+        this.entitiesTypes = entitiesTypes;
     }
 }
