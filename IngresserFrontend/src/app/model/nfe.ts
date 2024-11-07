@@ -50,6 +50,13 @@ export class NFe {
                 break;
 
             case CreationSource.JSON:
+                nfeIde = nfeValue.ide;
+                nfeEmit = nfeValue.emit;
+                nfeDest = nfeValue.dest;
+                nfeRetirada = nfeValue.retirada;
+                nfeEntrega = nfeValue.entrega;
+                infAdic = nfeValue.infAdic;
+                otherTags = nfeValue.otherTags;
 
                 break;
 
@@ -180,6 +187,7 @@ export class Ide {
                 break;
 
             case CreationSource.JSON:
+                this.number = content.number;
 
                 break;
 
@@ -248,6 +256,10 @@ export class Participant {
                 break;
 
             case CreationSource.JSON:
+
+                this.cnpj = content.cnpj;
+                this.name = content.name;
+                address = content.address;
 
                 break;
 
@@ -372,6 +384,7 @@ export class InfAdic {
                 break;
 
             case CreationSource.JSON:
+                this.idor = content.idor;
 
                 break;
 

@@ -370,7 +370,7 @@ export class AppService {
         this.http.post(backendUrl, sendRequest)
             .pipe(
                 catchError((httpErrorResponse: HttpErrorResponse) => {
-                    alert(`Erro na requisição:\nURL: ${httpErrorResponse.url}\nStatus: ${httpErrorResponse.status} (${httpErrorResponse.error.title})\nErro: ${httpErrorResponse.error.detail}` );
+                    alert(`Erro na requisição:\nURL: ${httpErrorResponse.url}\nStatus: ${httpErrorResponse.status} (${httpErrorResponse.error.title})\nErro: ${httpErrorResponse.error.detail}`);
                     return throwError(() => httpErrorResponse.error.detail);
                 })
             )
@@ -584,6 +584,113 @@ export class AppService {
         });
 
         return newFormShipment;
+    }
+
+    public addNFeFromEntity(nfe: NFe): any {
+        const ideXml = nfe.convertIdeToXml();
+        const emitXml = nfe.convertEmitToXml();
+        const destXml = nfe.convertDestToXml();
+
+        let retiradaXml = nfe.convertEmitToXml();
+
+        if (nfe.retirada)
+            retiradaXml = nfe.convertRetiradaToXml();
+
+        let entregaXml = nfe.convertDestToXml();
+
+        if (nfe.entrega)
+            entregaXml = nfe.convertEntregaToXml();
+
+        const infAdicXml = nfe.convertInfAdicToXml();
+
+        let newFormNfe: any = {
+            ide: {
+                tab: {
+                    inputContent: {
+                        number: nfe.ide.number
+                    },
+                    tabSelected: 0,
+                    xmlContent: ideXml
+                }
+            },
+            emit: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.emit.cnpj,
+                        name: nfe.emit.name,
+                        address: {
+                            ibgeCode: nfe.emit.address.ibgeCode,
+                            city: nfe.emit.address.city,
+                            uf: nfe.emit.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: emitXml
+                }
+            },
+            dest: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.dest.cnpj,
+                        name: nfe.dest.name,
+                        address: {
+                            ibgeCode: nfe.dest.address.ibgeCode,
+                            city: nfe.dest.address.city,
+                            uf: nfe.dest.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: destXml
+                }
+            },
+            retirada: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.retirada.cnpj,
+                        name: nfe.retirada.name,
+                        address: {
+                            ibgeCode: nfe.retirada.address.ibgeCode,
+                            city: nfe.retirada.address.city,
+                            uf: nfe.retirada.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: retiradaXml
+                }
+            },
+            entrega: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.entrega.cnpj,
+                        name: nfe.entrega.name,
+                        address: {
+                            ibgeCode: nfe.entrega.address.ibgeCode,
+                            city: nfe.entrega.address.city,
+                            uf: nfe.entrega.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: entregaXml
+                }
+            },
+            otherTags: {
+                tab: {
+                    tabSelected: 0,
+                    xmlContent: nfe.otherTags
+                }
+            },
+            infAdic: {
+                tab: {
+                    inputContent: {
+                        idor: nfe.infAdic.idor
+                    },
+                    tabSelected: 0,
+                    xmlContent: infAdicXml
+                }
+            }
+        };
+
+        return newFormNfe;
     }
 
     public getShipmentDefaultFormValues(): any {

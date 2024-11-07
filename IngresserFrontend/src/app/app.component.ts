@@ -20,9 +20,10 @@ import { DownloadOptionDialog } from './components/dialogs/download-option/downl
 import { ConfigsOptionDialog } from './components/dialogs/configs-option/configs-option-dialog.component';
 import { Configs } from './components/dialogs/configs-option/configs';
 import { CreateOptionDialog } from './components/dialogs/create-option/create-option-dialog.component';
-import { ShipmentIndex } from './model/shipment';
+import { Shipment, ShipmentIndex } from './model/shipment';
 import { NFeComponent } from './features/entities/nfe/nfe.component';
 import { DownloadModel } from './model/downloadModel';
+import { NFe } from './model/nfe';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,7 @@ export class AppComponent {
   #shipmentComponentRef?: ComponentRef<ShipmentComponent>;
   #nfeComponentRef?: ComponentRef<NFeComponent>;
 
-  public sendConfigs: Configs = new Configs(10,'','');
+  public sendConfigs: Configs = new Configs(10, '', '');
 
   public entitiesTypes: EntityType[] = [];
 
@@ -113,7 +114,7 @@ export class AppComponent {
 
         this.entitiesTypes.push(EntityType.Shipment);
 
-        this.addShipmentComponent();
+        this.addDefaultShipmentComponent();
 
         break;
 
@@ -121,7 +122,7 @@ export class AppComponent {
 
         this.entitiesTypes.push(EntityType.NFe);
 
-        this.addNFeComponent();
+        this.addDefaultNFeComponent();
 
         break;
 
@@ -137,7 +138,7 @@ export class AppComponent {
   public showUploadOptions(): void {
     const dialogRef = this.dialog.open(UploadOptionDialog);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: DownloadModel) => {
       if (result !== undefined) {
         this.createEntitiesFromUpload(result);
       }
@@ -145,18 +146,39 @@ export class AppComponent {
 
   }
 
-  public createEntitiesFromUpload(entitiesFromUpload: ShipmentIndex[]): void {
+  public createEntitiesFromUpload(entitiesFromUpload: DownloadModel): void {
 
     if (entitiesFromUpload) {
 
-      entitiesFromUpload.forEach((entity: ShipmentIndex) => {
+      this.form.reset();
 
-        this.form.reset();
+      entitiesFromUpload.entitiesTypes.forEach((entityType: EntityType, index: number) => {
 
-        this.entitiesTypes.push(EntityType.Shipment);
+        switch (entityType) {
+          case EntityType.Shipment:
 
-        this.shipmentComponent.addShipment(entity.shipment);
+            this.entitiesTypes.push(EntityType.Shipment);
 
+            const shipment: Shipment = entitiesFromUpload.formValue[index];
+
+            this.addShipmentComponent(shipment);
+
+            break;
+
+          case EntityType.NFe:
+
+            this.entitiesTypes.push(EntityType.NFe);
+
+            const nfe: NFe = entitiesFromUpload.formValue[index];
+
+            this.addNFeComponent(nfe);
+
+            break;
+
+          case EntityType.NotFound:
+          default:
+            break;
+        }
       });
 
     }
@@ -251,7 +273,7 @@ export class AppComponent {
     for (let i = indexes.length - 1; i >= 0; i--) {
 
       this.vcr()?.remove(indexes[i]);
-      
+
       this.entities.removeAt(indexes[i]);
 
       delete this.entitiesTypes[indexes[i]]
@@ -286,8 +308,7 @@ export class AppComponent {
 
   //#endregion
 
-  
-  public addShipmentComponent() {
+  public addDefaultShipmentComponent() {
     this.#shipmentComponentRef = this.vcr()?.createComponent(ShipmentComponent);
 
     const shipmentForm = this.#shipmentComponentRef?.instance.shipments!;
@@ -299,9 +320,25 @@ export class AppComponent {
     this.entities.push(
       shipmentForm
     );
+
   }
 
-  public addNFeComponent() {
+  public addShipmentComponent(shipment: Shipment) {
+    this.#shipmentComponentRef = this.vcr()?.createComponent(ShipmentComponent);
+
+    const shipmentForm = this.#shipmentComponentRef?.instance.shipments!;
+
+    shipmentForm.push(
+      this.formBuilder.group(this.appService.addShipmentFromEntity(shipment))
+    );
+
+    this.entities.push(
+      shipmentForm
+    );
+
+  }
+
+  public addDefaultNFeComponent() {
     this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
 
     const nfeForm = this.#nfeComponentRef?.instance.nfes!;
@@ -313,5 +350,28 @@ export class AppComponent {
     this.entities.push(
       nfeForm
     );
+  }
+
+  public addNFeComponent(nfe: NFe) {
+    this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
+
+    const nfeForm = this.#nfeComponentRef?.instance.nfes!;
+
+    nfeForm.push(
+      this.formBuilder.group(this.appService.addNFeFromEntity(nfe))
+    );
+
+    if (nfe.emit.cnpj !== nfe.retirada.cnpj) {
+      this.#nfeComponentRef?.instance.changeRetiradaState();
+    }
+
+    if (nfe.dest.cnpj !== nfe.entrega.cnpj) {
+      this.#nfeComponentRef?.instance.changeEntregaState();
+    }
+
+    this.entities.push(
+      nfeForm
+    );
+
   }
 }

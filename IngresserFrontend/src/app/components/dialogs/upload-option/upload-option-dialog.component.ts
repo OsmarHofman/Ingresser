@@ -11,9 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
-import { Shipment, ShipmentIndex } from '../../../model/shipment';
+import { Shipment } from '../../../model/shipment';
 import { EntityType } from '../../../model/entityType';
 import { CreationSource } from '../../../model/enums/creation-source';
+import { DownloadModel } from '../../../model/downloadModel';
+import { NFe } from '../../../model/nfe';
 
 @Component({
     selector: 'upload-option-dialog',
@@ -37,7 +39,8 @@ export class UploadOptionDialog {
     public fileName = '...';
     public uploadType = 'entity';
 
-    private uploadedShipments: ShipmentIndex[] = [];
+    private uploadedEntities: any[] = [];
+    private uploadedEntitiesTypes: EntityType[] = [];
 
     readonly dialogRef = inject(MatDialogRef<UploadOptionDialog>);
 
@@ -75,17 +78,31 @@ export class UploadOptionDialog {
 
                         convertedFileObjects.forEach((convertedFileObject: any, index: number) => {
 
-                            if (!isNaN(convertedFileObject.sendSequenceIndex) && convertedFileObject.shipment) {
+                            const entityType = this.getEntityType(convertedFileObject);
 
-                                const shipment: Shipment = new Shipment(convertedFileObject.shipment, CreationSource.JSON);
+                            switch (entityType) {
+                                case EntityType.Shipment:
 
-                                this.uploadedShipments.push(new ShipmentIndex(convertedFileObject.sendSequenceIndex, shipment));
+                                    const shipment: Shipment = new Shipment(convertedFileObject.shipment, CreationSource.JSON);
+
+                                    this.uploadedEntities.push(shipment);
+
+                                    break;
+
+                                case EntityType.NFe:
+
+                                    const nfe: NFe = new NFe(convertedFileObject.nfe, CreationSource.JSON);
+
+                                    this.uploadedEntities.push(nfe);
+
+                                    break;
+
+                                default:
+                                    indexesWithError += `${index}, `;
+                                    return;
                             }
-                            else {
 
-                                indexesWithError += `${index}, `;
-                                return;
-                            }
+                            this.uploadedEntitiesTypes.push(entityType);
                         });
 
                         if (indexesWithError) {
@@ -108,7 +125,14 @@ export class UploadOptionDialog {
 
     }
 
-    public returnShipments(): ShipmentIndex[] {
-        return this.uploadedShipments;
+    public returnEntities(): DownloadModel {
+        return new DownloadModel(this.uploadedEntities, this.uploadedEntitiesTypes);
+    }
+
+    private getEntityType(convertedFileObject: any): EntityType {
+        if (convertedFileObject.shipment) return EntityType.Shipment;
+        if (convertedFileObject.nfe) return EntityType.NFe;
+
+        return EntityType.NotFound;
     }
 }

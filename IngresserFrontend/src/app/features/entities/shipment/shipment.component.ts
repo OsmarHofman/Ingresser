@@ -115,18 +115,6 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
 
   //#endregion
 
-  public addDefaultShipment() {
-    this.shipments.push(
-      this.formBuilder.group(this.appService.getShipmentDefaultFormValues())
-    )
-  }
-
-  public addShipment(shipment: Shipment) {
-    this.shipments.push(
-      this.formBuilder.group(this.appService.addShipmentFromEntity(shipment))
-    )
-  }
-
   public removeShipmentByIndex(index: number): void {
     this.shipments.removeAt(index);
   }

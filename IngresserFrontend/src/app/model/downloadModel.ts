@@ -1,4 +1,3 @@
-import { FormArray } from "@angular/forms";
 import { EntityType } from "./entityType";
 
 export class DownloadModel {
