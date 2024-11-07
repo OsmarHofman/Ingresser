@@ -8,13 +8,16 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { EntityType } from '../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
 import fileSaver from 'file-saver';
 import { DownloadModel } from '../../../model/downloadModel';
+import { Shipment } from '../../../model/shipment';
+import { CreationSource } from '../../../model/enums/creation-source';
+import { NFe } from '../../../model/nfe';
 
 @Component({
     selector: 'download-option-dialog',
@@ -65,29 +68,36 @@ export class DownloadOptionDialog {
     private downloadFileAsJson() {
         let jsonToBeDownloaded: string = '[';
 
-        // this.entitiesToDownload.entitiesTypes.forEach((entityOrder: EntityType, index) => {
+        this.entitiesToDownload.formValue.forEach((entityToDownload: any, index: number) => {
 
-        //     if (index > 0)
-        //         jsonToBeDownloaded += ',\n';
+            if (index > 0)
+                jsonToBeDownloaded += ',\n';
 
-        //     switch (entityOrder) {
+            const entityType: EntityType = this.entitiesToDownload.entitiesTypes[index];
 
-        //         case EntityType.Shipment:
-        //             const formShipment = this.entitiesToDownload.formValue.controls['shipment'].value.shipments[entityOrder.entityListIndex];
+            switch (entityType) {
+                case EntityType.Shipment:
 
-        //             const shipment: Shipment = new Shipment(formShipment, CreationSource.Form);
+                    const shipment: Shipment = new Shipment(entityToDownload[0], CreationSource.Form);
 
-        //             const shipmentIndex: ShipmentIndex = new ShipmentIndex(entityOrder.entityListIndex, shipment);
+                    jsonToBeDownloaded += JSON.stringify({ shipment: shipment });
 
-        //             jsonToBeDownloaded += JSON.stringify(shipmentIndex);
+                    break;
 
-        //             break;
+                case EntityType.NFe:
 
-        //         default:
-        //             break;
-        //     }
+                    const nfe: NFe = new NFe(entityToDownload[0], CreationSource.Form);
 
-        // });
+                    jsonToBeDownloaded += JSON.stringify({ nfe: nfe });
+
+                    break;
+
+                case EntityType.NotFound:
+                default:
+                    return;
+            }
+
+        });
 
         jsonToBeDownloaded += ']'
 
@@ -99,4 +109,5 @@ export class DownloadOptionDialog {
         var blob = new Blob(["Hello, world!"], { type: "application/xml;charset=utf-8" });
         fileSaver.saveAs(blob, `${this.fileName}.xml`);
     }
+
 }

@@ -20,9 +20,9 @@ import { DownloadOptionDialog } from './components/dialogs/download-option/downl
 import { ConfigsOptionDialog } from './components/dialogs/configs-option/configs-option-dialog.component';
 import { Configs } from './components/dialogs/configs-option/configs';
 import { CreateOptionDialog } from './components/dialogs/create-option/create-option-dialog.component';
-import { DownloadModel } from './model/downloadModel';
 import { ShipmentIndex } from './model/shipment';
 import { NFeComponent } from './features/entities/nfe/nfe.component';
+import { DownloadModel } from './model/downloadModel';
 
 @Component({
   selector: 'app-root',
@@ -167,7 +167,7 @@ export class AppComponent {
   //#region Download Options
 
   public showDownloadOptions(): void {
-    if (!this.form.value.shipment && !this.form.value.nfe) {
+    if (this.entities.value.length === 0) {
       alert("Não há nada para ser baixado!");
 
       return;
@@ -175,7 +175,7 @@ export class AppComponent {
 
     const dialogRef = this.dialog.open(DownloadOptionDialog,
       {
-        data: new DownloadModel(this.form, this.entitiesTypes)
+        data: new DownloadModel(this.entities.value, this.entitiesTypes)
       }
     );
 

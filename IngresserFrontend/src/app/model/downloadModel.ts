@@ -1,11 +1,11 @@
-import { FormGroup } from "@angular/forms";
+import { FormArray } from "@angular/forms";
 import { EntityType } from "./entityType";
 
 export class DownloadModel {
-    public formValue: FormGroup<any>;
+    public formValue: any;
     public entitiesTypes: EntityType[];
 
-    constructor(formValue: FormGroup<any>, entitiesTypes: EntityType[]){
+    constructor(formValue: any, entitiesTypes: EntityType[]){
         this.formValue = formValue;
         this.entitiesTypes = entitiesTypes;
     }
