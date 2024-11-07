@@ -33,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     MatSidenavModule,
     BrowserAnimationsModule,
     NFeComponent,
-    NFeParticipantAccordionComponent
+    NFeParticipantAccordionComponent,
 ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],

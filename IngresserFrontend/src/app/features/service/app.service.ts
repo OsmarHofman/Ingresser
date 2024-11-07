@@ -1,21 +1,20 @@
 import { FormGroup } from "@angular/forms";
-import { Shipment, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { NFeBaseTag, ShipmentBaseTag } from "../../model/xml-base-tags";
-import { ValuesConfiguration } from "../../model/values-configuration";
 import { catchError, throwError } from "rxjs";
 import { ResultMessage } from "../shared/result-message";
-import { _ErrorStateTracker } from "@angular/material/core";
+import { Shipment, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
+import { NFeBaseTag, ShipmentBaseTag } from "../../model/xml-base-tags";
+import { ValuesConfiguration } from "../../model/values-configuration";
 import { NFe, NFesAndId } from "../../model/nfe";
 import { CreationSource } from "../../model/enums/creation-source";
-import { SendRequest, WsType } from "../../model/send-request";
+import { SendRequest } from "../../model/send-request";
+import { EntityType } from "../../model/entityType";
 
 const backendUrl = "http://localhost:5181/sendXml";
 
 @Injectable()
 export class AppService {
-
 
     public wsUrl = 'https://pr.dev.nddfrete.com.br:1081/tmsExchangeMessage/TMSExchangeMessage.asmx';
 
@@ -25,197 +24,187 @@ export class AppService {
         this.getConfigurationFromFile();
     }
 
-    public convertShipmentFormToXml(form: FormGroup): string[] {
+    public convertShipmentFormToXml(formShipment: any): string {
 
-        if (!this.configuration) return [];
+        if (!this.configuration) return '';
 
-        let xmlsToSend: string[] = [];
+        const shipment: Shipment = new Shipment(formShipment, CreationSource.Form);
 
-        const formShipments = form.controls['shipment'].value.shipments;
+        let shipmentXml: string = '';
 
-        formShipments.forEach((formShipment: any) => {
-            const shipment: Shipment = new Shipment(formShipment, CreationSource.Form);
+        const shipmentHeaderTab = formShipment.shipmentHeader.tab;
 
-            let shipmentXml: string = '';
+        let shipmentXid: string;
+        let carrierXid: string;
 
-            const shipmentHeaderTab = formShipment.shipmentHeader.tab;
+        if (shipmentHeaderTab.tabSelected === 0) {
+            shipmentXml += shipment.convertShipmentHeaderToXml();
+            shipmentXid = shipment.shipmentHeader.shipmentXid;
+            carrierXid = shipment.shipmentHeader.carrierXid;
+        } else {
+            shipmentXml += shipmentHeaderTab.xmlContent;
+            shipmentXid = ShipmentHeader.getShipmentXidFromXml(shipmentXml);
+            carrierXid = ShipmentHeader.getCarrierXidFromXml(shipmentXml);
+        }
 
-            let shipmentXid: string;
-            let carrierXid: string;
+        shipmentXml += "\n";
 
-            if (shipmentHeaderTab.tabSelected === 0) {
-                shipmentXml += shipment.convertShipmentHeaderToXml();
-                shipmentXid = shipment.shipmentHeader.shipmentXid;
-                carrierXid = shipment.shipmentHeader.carrierXid;
-            } else {
-                shipmentXml += shipmentHeaderTab.xmlContent;
-                shipmentXid = ShipmentHeader.getShipmentXidFromXml(shipmentXml);
-                carrierXid = ShipmentHeader.getCarrierXidFromXml(shipmentXml);
-            }
+        const shipmentHeader2Tab = formShipment.shipmentHeader2.tab;
 
-            shipmentXml += "\n";
+        let shipmentPerspective: string;
 
-            const shipmentHeader2Tab = formShipment.shipmentHeader2.tab;
+        if (shipmentHeader2Tab.tabSelected === 0) {
+            shipmentXml += shipment.convertShipmentHeader2ToXml();
+            shipmentPerspective = shipment.shipmentHeader2.perspective;
+        } else {
+            shipmentXml += shipmentHeader2Tab.xmlContent;
+            shipmentPerspective = ShipmentHeader2.getPerspectiveFromXml(shipmentXml);
+        }
 
-            let shipmentPerspective: string;
+        shipmentXml += "\n";
 
-            if (shipmentHeader2Tab.tabSelected === 0) {
-                shipmentXml += shipment.convertShipmentHeader2ToXml();
-                shipmentPerspective = shipment.shipmentHeader2.perspective;
-            } else {
-                shipmentXml += shipmentHeader2Tab.xmlContent;
-                shipmentPerspective = ShipmentHeader2.getPerspectiveFromXml(shipmentXml);
-            }
+        const shipmentStopTab = formShipment.shipmentStop.tab;
 
-            shipmentXml += "\n";
+        if (shipmentStopTab.tabSelected === 0) {
+            shipmentXml += shipment.convertShipmentStopToXml();
+        } else {
+            shipmentXml += shipmentStopTab.xmlContent;
+        }
 
-            const shipmentStopTab = formShipment.shipmentStop.tab;
+        shipmentXml += "\n";
 
-            if (shipmentStopTab.tabSelected === 0) {
-                shipmentXml += shipment.convertShipmentStopToXml();
-            } else {
-                shipmentXml += shipmentStopTab.xmlContent;
-            }
+        const shipmentLocationTab = formShipment.location.tab;
 
-            shipmentXml += "\n";
+        if (shipmentLocationTab.tabSelected === 0) {
+            shipmentXml += shipment.convertLocationToXml();
+        } else {
+            shipmentXml += shipmentLocationTab.xmlContent;
+        }
 
-            const shipmentLocationTab = formShipment.location.tab;
+        shipmentXml += "\n";
 
-            if (shipmentLocationTab.tabSelected === 0) {
-                shipmentXml += shipment.convertLocationToXml();
-            } else {
-                shipmentXml += shipmentLocationTab.xmlContent;
-            }
+        const shipmentReleaseTab = formShipment.release.tab;
 
-            shipmentXml += "\n";
+        if (shipmentReleaseTab.tabSelected === 0) {
+            shipmentXml += shipment.convertReleaseToXml(shipmentXid, shipmentPerspective, carrierXid);
+        } else {
+            shipmentXml += shipmentReleaseTab.xmlContent;
+        }
 
-            const shipmentReleaseTab = formShipment.release.tab;
+        shipmentXml += "\n";
 
-            if (shipmentReleaseTab.tabSelected === 0) {
-                shipmentXml += shipment.convertReleaseToXml(shipmentXid, shipmentPerspective, carrierXid);
-            } else {
-                shipmentXml += shipmentReleaseTab.xmlContent;
-            }
-
-            shipmentXml += "\n";
-
-            xmlsToSend.push(shipmentXml);
-        });
-
-        return xmlsToSend;
-
+        return shipmentXml;
     }
 
-    public convertNFeFormToXml(form: FormGroup): NFesAndId[] {
+    public convertNFeFormToXml(formNFe: any): NFesAndId {
 
-        if (!this.configuration) return [];
+        if (!this.configuration) return new NFesAndId('', '');
 
-        let xmlsToSend: NFesAndId[] = [];
+        const nfe: NFe = new NFe(formNFe, CreationSource.Form);
 
-        const formNFes = form.controls['nfe'].value.nfes;
+        let nfeXml: string = '';
 
-        formNFes.forEach((formNFe: any) => {
-            const nfe: NFe = new NFe(formNFe, CreationSource.Form);
+        const nfeIdeTab = formNFe.ide.tab;
 
-            let nfeXml: string = '';
+        let nfeId: string = '';
 
-            const nfeIdeTab = formNFe.ide.tab;
+        if (nfeIdeTab.tabSelected === 0) {
+            nfeXml += nfe.convertIdeToXml();
+            const nfeNumber: string = nfe.ide.number.padStart(9, '0');
 
-            let nfeId: string = '';
+            nfeId = `3520060766314000027055031${nfeNumber}1819146465`;
+        } else {
 
-            if (nfeIdeTab.tabSelected === 0) {
-                nfeXml += nfe.convertIdeToXml();
-                const nfeNumber: string = nfe.ide.number.padStart(9, '0');
+            nfeXml += nfeIdeTab.xmlContent;
 
-                nfeId = `3520060766314000027055031${nfeNumber}1819146465`;
-            } else {
+            nfeId = NFe.generateNFeIdByIdeTag(nfeIdeTab.xmlContent);
+        }
 
-                nfeXml += nfeIdeTab.xmlContent;
+        nfeXml += "\n";
 
-                nfeId = NFe.generateNFeIdByIdeTag(nfeIdeTab.xmlContent);
-            }
+        const nfeEmitTab = formNFe.emit.tab;
 
-            nfeXml += "\n";
+        if (nfeEmitTab.tabSelected === 0) {
+            nfeXml += nfe.convertEmitToXml();
+        } else {
+            nfeXml += nfeEmitTab.xmlContent;
+        }
 
-            const nfeEmitTab = formNFe.emit.tab;
+        nfeXml += "\n";
 
-            if (nfeEmitTab.tabSelected === 0) {
-                nfeXml += nfe.convertEmitToXml();
-            } else {
-                nfeXml += nfeEmitTab.xmlContent;
-            }
+        const nfeDestTab = formNFe.dest.tab;
 
-            nfeXml += "\n";
+        if (nfeDestTab.tabSelected === 0) {
+            nfeXml += nfe.convertDestToXml();
+        } else {
+            nfeXml += nfeDestTab.xmlContent;
+        }
 
-            const nfeDestTab = formNFe.dest.tab;
+        nfeXml += "\n";
 
-            if (nfeDestTab.tabSelected === 0) {
-                nfeXml += nfe.convertDestToXml();
-            } else {
-                nfeXml += nfeDestTab.xmlContent;
-            }
+        const nfeRetiradaTab = formNFe.retirada.tab;
 
-            nfeXml += "\n";
+        if (nfeRetiradaTab.tabSelected === 0) {
+            nfeXml += nfe.convertRetiradaToXml();
+        } else {
+            nfeXml += nfeRetiradaTab.xmlContent;
+        }
 
-            const nfeRetiradaTab = formNFe.retirada.tab;
+        nfeXml += "\n";
 
-            if (nfeRetiradaTab.tabSelected === 0) {
-                nfeXml += nfe.convertRetiradaToXml();
-            } else {
-                nfeXml += nfeRetiradaTab.xmlContent;
-            }
+        const nfeEntregaTab = formNFe.entrega.tab;
 
-            nfeXml += "\n";
+        if (nfeEntregaTab.tabSelected === 0) {
+            nfeXml += nfe.convertEntregaToXml();
+        } else {
+            nfeXml += nfeEntregaTab.xmlContent;
+        }
 
-            const nfeEntregaTab = formNFe.entrega.tab;
+        nfeXml += "\n";
 
-            if (nfeEntregaTab.tabSelected === 0) {
-                nfeXml += nfe.convertEntregaToXml();
-            } else {
-                nfeXml += nfeEntregaTab.xmlContent;
-            }
+        nfeXml += `${nfe.otherTags}\n`;
 
-            nfeXml += "\n";
+        const nfeInfAdicTab = formNFe.infAdic.tab;
 
-            nfeXml += `${nfe.otherTags}\n`;
+        if (nfeInfAdicTab.tabSelected === 0) {
+            nfeXml += nfe.convertInfAdicToXml();
+        } else {
+            nfeXml += nfeInfAdicTab.xmlContent;
+        }
 
-            const nfeInfAdicTab = formNFe.infAdic.tab;
+        nfeXml += "\n";
 
-            if (nfeInfAdicTab.tabSelected === 0) {
-                nfeXml += nfe.convertInfAdicToXml();
-            } else {
-                nfeXml += nfeInfAdicTab.xmlContent;
-            }
-
-            nfeXml += "\n";
-
-            xmlsToSend.push(new NFesAndId(nfeXml, nfeId));
-        });
-
-        return xmlsToSend;
+        return new NFesAndId(nfeXml, nfeId);
     }
 
-    public sendXmlsToWS(form: FormGroup, xmlsToSendPort: number): void {
+    public sendXmlsToWS(form: FormGroup, entitiesTypes: EntityType[], xmlsToSendPort: number): void {
 
         let xmlsToSend: SendRequest[] = [];
 
-        if (form.controls['shipment'].value) {
+        if (form.controls['entities'].value) {
 
-            const xmlsShipment: string[] = this.convertShipmentFormToXml(form);
+            for (let index = 0; index < entitiesTypes.length; index++) {
 
-            xmlsShipment.forEach((shipmentXml: string) => {
+                const formValue = form.controls['entities'].value[index];
 
-                const currentTime = new Date();
+                const entityType = entitiesTypes[index];
 
-                const gLogDate: string = String(currentTime.getFullYear()) +
-                    String(currentTime.getMonth()).padStart(2, '0') +
-                    String(currentTime.getDate()).padStart(2, '0') +
-                    String(currentTime.getHours()).padStart(2, '0') +
-                    String(currentTime.getMinutes()).padStart(2, '0') +
-                    String(currentTime.getSeconds()).padStart(2, '0');
+                switch (entityType) {
 
+                    case EntityType.Shipment:
 
-                let finalShipmentXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+                        const shipmentXml: string = this.convertShipmentFormToXml(formValue[0]);
+
+                        const currentTime = new Date();
+
+                        const gLogDate: string = String(currentTime.getFullYear()) +
+                            String(currentTime.getMonth()).padStart(2, '0') +
+                            String(currentTime.getDate()).padStart(2, '0') +
+                            String(currentTime.getHours()).padStart(2, '0') +
+                            String(currentTime.getMinutes()).padStart(2, '0') +
+                            String(currentTime.getSeconds()).padStart(2, '0');
+
+                        let finalShipmentXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
         <soapenv:Header/>
         <soapenv:Body>
             <Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
@@ -282,18 +271,15 @@ export class AppService {
         </soapenv:Body>
     </soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
 
-                xmlsToSend.push(new SendRequest(finalShipmentXml, WsType.ShipmentWS));
-            });
+                        xmlsToSend.push(new SendRequest(finalShipmentXml, entityType));
 
-        }
+                        break;
 
-        if (form.controls['nfe'].value) {
+                    case EntityType.NFe:
 
-            const NFeXmlsAndId: NFesAndId[] = this.convertNFeFormToXml(form);
+                        const NFeXmlAndId: NFesAndId = this.convertNFeFormToXml(formValue[0]);
 
-            NFeXmlsAndId.forEach((NFeXmlAndId: NFesAndId) => {
-
-                let finalNFeXml: string = `<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
+                        let finalNFeXml: string = `<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
 	<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
 		<infNFe Id="NFe[[NFeId]]" versao="4.00">
         [[NFe]]
@@ -333,9 +319,16 @@ export class AppService {
 	</protNFe>
 </nfeProc>`.replace('[[NFeId]]', NFeXmlAndId.id).replace('[[NFe]]', NFeXmlAndId.nfeXml);
 
-                xmlsToSend.push(new SendRequest(finalNFeXml, WsType.DocumentsWS));
-            });
+                        xmlsToSend.push(new SendRequest(finalNFeXml, entityType));
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
+
 
         xmlsToSend.forEach(async (xmlToSend: SendRequest) => {
             this.sendXml(xmlToSend, xmlsToSendPort);
@@ -349,12 +342,8 @@ export class AppService {
     }
 
     public sendXml(sendRequest: SendRequest, port: number): void {
-        let wsUrl = sendRequest.wsType === WsType.ShipmentWS
-            ? `https://pr.dev.nddfrete.com.br:${port}/tmsExchangeMessage/TMSExchangeMessage.asmx`
-            : `https://pr.dev.nddfrete.com.br:${port}/exchangeMessage/WSExchangeMessage.asmx`;
-
         const soapRequest = {
-            url: wsUrl,
+            url: sendRequest.getUrlWithPort(port),
             xml: sendRequest.xml
         }
 

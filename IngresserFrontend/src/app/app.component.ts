@@ -1,5 +1,14 @@
-import { Component, Injectable, signal, model, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  Component,
+  Injectable,
+  signal,
+  model,
+  ViewChild,
+  ViewContainerRef,
+  ComponentRef,
+  viewChild
+} from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from './features/service/app.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ShipmentComponent } from './features/entities/shipment/shipment.component';
@@ -26,9 +35,14 @@ import { NFeComponent } from './features/entities/nfe/nfe.component';
 @Injectable()
 export class AppComponent {
 
+  public vcr = viewChild('entities', { read: ViewContainerRef });
+
+  #shipmentComponentRef?: ComponentRef<ShipmentComponent>;
+  #nfeComponentRef?: ComponentRef<NFeComponent>;
+
   public xmlsToSendPort: number = 0;
 
-  public entitiesToBeSent: SendEntity[] = [];
+  public entitiesTypes: EntityType[] = [];
 
   constructor(private formBuilder: FormBuilder,
     private appService: AppService,
@@ -37,15 +51,14 @@ export class AppComponent {
   //#region Form
 
   public form: FormGroup = this.formBuilder.group({
-    shipment: [''],
-    nfe: [''],
+    entities: this.formBuilder.array([]),
   },);
 
   public submitForm(): void {
     console.log('Formulario:', this.form.value);
 
     // if (this.validateForm())
-    this.appService.sendXmlsToWS(this.form, this.xmlsToSendPort);
+    this.appService.sendXmlsToWS(this.form, this.entitiesTypes, this.xmlsToSendPort);
     // else
     //   alert('Alguma tag não foi preenchida! Favor verificar se os campos foram preenchidos ou selecionado a aba do xml!');
   }
@@ -69,6 +82,9 @@ export class AppComponent {
     return controlNames.every(controlName => this.form.controls[controlName].value);
   }
 
+  get entities() {
+    return this.form.get('entities') as FormArray;
+  }
   //#endregion
 
   readonly costXid = signal('');
@@ -92,36 +108,28 @@ export class AppComponent {
 
   public createEntityByAction(result: EntityType) {
 
+    let entityIndex: number = 0;
+
+    const entitiesList: any = this.entities.value;
+
+    if (entitiesList) {
+      entityIndex = entitiesList.length;
+    }
+
     switch (result) {
       case EntityType.Shipment:
 
-        let shipmentIndex: number = 0;
+        this.entitiesTypes.push(EntityType.Shipment);
 
-        const shipmentList: any = this.form.controls['shipment'].value.shipments;
-
-        if (shipmentList) {
-          shipmentIndex = shipmentList.length;
-        }
-
-        this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, shipmentIndex));
-
-        this.shipmentComponent.addDefaultShipment();
+        this.addShipmentComponent();
 
         break;
 
       case EntityType.NFe:
 
-        let nfeIndex: number = 0;
+        this.entitiesTypes.push(EntityType.NFe);
 
-        const nfeList: any = this.form.controls['nfe'].value.nfes;
-
-        if (nfeList) {
-          nfeIndex = nfeList.length;
-        }
-
-        this.entitiesToBeSent.push(new SendEntity(EntityType.NFe, nfeIndex));
-
-        this.nfeComponent.addDefaultNFe();
+        this.addNFeComponent();
 
         break;
 
@@ -153,7 +161,7 @@ export class AppComponent {
 
         this.form.reset();
 
-        this.entitiesToBeSent.push(new SendEntity(EntityType.Shipment, entity.sendSequenceIndex));
+        this.entitiesTypes.push(EntityType.Shipment);
 
         this.shipmentComponent.addShipment(entity.shipment);
 
@@ -173,17 +181,17 @@ export class AppComponent {
       return;
     }
 
-    const dialogRef = this.dialog.open(DownloadOptionDialog,
-      {
-        data: new DownloadModel(this.form, this.entitiesToBeSent)
-      }
-    );
+    // const dialogRef = this.dialog.open(DownloadOptionDialog,
+    //   {
+    //     data: new DownloadModel(this.form, this.entitiesToBeSent)
+    //   }
+    // );
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        //this.createEntityByAction(result);
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result !== undefined) {
+    //     //this.createEntityByAction(result);
+    //   }
+    // });
 
   }
 
@@ -191,14 +199,14 @@ export class AppComponent {
 
   //#region Duplicate Options
   public showDuplicateOptions(): void {
-    if (this.entitiesToBeSent.length === 0) {
+    if (this.entitiesTypes.length === 0) {
       alert("Não há nada para ser duplicado!");
 
       return;
     }
 
     const dialogRef = this.dialog.open(DuplicateOptionDialog, {
-      data: this.entitiesToBeSent,
+      data: this.entitiesTypes,
     }
     );
 
@@ -227,14 +235,14 @@ export class AppComponent {
 
   //#region Delete Options
   public showDeleteOptions(): void {
-    if (this.entitiesToBeSent.length === 0) {
+    if (this.entitiesTypes.length === 0) {
       alert("Não há nada para ser deletado!");
 
       return;
     }
 
     const dialogRef = this.dialog.open(DeleteOptionDialog, {
-      data: this.entitiesToBeSent,
+      data: this.entitiesTypes,
     }
     );
 
@@ -246,46 +254,46 @@ export class AppComponent {
   }
 
   public deleteEntityByIndexes(indexes: number[]) {
-    indexes = indexes.sort();
+    // indexes = indexes.sort();
 
-    for (let i = indexes.length - 1; i >= 0; i--) {
-      const entityToBeDeleted = this.entitiesToBeSent[indexes[i]];
+    // for (let i = indexes.length - 1; i >= 0; i--) {
+    //   const entityToBeDeleted = this.entitiesToBeSent[indexes[i]];
 
-      switch (entityToBeDeleted.type) {
-        case EntityType.Shipment:
-          this.shipmentComponent.removeShipmentByIndex(entityToBeDeleted.entityListIndex);
+    //   switch (entityToBeDeleted.type) {
+    //     case EntityType.Shipment:
+    //       this.shipmentComponent.removeShipmentByIndex(entityToBeDeleted.entityListIndex);
 
-          this.recalculateShipmentIndexesInEntitiesToBeSent(indexes, i);
+    //       this.recalculateShipmentIndexesInEntitiesToBeSent(indexes, i);
 
-          break;
+    //       break;
 
-        default:
-          break;
-      }
+    //     default:
+    //       break;
+    //   }
 
-      delete this.entitiesToBeSent[indexes[i]]
-    }
+    //   delete this.entitiesToBeSent[indexes[i]]
+    // }
 
-    this.entitiesToBeSent = this.entitiesToBeSent.filter((entityToBeSent: SendEntity) => {
-      return entityToBeSent;
-    })
+    // this.entitiesToBeSent = this.entitiesToBeSent.filter((entityToBeSent: SendEntity) => {
+    //   return entityToBeSent;
+    // })
   }
 
   private recalculateShipmentIndexesInEntitiesToBeSent(indexes: number[], i: number) {
-    const lastEntityIndex: number = this.entitiesToBeSent.length - 1;
+    // const lastEntityIndex: number = this.entitiesToBeSent.length - 1;
 
-    if (lastEntityIndex > indexes[i]) {
+    // if (lastEntityIndex > indexes[i]) {
 
-      const entitiesAfterDeletedInList: SendEntity[] = this.entitiesToBeSent
-        .slice(indexes[i] + 1, this.entitiesToBeSent.length)
-        .filter((entityToBeSent: SendEntity) => {
-          return entityToBeSent.type === EntityType.Shipment;
-        });
+    //   const entitiesAfterDeletedInList: SendEntity[] = this.entitiesToBeSent
+    //     .slice(indexes[i] + 1, this.entitiesToBeSent.length)
+    //     .filter((entityToBeSent: SendEntity) => {
+    //       return entityToBeSent.type === EntityType.Shipment;
+    //     });
 
-      entitiesAfterDeletedInList.forEach((entityToBeSent: SendEntity) => {
-        entityToBeSent.entityListIndex -= 1;
-      });
-    }
+    //   entitiesAfterDeletedInList.forEach((entityToBeSent: SendEntity) => {
+    //     entityToBeSent.entityListIndex -= 1;
+    //   });
+    // }
   }
   //#endregion
 
@@ -308,4 +316,33 @@ export class AppComponent {
   //#endregion
 
   //#endregion
+
+  
+  public addShipmentComponent() {
+    this.#shipmentComponentRef = this.vcr()?.createComponent(ShipmentComponent);
+
+    const shipmentForm = this.#shipmentComponentRef?.instance.shipments!;
+
+    shipmentForm.push(
+      this.formBuilder.group(this.appService.getShipmentDefaultFormValues())
+    );
+
+    this.entities.push(
+      shipmentForm
+    );
+  }
+
+  public addNFeComponent() {
+    this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
+
+    const nfeForm = this.#nfeComponentRef?.instance.nfes!;
+
+    nfeForm.push(
+      this.formBuilder.group(this.appService.getNFeDefaultFormValues())
+    );
+
+    this.entities.push(
+      nfeForm
+    );
+  }
 }

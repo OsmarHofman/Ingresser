@@ -39,7 +39,7 @@
         Download
       </button>
     </li>
-    
+
     <li>
       <button class="fab-btn" (click)="showUploadOptions()">
         Upload
@@ -55,8 +55,9 @@
   </ul>
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
     <div>
-      <shipment #shipment formControlName="shipment" />
-      <nfe #nfe formControlName="nfe" />
+
+      <ng-container #entities formArrayName="entities">
+      </ng-container>
       <hr>
 
       <div *ngIf="xmlsToSendPort != 0; else elseBlock">
@@ -65,11 +66,12 @@
         <label class="send-data-label">Porta {{xmlsToSendPort}}</label>
         <br>
         <button class="btn btn-primary submit" type="submit">Enviar</button>
+        <label class="preview-label">Acompanhar envios (Em Breve!)</label>
       </div>
       <ng-template #elseBlock>
         <label class="attention">Preencha a opção "Configs" no Menu para habilitar o Envio</label>
       </ng-template>
-        
+
     </div>
   </form>
 </main>
