@@ -108,14 +108,6 @@ export class AppComponent {
 
   public createEntityByAction(result: EntityType) {
 
-    let entityIndex: number = 0;
-
-    const entitiesList: any = this.entities.value;
-
-    if (entitiesList) {
-      entityIndex = entitiesList.length;
-    }
-
     switch (result) {
       case EntityType.Shipment:
 
