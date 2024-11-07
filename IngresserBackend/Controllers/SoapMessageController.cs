@@ -25,11 +25,18 @@ namespace IngresserBackend.Controllers
                 if (soapRequest == null)
                     throw new BadHttpRequestException("Requisição não preenchida!");
 
-                if (soapRequest.IsShipment)
-                    _soapCallService.CallShipmentWebService(soapRequest);
-                else
-                    _soapCallService.CallDocumentWebService(soapRequest);
+                var callResult = soapRequest.EntityType == EntityType.Shipment
+                    ? _soapCallService.CallShipmentWebService(soapRequest)
+                    : _soapCallService.CallDocumentWebService(soapRequest);
 
+                if (callResult.Status == TaskStatus.Faulted)
+                {
+                    var wsError = soapRequest.EntityType == EntityType.Shipment
+                        ? "\nErro na chamada para o WS de Embarques\n\t "
+                        : "\nErro na chamada para o WS de Documentos\n\t ";
+
+                    return Problem(wsError + callResult.Exception?.Message, null, 512, "IngresserProcessingError");
+                }
 
                 var resultMessage = new ResultMessage("Xml enviado com sucesso!", successful: true);
 

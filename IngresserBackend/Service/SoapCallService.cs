@@ -11,7 +11,7 @@ namespace IngresserBackend.Service
             try
             {
                 using var content = new StringContent(soapRequest.Xml, Encoding.UTF8, "text/xml");
-                using var request = new HttpRequestMessage(HttpMethod.Post, soapRequest.Url);
+                using var request = new HttpRequestMessage(HttpMethod.Post, soapRequest.GetUrl());
 
                 request.Headers.Add("SOAPAction", "ReceiveTransmission");
                 request.Content = content;
@@ -22,9 +22,9 @@ namespace IngresserBackend.Service
 
                 await response.Content.ReadAsStringAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                await Task.FromException(e);
             }
         }
 
@@ -32,10 +32,8 @@ namespace IngresserBackend.Service
         {
             try
             {
-                var urlSend = $"{soapRequest.Url}?op=Send";
-
                 using var content = new StringContent(soapRequest.Xml, Encoding.UTF8, "text/xml");
-                using var request = new HttpRequestMessage(HttpMethod.Post, urlSend);
+                using var request = new HttpRequestMessage(HttpMethod.Post, soapRequest.GetUrl());
 
                 request.Content = content;
 
@@ -45,9 +43,9 @@ namespace IngresserBackend.Service
 
                 await response.Content.ReadAsStringAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                await Task.FromException(e);
             }
         }
     }
