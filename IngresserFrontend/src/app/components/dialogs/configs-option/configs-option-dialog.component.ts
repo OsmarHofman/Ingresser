@@ -4,7 +4,8 @@ import {
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    MatDialogTitle
+    MatDialogTitle,
+    MAT_DIALOG_DATA
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
@@ -30,18 +31,16 @@ import { Configs } from './configs';
 })
 
 export class ConfigsOptionDialog {
-    public port: number = 10;
-    public enterpriseId: string = '';
-    public token: string = '';
 
     readonly dialogRef = inject(MatDialogRef<ConfigsOptionDialog>);
+    readonly configs = inject<Configs>(MAT_DIALOG_DATA);
 
     public onNoClick(): void {
         this.dialogRef.close();
     }
 
     public returnConfigurations(): Configs {
-        return new Configs(this.port, this.enterpriseId, this.token);
+        return this.configs;
     }
 
 }

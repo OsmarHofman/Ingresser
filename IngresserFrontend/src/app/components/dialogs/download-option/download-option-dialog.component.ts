@@ -11,12 +11,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { EntityType, SendEntity } from '../../../model/entityType';
+import { EntityType } from '../../../model/entityType';
 import { MatRadioModule } from '@angular/material/radio';
 import fileSaver from 'file-saver';
 import { DownloadModel } from '../../../model/downloadModel';
-import { Shipment, ShipmentIndex } from '../../../model/shipment';
-import { CreationSource } from '../../../model/enums/creation-source';
 
 @Component({
     selector: 'download-option-dialog',

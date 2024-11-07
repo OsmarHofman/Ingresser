@@ -3,19 +3,19 @@
   <div class="row">
     <mat-form-field appearance="outline" fxFill id="name" class="col-md-4 name-input" subscriptSizing="dynamic">
       <mat-label>Porta para envio</mat-label>
-      <input matInput #input placeholder="1081" [(ngModel)]="port" />
+      <input matInput #input placeholder="1081" [(ngModel)]="configs.port" />
     </mat-form-field>
   </div>
   <div class="row">
     <mat-form-field appearance="outline" fxFill id="enterpriseId" class="col-md-10 name-input" subscriptSizing="dynamic">
       <mat-label>EnterpriseId</mat-label>
-      <input matInput #input placeholder="85c8732d-4140-4795-91a2-127159f4ee78" [(ngModel)]="enterpriseId" />
+      <input matInput #input placeholder="85c8732d-4140-4795-91a2-127159f4ee78" [(ngModel)]="configs.enterpriseId" />
     </mat-form-field>
   </div>
   <div class="row">
     <mat-form-field appearance="outline" fxFill id="token" class="col-md-10 name-input" subscriptSizing="dynamic">
       <mat-label>Token</mat-label>
-      <input matInput #input placeholder="f5f0280c-0ed9-4f48-b01c-a39d7f79a2ca" [(ngModel)]="token" />
+      <input matInput #input placeholder="f5f0280c-0ed9-4f48-b01c-a39d7f79a2ca" [(ngModel)]="configs.token" />
     </mat-form-field>
   </div>
   <div class="row">

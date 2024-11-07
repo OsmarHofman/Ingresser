@@ -60,11 +60,23 @@
       </ng-container>
       <hr>
 
-      <div *ngIf="sendConfigs.port != 0; else elseBlock">
+      <div *ngIf="sendConfigs.port != 10; else elseBlock">
         <label class="send-data-label-title">Dados do envio:</label>
         <br>
-        <label class="send-data-label">Porta {{sendConfigs.port}}</label>
+        <label class="send-data-label">Porta: {{sendConfigs.port}}</label>
         <br>
+        <div *ngIf="sendConfigs.enterpriseId">
+          <label class="send-data-label" >EnterpriseId:
+            {{sendConfigs.enterpriseId}}
+          </label>
+          <br>
+        </div>
+        <div *ngIf="sendConfigs.token">
+          <label class="send-data-label" >Token:
+            {{sendConfigs.token}}
+          </label>
+          <br>
+        </div>
         <button class="btn btn-primary submit" type="submit">Enviar</button>
         <label class="preview-label">Acompanhar envios (Em Breve!)</label>
       </div>

@@ -40,7 +40,7 @@ export class AppComponent {
   #shipmentComponentRef?: ComponentRef<ShipmentComponent>;
   #nfeComponentRef?: ComponentRef<NFeComponent>;
 
-  public sendConfigs: Configs = new Configs(0,'','');
+  public sendConfigs: Configs = new Configs(10,'','');
 
   public entitiesTypes: EntityType[] = [];
 
@@ -266,7 +266,9 @@ export class AppComponent {
 
   //#region Configs Options
   public showConfigsOptions(): void {
-    const dialogRef = this.dialog.open(ConfigsOptionDialog);
+    const dialogRef = this.dialog.open(ConfigsOptionDialog, {
+      data: this.sendConfigs,
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
