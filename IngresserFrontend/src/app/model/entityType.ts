@@ -4,7 +4,8 @@ export enum EntityType {
 }
 
 export const EntityTypeLabel = new Map<number, string>([
-    [EntityType.Shipment, 'Embarque']
+    [EntityType.Shipment, 'Embarque'],
+    [EntityType.NFe, 'NF-e'],
 ])
 
 export class SendEntity {

@@ -11,8 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
-import { EntityTypeLabel, SendEntity } from '../../../model/entityType';
+import { EntityType, EntityTypeLabel, SendEntity } from '../../../model/entityType';
 import { CommonModule } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
 
@@ -38,7 +37,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 
 export class DeleteOptionDialog {
     readonly dialogRef = inject(MatDialogRef<DeleteOptionDialog>);
-    readonly entities = inject<SendEntity[]>(MAT_DIALOG_DATA);
+    readonly entities = inject<EntityType[]>(MAT_DIALOG_DATA);
 
     public selectedRows: number[] = [];
 
@@ -51,9 +50,9 @@ export class DeleteOptionDialog {
     }
 
     public getEntityAndNumberByIndex(index: number): string {
-        const entity: SendEntity = this.entities[index];
+        const entity: EntityType = this.entities[index];
 
-        return `${EntityTypeLabel.get(entity.type)} no índice: ${index}`;
+        return `${EntityTypeLabel.get(entity)} no índice: ${index}`;
     }
 
     public markRowAsSelected(selectedIndex: number) {

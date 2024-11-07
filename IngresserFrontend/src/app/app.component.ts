@@ -254,47 +254,22 @@ export class AppComponent {
   }
 
   public deleteEntityByIndexes(indexes: number[]) {
-    // indexes = indexes.sort();
+    indexes = indexes.sort();
 
-    // for (let i = indexes.length - 1; i >= 0; i--) {
-    //   const entityToBeDeleted = this.entitiesToBeSent[indexes[i]];
+    for (let i = indexes.length - 1; i >= 0; i--) {
 
-    //   switch (entityToBeDeleted.type) {
-    //     case EntityType.Shipment:
-    //       this.shipmentComponent.removeShipmentByIndex(entityToBeDeleted.entityListIndex);
+      this.vcr()?.remove(indexes[i]);
+      
+      this.entities.removeAt(indexes[i]);
 
-    //       this.recalculateShipmentIndexesInEntitiesToBeSent(indexes, i);
+      delete this.entitiesTypes[indexes[i]]
+    }
 
-    //       break;
-
-    //     default:
-    //       break;
-    //   }
-
-    //   delete this.entitiesToBeSent[indexes[i]]
-    // }
-
-    // this.entitiesToBeSent = this.entitiesToBeSent.filter((entityToBeSent: SendEntity) => {
-    //   return entityToBeSent;
-    // })
+    this.entitiesTypes = this.entitiesTypes.filter((entityToBeSent: EntityType) => {
+      return entityToBeSent !== undefined;
+    })
   }
 
-  private recalculateShipmentIndexesInEntitiesToBeSent(indexes: number[], i: number) {
-    // const lastEntityIndex: number = this.entitiesToBeSent.length - 1;
-
-    // if (lastEntityIndex > indexes[i]) {
-
-    //   const entitiesAfterDeletedInList: SendEntity[] = this.entitiesToBeSent
-    //     .slice(indexes[i] + 1, this.entitiesToBeSent.length)
-    //     .filter((entityToBeSent: SendEntity) => {
-    //       return entityToBeSent.type === EntityType.Shipment;
-    //     });
-
-    //   entitiesAfterDeletedInList.forEach((entityToBeSent: SendEntity) => {
-    //     entityToBeSent.entityListIndex -= 1;
-    //   });
-    // }
-  }
   //#endregion
 
   //#region Configs Options
