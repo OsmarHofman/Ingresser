@@ -279,7 +279,24 @@ export class AppService {
 
                         const NFeXmlAndId: NFesAndId = this.convertNFeFormToXml(formValue[0]);
 
-                        let finalNFeXml: string = `<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
+                        let finalNFeXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ndd="http://nddigital.com.br/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ndd:Send>
+         <!--Optional:-->
+         <ndd:header><![CDATA[<CrosstalkMessage>
+           <CrosstalkHeader>
+            <ProcessCode>6002</ProcessCode>
+            <MessageType>100</MessageType>
+            <ExchangePattern>7</ExchangePattern>
+            <EnterpriseId>85c8732d-4140-4795-91a2-127159f4ee78</EnterpriseId>
+            <Token>f5f0280c-0ed9-4f48-b01c-a39d7f79a2ca</Token> 
+            <ContentEncoding>utf-8</ContentEncoding>
+            <ContentType>text/xml</ContentType>
+          </CrosstalkHeader>
+         </CrosstalkMessage>]]></ndd:header>
+         <!--Optional:-->
+         <ndd:rawdata><![CDATA[<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
 	<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
 		<infNFe Id="NFe[[NFeId]]" versao="4.00">
         [[NFe]]
@@ -317,7 +334,10 @@ export class AppService {
 			<xMotivo>Autorizado o uso da NF-e</xMotivo>
 		</infProt>
 	</protNFe>
-</nfeProc>`.replace('[[NFeId]]', NFeXmlAndId.id).replace('[[NFe]]', NFeXmlAndId.nfeXml);
+</nfeProc>]]></ndd:rawdata>
+      </ndd:Send>
+   </soapenv:Body>
+</soapenv:Envelope>`.replace('[[NFeId]]', NFeXmlAndId.id).replace('[[NFe]]', NFeXmlAndId.nfeXml);
 
                         xmlsToSend.push(new SendRequest(finalNFeXml, entityType));
 
@@ -328,7 +348,6 @@ export class AppService {
                 }
             }
         }
-
 
         xmlsToSend.forEach(async (xmlToSend: SendRequest) => {
             this.sendXml(xmlToSend, xmlsToSendPort);
@@ -344,7 +363,8 @@ export class AppService {
     public sendXml(sendRequest: SendRequest, port: number): void {
         const soapRequest = {
             url: sendRequest.getUrlWithPort(port),
-            xml: sendRequest.xml
+            xml: sendRequest.xml,
+            isShipment: sendRequest.entityType === EntityType.Shipment
         }
 
         this.http.post(backendUrl, soapRequest)
