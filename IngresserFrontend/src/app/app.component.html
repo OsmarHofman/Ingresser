@@ -1,0 +1,91 @@
+<main class="main">
+
+  <header class="bd-header bg-dark py-3 d-flex align-items-stretch border-bottom border-dark">
+    <div class="container-fluid d-flex align-items-center">
+      <h1 class="d-flex align-items-center fs-4 text-white mb-0">
+        <img src="../assets/logo.ico" alt="logo" height="100px;" />
+        <h1 style="margin-top: 20px;">Ingresser</h1>
+      </h1>
+    </div>
+  </header>
+
+
+  <button class="float fab-btn" id="menu-share">
+    Menu
+  </button>
+
+  <ul>
+    <li>
+      <button class="fab-btn" (click)="showConfigsOptions()">
+        Configs
+      </button>
+    </li>
+
+
+    <li>
+      <button class="fab-btn" (click)="showDeleteOptions()">
+        Excluir
+      </button>
+    </li>
+
+    <li>
+      <button class="fab-btn menu-duplicate-option" (click)="showDuplicateOptions()">
+        Duplicar
+      </button>
+    </li>
+
+    <li>
+      <button class="fab-btn" (click)="showDownloadOptions()">
+        Download
+      </button>
+    </li>
+
+    <li>
+      <button class="fab-btn" (click)="showUploadOptions()">
+        Upload
+      </button>
+    </li>
+
+    <li>
+      <button class="fab-btn menu-create-option" (click)="showCreateOptions()">
+        Criar
+      </button>
+    </li>
+
+  </ul>
+  <form [formGroup]="form" (ngSubmit)="submitForm()" class="bd-main container-fluid">
+    <div>
+
+      <ng-container #entities formArrayName="entities">
+      </ng-container>
+      <hr>
+
+      <div *ngIf="sendConfigs.port != 10; else elseBlock">
+        <label class="send-data-label-title">Dados do envio:</label>
+        <br>
+        <label class="send-data-label">Porta: {{sendConfigs.port}}</label>
+        <br>
+        <div *ngIf="sendConfigs.enterpriseId">
+          <label class="send-data-label" >EnterpriseId:
+            {{sendConfigs.enterpriseId}}
+          </label>
+          <br>
+        </div>
+        <div *ngIf="sendConfigs.token">
+          <label class="send-data-label" >Token:
+            {{sendConfigs.token}}
+          </label>
+          <br>
+        </div>
+        <button class="btn btn-primary submit" type="submit">Enviar</button>
+        <label class="preview-label">Acompanhar envios (Em Breve!)</label>
+      </div>
+      <ng-template #elseBlock>
+        <label class="attention">Preencha a opção "Configs" no Menu para habilitar o Envio</label>
+      </ng-template>
+
+    </div>
+  </form>
+</main>
+
+<router-outlet />

@@ -1,0 +1,31 @@
+<div class="content">
+  <h2 mat-dialog-title>Upload de entidades</h2>
+  <div class="row">
+    <label class="upload-type-label">Tipo de Upload:</label>
+
+    <mat-radio-group class="radio-group" (change)="onUploadTypeChange($event)">
+      <mat-radio-button class="col-md-12" id="entity" value="1" [checked]="true">Entidades (Campos para
+        preenchimento)</mat-radio-button>
+      <mat-radio-button class="col-md-12" id="xml" value="2" disabled="true">XML (Em breve!)</mat-radio-button>
+    </mat-radio-group>
+    <hr>
+  </div>
+
+  <div class="row">
+
+    <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+
+    <button mat-button class="col-md-4 upload-button" (click)="fileUpload.click()">
+      Upload
+    </button>
+    <label class="col-md-4 file-name-label">{{fileName}}</label>
+
+  </div>
+  <hr>
+  <label class="preview">Progresso da análise do documento (Em breve!)</label>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button (click)="dialogRef.close(returnEntities())">Importar</button>
+  </mat-dialog-actions>
+</div>

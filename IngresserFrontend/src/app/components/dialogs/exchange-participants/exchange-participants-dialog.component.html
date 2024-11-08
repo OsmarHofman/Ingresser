@@ -1,0 +1,30 @@
+<div class="content">
+    <h2 mat-dialog-title>Inverter Participantes</h2>
+    <div class="row">
+        <mat-form-field class="participant-select col-md-10">
+            <mat-label>1º Participante</mat-label>
+            <mat-select>
+                @for (participant of participants; track firstParticipantToExchange) {
+                <mat-option [value]="firstParticipantToExchange">{{participant}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <img id="arrow" src="../../../../assets/arrow.png" alt="logo" />
+    <div class="row">
+        <mat-form-field class="participant-select col-md-10">
+            <mat-label>2º Participante</mat-label>
+            <mat-select>
+                @for (participant of participants; track secondParticipantToExchange) {
+                <mat-option [value]="secondParticipantToExchange">{{participant}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-dialog-actions class="participant-select col-md-10">
+            <button mat-button (click)="onNoClick()">Cancelar</button>
+            <button mat-button (click)="dialogRef.close(getParticipantsToExchange())" cdkFocusInitial>Inverter</button>
+        </mat-dialog-actions>
+    </div>
+</div>
