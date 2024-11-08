@@ -27,7 +27,6 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
-*/.vs/*
 
 # Miscellaneous
 /.angular/cache
@@ -37,20 +36,6 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
-
-#DotNet
-**/[Dd]ebug/
-**/[Dd]ebugPublic/
-*/IngresserBackend/[Rr]elease/
-*/IngresserBackend/[Rr]eleases/
-**/[Xx]64/
-**/[Xx]86/
-**/[Bb]uild/
-**/bld/
-**/[Bb]in/
-**/[Oo]bj/
-**/[Bb]in/[Dd]ebug/
-**/*.pdb
 
 # System files
 .DS_Store
