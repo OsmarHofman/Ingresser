@@ -224,18 +224,26 @@ export class AppComponent {
     }
     );
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: number) => {
       if (result !== undefined) {
         this.duplicateEntityByIndex(result);
       }
     });
   }
 
-  public duplicateEntityByIndex(sendEntityToBeDuplicated: SendEntity) {
+  public duplicateEntityByIndex(entityIndex: number) {
 
-    switch (sendEntityToBeDuplicated.type) {
+    const entityType: EntityType = this.entitiesTypes[entityIndex];
+
+    switch (entityType) {
+
       case EntityType.Shipment:
-        this.shipmentComponent.duplicateShipmentByIndex(sendEntityToBeDuplicated.entityListIndex);
+        this.duplicateShipmentByIndex(entityIndex);
+
+        break;
+
+      case EntityType.NFe:
+        this.duplicateNFeByIndex(entityIndex);
 
         break;
 
@@ -338,6 +346,25 @@ export class AppComponent {
 
   }
 
+  public duplicateShipmentByIndex(index: number): void {
+
+    this.#shipmentComponentRef = this.vcr()?.createComponent(ShipmentComponent);
+
+    const shipmentForm = this.#shipmentComponentRef?.instance.shipments!;
+
+    const shipmentToBeDuplicated = this.entities.value[index][0];
+
+    shipmentForm.push(
+      this.formBuilder.group(this.appService.getNewShipmentByExistent(shipmentToBeDuplicated))
+    );
+
+    this.entities.push(
+      shipmentForm
+    );
+
+    this.entitiesTypes.push(EntityType.Shipment);
+  }
+
   public addDefaultNFeComponent() {
     this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
 
@@ -373,5 +400,24 @@ export class AppComponent {
       nfeForm
     );
 
+  }
+
+  public duplicateNFeByIndex(index: number): void {
+
+    this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
+
+    const nfeForm = this.#nfeComponentRef?.instance.nfes!;
+
+    const nfeToBeDuplicated = this.entities.value[index][0];
+
+    nfeForm.push(
+      this.formBuilder.group(this.appService.getNewNFeByExistent(nfeToBeDuplicated))
+    );
+
+    this.entities.push(
+      nfeForm
+    );
+
+    this.entitiesTypes.push(EntityType.NFe);
   }
 }

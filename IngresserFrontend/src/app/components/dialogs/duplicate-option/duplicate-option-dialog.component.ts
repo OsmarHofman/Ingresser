@@ -11,8 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
-import { EntityTypeLabel, SendEntity } from '../../../model/entityType';
+import { EntityType, EntityTypeLabel } from '../../../model/entityType';
 import { CommonModule } from '@angular/common';
 import { MatRadioModule } from '@angular/material/radio';
 
@@ -38,9 +37,9 @@ import { MatRadioModule } from '@angular/material/radio';
 
 export class DuplicateOptionDialog {
     readonly dialogRef = inject(MatDialogRef<DuplicateOptionDialog>);
-    readonly entities = inject<SendEntity[]>(MAT_DIALOG_DATA);
+    readonly entities = inject<EntityType[]>(MAT_DIALOG_DATA);
 
-    public selectedEntity: SendEntity = this.entities[0];
+    public selectedEntityIndex: number = 0;
 
     constructor() { }
 
@@ -49,8 +48,8 @@ export class DuplicateOptionDialog {
     }
 
     public getEntityAndNumberByIndex(index: number): string {
-        const entity: SendEntity = this.entities[index];
+        const entity: EntityType = this.entities[index];
 
-        return `${EntityTypeLabel.get(entity.type)} no índice: ${index}`;
+        return `${EntityTypeLabel.get(entity)} no índice: ${index}`;
     }
 }
