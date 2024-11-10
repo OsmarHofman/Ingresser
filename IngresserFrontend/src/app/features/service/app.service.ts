@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { catchError, throwError } from "rxjs";
 
-import { ResultMessage } from "../shared/result-message";
+import { ResultMessage } from "../../model/result-message";
 import { NFesAndId } from "../../model/nfe";
 import { ValuesConfiguration } from "../../model/values-configuration";
 import { SendRequest } from "../../model/send-request";
