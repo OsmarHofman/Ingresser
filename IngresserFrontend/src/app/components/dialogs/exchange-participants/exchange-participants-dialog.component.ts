@@ -1,15 +1,13 @@
 import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
     MatDialogRef,
-    MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -24,9 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
         FormsModule,
         MatButtonModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
-        MatDialogClose,
         MatSelectModule,
     ]
 })
@@ -44,7 +40,7 @@ export class ExchangeParticipantsDialog {
         this.dialogRef.close();
     }
 
-    public getParticipantsToExchange(): string[] {
-        return [this.firstParticipantToExchange, this.secondParticipantToExchange];
+    public returnParticipantsToExchange(): void {
+        this.dialogRef.close([this.firstParticipantToExchange, this.secondParticipantToExchange]);
     }
 }

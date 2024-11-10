@@ -18,7 +18,7 @@ import { DuplicateOptionDialog } from './components/dialogs/duplicate-option/dup
 import { UploadOptionDialog } from './components/dialogs/upload-option/upload-option-dialog.component';
 import { DownloadOptionDialog } from './components/dialogs/download-option/download-option-dialog.component';
 import { ConfigsOptionDialog } from './components/dialogs/configs-option/configs-option-dialog.component';
-import { Configs } from './components/dialogs/configs-option/configs';
+import { Configs } from './model/configs';
 import { CreateOptionDialog } from './components/dialogs/create-option/create-option-dialog.component';
 import { Shipment, ShipmentIndex } from './model/shipment';
 import { NFeComponent } from './features/entities/nfe/nfe.component';

@@ -7,5 +7,5 @@
 </ng-container>
 <mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button (click)="dialogRef.close(selectedRows)" cdkFocusInitial>Deletar</button>
+  <button mat-button (click)="returnEntitiesToBeDeleted()" cdkFocusInitial>Deletar</button>
 </mat-dialog-actions>

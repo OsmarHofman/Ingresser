@@ -1,21 +1,20 @@
 import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
     MatDialogRef,
-    MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
+
+import { NFe } from '../../../model/nfe';
 import { Shipment } from '../../../model/shipment';
 import { EntityType } from '../../../model/entityType';
-import { CreationSource } from '../../../model/enums/creation-source';
 import { DownloadModel } from '../../../model/downloadModel';
-import { NFe } from '../../../model/nfe';
+import { CreationSource } from '../../../model/enums/creation-source';
 
 @Component({
     selector: 'upload-option-dialog',
@@ -28,9 +27,7 @@ import { NFe } from '../../../model/nfe';
         FormsModule,
         MatButtonModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
-        MatDialogClose,
         MatRadioModule
     ]
 })
@@ -46,10 +43,6 @@ export class UploadOptionDialog {
 
     public onNoClick(): void {
         this.dialogRef.close();
-    }
-
-    public returnCreateShipment(): EntityType {
-        return EntityType.Shipment;
     }
 
     public onUploadTypeChange(event: any): void {
@@ -125,14 +118,14 @@ export class UploadOptionDialog {
 
     }
 
-    public returnEntities(): DownloadModel {
-        return new DownloadModel(this.uploadedEntities, this.uploadedEntitiesTypes);
-    }
-
     private getEntityType(convertedFileObject: any): EntityType {
         if (convertedFileObject.shipment) return EntityType.Shipment;
         if (convertedFileObject.nfe) return EntityType.NFe;
 
         return EntityType.NotFound;
+    }
+
+    public returnEntitiesToBeUploaded(): void {
+        this.dialogRef.close(new DownloadModel(this.uploadedEntities, this.uploadedEntitiesTypes));
     }
 }

@@ -11,9 +11,10 @@
   <div class="row">
     <label class="download-name-label">Nome do arquivo:</label>
 
-    <mat-form-field appearance="outline" fxFill id="name" class="col-md-6 download-name-input" subscriptSizing="dynamic">
+    <mat-form-field appearance="outline" fxFill id="name" class="col-md-6 download-name-input"
+      subscriptSizing="dynamic">
       <mat-label>Nome</mat-label>
-      <input matInput #input placeholder="Ingresser" [(ngModel)]="fileName"/>
+      <input matInput #input placeholder="Ingresser" [(ngModel)]="fileName" />
     </mat-form-field>
 
   </div>
@@ -21,6 +22,6 @@
   <label class="preview">Seletor de itens a serem serializados (Em breve!)</label>
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button (click)="downloadCallsAsFile()">Salvar</button>
+    <button mat-button (click)="returnDownloadEntitiesAsFile()">Salvar</button>
   </mat-dialog-actions>
 </div>

@@ -7,7 +7,8 @@
     </mat-form-field>
   </div>
   <div class="row">
-    <mat-form-field appearance="outline" fxFill id="enterpriseId" class="col-md-10 name-input" subscriptSizing="dynamic">
+    <mat-form-field appearance="outline" fxFill id="enterpriseId" class="col-md-10 name-input"
+      subscriptSizing="dynamic">
       <mat-label>EnterpriseId</mat-label>
       <input matInput #input placeholder="85c8732d-4140-4795-91a2-127159f4ee78" [(ngModel)]="configs.enterpriseId" />
     </mat-form-field>
@@ -24,6 +25,6 @@
   </div>
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button (click)="dialogRef.close(returnConfigurations())">Salvar</button>
+    <button mat-button (click)="returnConfigurations()">Salvar</button>
   </mat-dialog-actions>
 </div>

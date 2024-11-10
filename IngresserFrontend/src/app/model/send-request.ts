@@ -1,4 +1,4 @@
-import { Configs } from "../components/dialogs/configs-option/configs";
+import { Configs } from "./configs";
 import { EntityType } from "./entityType";
 
 export class SendRequest {

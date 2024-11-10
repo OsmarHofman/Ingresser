@@ -1,15 +1,14 @@
 import { Component, inject } from '@angular/core';
 import {
     MatDialogRef,
-    MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+
 import { EntityType } from '../../../model/entityType';
 
 @Component({
@@ -23,9 +22,7 @@ import { EntityType } from '../../../model/entityType';
         FormsModule,
         MatButtonModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
-        MatDialogClose,
     ]
 })
 
@@ -36,11 +33,11 @@ export class CreateOptionDialog {
         this.dialogRef.close();
     }
 
-    public returnCreateShipment(): EntityType {
-        return EntityType.Shipment;
+    public returnCreateShipment(): void {
+        this.dialogRef.close(EntityType.Shipment);
     }
-    
-    public returnCreateNFe(): EntityType {
-        return EntityType.NFe;
+
+    public returnCreateNFe(): void {
+        this.dialogRef.close(EntityType.NFe);
     }
 }

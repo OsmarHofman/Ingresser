@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
 import {
     ControlValueAccessor,
     FormBuilder,
@@ -7,10 +6,11 @@ import {
     ReactiveFormsModule,
     NG_VALUE_ACCESSOR
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'document-address',

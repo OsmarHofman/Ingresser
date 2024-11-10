@@ -12,8 +12,9 @@ import {
 } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
+
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'accessory-cost',
@@ -42,13 +43,66 @@ export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestr
 
     constructor(private formBuilder: FormBuilder) { }
 
+    //#region Form
+
+    public costForm: FormGroup = this.formBuilder.group('');
+
+    public onTouched: Function = () => { };
+
+    public onChangeSubs: Subscription[] = [];
+
+    public ngOnInit() {
+        this.costForm = this.formBuilder.group({
+            costs: this.formBuilder.array([]),
+        });
+    }
+
+    get costs() {
+        return this.costForm.get('costs') as FormArray;
+    }
+
+    public registerOnChange(onChange: any): void {
+        const sub = this.costForm.valueChanges.subscribe(onChange);
+        this.onChangeSubs.push(sub);
+    }
+
+    public registerOnTouched(onTouched: any): void {
+        this.onTouched = onTouched;
+    }
+
+    public setDisabledState?(isDisabled: boolean): void {
+        if (isDisabled)
+            this.costForm.disable();
+        else
+            this.costForm.enable();
+    }
+
+    public writeValue(value: any): void {
+        if (value) {
+            if (typeof (value) === "object" && value.length === 0) return;
+
+            if (value.costs) {
+                value.costs.forEach((cost: any) => {
+                    this.addRowWithXidAndValue(cost.xid, cost.costValue);
+                });
+            }
+
+            else this.costForm.setValue(value, { emitEvent: false });
+        }
+    }
+
+    public ngOnDestroy(): void {
+        this.onChangeSubs.forEach(sub => {
+            sub.unsubscribe();
+        });
+    }
+
+    //#endregion
+
+
     //#region Table
 
     public selectedRows: number[] = [];
-
-    get costs() {
-        return this.tableForm.get('costs') as FormArray;
-    }
 
     public addRow() {
         this.costs.push(
@@ -86,55 +140,4 @@ export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestr
 
     //#endregion
 
-    //#region Form
-
-    public tableForm: FormGroup = this.formBuilder.group('');
-
-    public onTouched: Function = () => { };
-
-    public onChangeSubs: Subscription[] = [];
-
-    public ngOnInit() {
-        this.tableForm = this.formBuilder.group({
-            costs: this.formBuilder.array([]),
-        });
-    }
-
-    public registerOnChange(onChange: any): void {
-        const sub = this.tableForm.valueChanges.subscribe(onChange);
-        this.onChangeSubs.push(sub);
-    }
-
-    public registerOnTouched(onTouched: any): void {
-        this.onTouched = onTouched;
-    }
-
-    public setDisabledState?(isDisabled: boolean): void {
-        if (isDisabled)
-            this.tableForm.disable();
-        else
-            this.tableForm.enable();
-    }
-
-    public writeValue(value: any): void {
-        if (value) {
-            if (typeof (value) === "object" && value.length === 0) return;
-
-            if(value.costs){
-                value.costs.forEach((cost: any) => {
-                    this.addRowWithXidAndValue(cost.xid, cost.costValue);
-                });
-            }
-            
-            else this.tableForm.setValue(value, { emitEvent: false });
-        }
-    }
-
-    public ngOnDestroy(): void {
-        this.onChangeSubs.forEach(sub => {
-            sub.unsubscribe();
-        });
-    }
-
-    //#endregion
 }

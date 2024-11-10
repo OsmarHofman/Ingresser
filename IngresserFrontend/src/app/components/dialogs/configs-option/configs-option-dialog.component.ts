@@ -1,9 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {
     MatDialogRef,
-    MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle,
     MAT_DIALOG_DATA
 } from '@angular/material/dialog';
@@ -11,7 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Configs } from './configs';
+
+import { Configs } from '../../../model/configs';
 
 @Component({
     selector: 'configs-option-dialog',
@@ -24,9 +23,7 @@ import { Configs } from './configs';
         FormsModule,
         MatButtonModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
-        MatDialogClose,
     ]
 })
 
@@ -39,8 +36,8 @@ export class ConfigsOptionDialog {
         this.dialogRef.close();
     }
 
-    public returnConfigurations(): Configs {
-        return this.configs;
+    public returnConfigurations(): void {
+        this.dialogRef.close(this.configs);
     }
 
 }

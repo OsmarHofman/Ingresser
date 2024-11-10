@@ -1,19 +1,18 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
     MatDialogRef,
-    MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { EntityType, EntityTypeLabel, SendEntity } from '../../../model/entityType';
-import { CommonModule } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
+
+import { EntityType, EntityTypeLabel } from '../../../model/entityType';
 
 
 @Component({
@@ -27,9 +26,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
         FormsModule,
         MatButtonModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
-        MatDialogClose,
         MatCheckbox,
         CommonModule
     ]
@@ -41,7 +38,7 @@ export class DeleteOptionDialog {
 
     public selectedRows: number[] = [];
 
-    constructor(){
+    constructor() {
         this.selectedRows = [];
     }
 
@@ -60,5 +57,9 @@ export class DeleteOptionDialog {
             delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
         else
             this.selectedRows.push(selectedIndex);
+    }
+
+    public returnEntitiesToBeDeleted(): void {
+        this.dialogRef.close(this.selectedRows);
     }
 }

@@ -10,7 +10,7 @@ import { NFe, NFesAndId } from "../../model/nfe";
 import { CreationSource } from "../../model/enums/creation-source";
 import { SendRequest } from "../../model/send-request";
 import { EntityType } from "../../model/entityType";
-import { Configs } from "../../components/dialogs/configs-option/configs";
+import { Configs } from "../../model/configs";
 
 const backendUrl = "http://localhost:5181/sendXml";
 

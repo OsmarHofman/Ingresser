@@ -1,19 +1,18 @@
 import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import {
     MAT_DIALOG_DATA,
     MatDialogRef,
-    MatDialogContent,
     MatDialogActions,
-    MatDialogClose,
     MatDialogTitle
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { EntityType, EntityTypeLabel } from '../../../model/entityType';
-import { CommonModule } from '@angular/common';
 import { MatRadioModule } from '@angular/material/radio';
+
+import { EntityType, EntityTypeLabel } from '../../../model/entityType';
 
 
 @Component({
@@ -27,9 +26,7 @@ import { MatRadioModule } from '@angular/material/radio';
         FormsModule,
         MatButtonModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
-        MatDialogClose,
         MatRadioModule,
         CommonModule
     ]
@@ -51,5 +48,9 @@ export class DuplicateOptionDialog {
         const entity: EntityType = this.entities[index];
 
         return `${EntityTypeLabel.get(entity)} no índice: ${index}`;
+    }
+
+    public returnEntityToBeDuplicated(): void {
+        this.dialogRef.close(this.selectedEntityIndex);
     }
 }
