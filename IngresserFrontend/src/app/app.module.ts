@@ -1,13 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { ApplicationConfig, NgModule } from '@angular/core';
 import { provideRouter, RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from "@angular/common/http";
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
@@ -34,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     BrowserAnimationsModule,
     NFeComponent,
     NFeParticipantAccordionComponent,
-],
+  ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: [provideHttpClient()]
