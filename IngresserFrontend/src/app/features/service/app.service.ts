@@ -5,7 +5,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from "rxjs";
 
 import { ResultMessage } from "../shared/result-message";
-import { Shipment  } from "../../model/shipment";
 import { NFesAndId } from "../../model/nfe";
 import { ValuesConfiguration } from "../../model/values-configuration";
 import { SendRequest } from "../../model/send-request";
@@ -22,9 +21,19 @@ export class AppService {
         this.getConfigurationFromFile();
     }
 
+    private getConfigurationFromFile(): void {
+        this.http.get('./assets/values-configuration.json').subscribe(configurationData => {
+            if (configurationData) {
+                this.configuration = configurationData as ValuesConfiguration;
+            } else {
+                alert("Erro ao tentar obter configurações do arquivo: values-configuration.json!");
+            }
+        });
+    }
+
     public sendXmlsToWS(form: FormGroup, entitiesTypes: EntityType[], configs: Configs): void {
 
-        if (!this.configuration) return ;
+        if (!this.configuration) return;
 
         let xmlsToSend: SendRequest[] = [];
 
@@ -69,11 +78,7 @@ export class AppService {
         })
     }
 
-    private sleep(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    public sendXml(sendRequest: SendRequest): void {
+    private sendXml(sendRequest: SendRequest): void {
 
         this.http.post(this.configuration.backendUrl, sendRequest)
             .pipe(
@@ -96,13 +101,8 @@ export class AppService {
             });
     }
 
-    public getConfigurationFromFile(): void {
-        this.http.get('./assets/values-configuration.json').subscribe(configurationData => {
-            if (configurationData) {
-                this.configuration = configurationData as ValuesConfiguration;
-            } else{
-                alert("Erro ao tentar obter configurações do arquivo: values-configuration.json!");
-            }
-        });
+    private sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
+
 }
