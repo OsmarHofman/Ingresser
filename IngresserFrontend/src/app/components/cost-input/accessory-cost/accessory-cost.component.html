@@ -5,24 +5,24 @@
     <form [formGroup]="tableForm">
       <table>
         <tbody>
-          <ng-container formArrayName="costs">
+          <ng-container formArrayName="costs" class="row col-md-12">
             <ng-container *ngFor="
               let control of costs.controls;
               let i = index
             ">
 
-              <tr [formGroupName]="i" class="row">
-                <td class="col-md-1">
+              <tr [formGroupName]="i">
+                <td class="col-md-2">
                   <mat-checkbox class="checkbox" (change)="markRowAsSelected(i)"></mat-checkbox>
                 </td>
-                <td class="col-md-5">
-                  <mat-form-field appearance="outline" fxFill id="xid" subscriptSizing="dynamic">
+                <td>
+                  <mat-form-field appearance="outline" fxFill id="xid" subscriptSizing="dynamic" class="col-md-10">
                     <mat-label>Xid</mat-label>
                     <input matInput #input placeholder="DIARIA" formControlName="xid" />
                   </mat-form-field>
                 </td>
-                <td class="col-md-5">
-                  <mat-form-field appearance="outline" fxFill id="costValue" subscriptSizing="dynamic">
+                <td>
+                  <mat-form-field appearance="outline" fxFill id="costValue" subscriptSizing="dynamic" class="col-md-7">
                     <mat-label>Valor</mat-label>
                     <input matInput #input placeholder="14.23" formControlName="costValue" />
                   </mat-form-field>

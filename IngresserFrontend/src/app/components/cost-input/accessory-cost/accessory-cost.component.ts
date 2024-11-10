@@ -59,6 +59,15 @@ export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestr
         );
     }
 
+    public addRowWithXidAndValue(xid: string, value: string) {
+        this.costs.push(
+            this.formBuilder.group({
+                xid: xid,
+                costValue: value,
+            })
+        );
+    }
+
     public removeRow() {
         this.selectedRows.sort((a, b) => b - a)
             .forEach(rowIndex => {
@@ -110,8 +119,14 @@ export class CostTableComponent implements OnInit, ControlValueAccessor, OnDestr
     public writeValue(value: any): void {
         if (value) {
             if (typeof (value) === "object" && value.length === 0) return;
+
+            if(value.costs){
+                value.costs.forEach((cost: any) => {
+                    this.addRowWithXidAndValue(cost.xid, cost.costValue);
+                });
+            }
             
-            this.tableForm.setValue(value, { emitEvent: false });
+            else this.tableForm.setValue(value, { emitEvent: false });
         }
     }
 

@@ -1,7 +1,7 @@
 import { FormGroup } from "@angular/forms";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { catchError, config, throwError } from "rxjs";
+import { catchError, throwError } from "rxjs";
 import { ResultMessage } from "../shared/result-message";
 import { Shipment, ShipmentHeader, ShipmentHeader2, Refnum, ShipmentStop, Location, Release, OrderMovement } from "../../model/shipment";
 import { NFeBaseTag, ShipmentBaseTag } from "../../model/xml-base-tags";
@@ -939,26 +939,7 @@ export class AppService {
 
             const release = contentRelease.release;
 
-            const newRelease = {
-                release: {
-                    releaseDomainName: release.releaseDomainName,
-                    releaseXid: release.releaseXid,
-                    shipFrom: release.shipFrom,
-                    shipTo: release.shipTo,
-                    taker: release.taker,
-                    orderMovement: {
-                        Movements: [{}]
-                    },
-                    refnums: {
-                        Refnums: [{}]
-                    },
-                    releaseCost: {
-                        acessorialCost: [{}],
-                        baseCost: "",
-                        totalCost: ""
-                    }
-                }
-            };
+            const newRelease = this.getNewReleaseConsideringCost(release);
 
             const newReleaseOrderMovements = newRelease.release.orderMovement.Movements;
 
@@ -985,22 +966,69 @@ export class AppService {
                 });
             }
 
-            const newReleaseCost = newRelease.release.releaseCost;
-
-            newReleaseCost.acessorialCost.pop();
-
-            if (release.releaseCost) {
-                const releaseCost = release.release.releaseCost;
-                newReleaseCost.baseCost = releaseCost.baseCost;
-                newReleaseCost.totalCost = releaseCost.totalCost;
-            }
-
             newShipmentReleases.push(newRelease);
         });
 
         return newShipment;
     }
-    
+
+
+    private getNewReleaseConsideringCost(release: any): any {
+
+        if (!release.releaseCost) {
+            return {
+                release: {
+                    releaseDomainName: release.releaseDomainName,
+                    releaseXid: release.releaseXid,
+                    shipFrom: release.shipFrom,
+                    shipTo: release.shipTo,
+                    taker: release.taker,
+                    orderMovement: {
+                        Movements: [{}]
+                    },
+                    refnums: {
+                        Refnums: [{}]
+                    },
+                    releaseCost: ""
+                }
+            }
+        }
+
+        const releaseWithCost = {
+            release: {
+                releaseDomainName: release.releaseDomainName,
+                releaseXid: release.releaseXid,
+                shipFrom: release.shipFrom,
+                shipTo: release.shipTo,
+                taker: release.taker,
+                orderMovement: {
+                    Movements: [{}]
+                },
+                refnums: {
+                    Refnums: [{}]
+                },
+                releaseCost: {
+                    acessorialCost: [{}],
+                    baseCost: "",
+                    totalCost: ""
+                }
+            }
+        };
+
+        const newReleaseCost = releaseWithCost.release.releaseCost;
+
+        newReleaseCost.acessorialCost.pop();
+
+        if (release.releaseCost) {
+            const releaseCost = release.releaseCost;
+            newReleaseCost.baseCost = releaseCost.baseCost;
+            newReleaseCost.acessorialCost = releaseCost.acessorialCost;
+            newReleaseCost.totalCost = releaseCost.totalCost;
+        }
+
+        return releaseWithCost;
+    }
+
     public addNFeFromEntity(nfe: NFe): any {
         const ideXml = nfe.convertIdeToXml();
         const emitXml = nfe.convertEmitToXml();
