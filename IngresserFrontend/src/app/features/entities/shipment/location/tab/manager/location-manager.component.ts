@@ -10,10 +10,11 @@ import {
     ControlValueAccessor,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
+
+import { Subscription } from 'rxjs';
+
 import { LocationInputComponent } from './input/location-input.component';
 
 @Component({
@@ -26,8 +27,6 @@ import { LocationInputComponent } from './input/location-input.component';
         ReactiveFormsModule,
         CommonModule,
         MatInputModule,
-        MatFormField,
-        MatLabel,
         MatCheckbox,
         LocationInputComponent
     ],
@@ -48,45 +47,15 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
         this.addRow();
     }
 
-    //#region Table
-
-    public selectedRows: number[] = [];
-
-    get locations() {
-        return this.locationForm.get('locations') as FormArray;
-    }
-
-    public addRow() {
-        this.locations.push(
-            this.formBuilder.group({
-                location: new FormControl(),
-            })
-        );
-    }
-
-    public removeRow() {
-        this.selectedRows.sort((a, b) => b - a)
-            .forEach(rowIndex => {
-                this.locations.removeAt(rowIndex);
-            });
-
-        this.selectedRows = [];
-    }
-
-    public markRowAsSelected(selectedIndex: number) {
-        if (this.selectedRows.includes(selectedIndex))
-            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
-        else
-            this.selectedRows.push(selectedIndex);
-    }
-
-    //#endregion
-
     //#region Form
 
     public locationForm: FormGroup = this.formBuilder.group({
         locations: this.formBuilder.array([]),
     });
+
+    get locations() {
+        return this.locationForm.get('locations') as FormArray;
+    }
 
     public onTouched: Function = () => { };
 
@@ -117,6 +86,36 @@ export class LocationManagerComponent implements ControlValueAccessor, OnDestroy
         this.onChangeSubs.forEach(sub => {
             sub.unsubscribe();
         });
+    }
+
+    //#endregion
+
+    //#region Table
+
+    public selectedRows: number[] = [];
+
+    public addRow() {
+        this.locations.push(
+            this.formBuilder.group({
+                location: new FormControl(),
+            })
+        );
+    }
+
+    public removeRow() {
+        this.selectedRows.sort((a, b) => b - a)
+            .forEach(rowIndex => {
+                this.locations.removeAt(rowIndex);
+            });
+
+        this.selectedRows = [];
+    }
+
+    public markRowAsSelected(selectedIndex: number) {
+        if (this.selectedRows.includes(selectedIndex))
+            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
+        else
+            this.selectedRows.push(selectedIndex);
     }
 
     //#endregion

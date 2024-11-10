@@ -3,7 +3,6 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import {
     ControlValueAccessor,
     FormBuilder,
@@ -11,7 +10,10 @@ import {
     ReactiveFormsModule,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+
 import { Subscription } from 'rxjs';
+
 import { ReleaseManagerComponent } from './manager/release-manager.component';
 
 @Component({

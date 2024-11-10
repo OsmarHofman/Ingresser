@@ -1,6 +1,6 @@
-import { Component, Injectable, OnDestroy } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+import { Component, Injectable, OnDestroy } from '@angular/core';
 import {
   ControlValueAccessor,
   FormArray,
@@ -9,14 +9,16 @@ import {
   ReactiveFormsModule,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+
+import { Subscription } from 'rxjs';
+
 import { ShipmentHeaderAccordionComponent } from './shipment-header/shipment-header-accordion.component';
 import { ShipmentHeader2AccordionComponent } from './shipment-header2/shipment-header2-accordion.component';
 import { ShipmentStopAccordionComponent } from './shipment-stop/shipment-stop-accordion.component';
 import { LocationAccordionComponent } from './location/location-accordion.component';
 import { ReleaseAccordionComponent } from './release/release-accordion.component';
-import { Subscription } from 'rxjs';
-import { Shipment, ShipmentHeader } from '../../../model/shipment';
 import { AppService } from '../../service/app.service';
+import { ShipmentHeader } from '../../../model/shipment';
 
 @Component({
   selector: 'shipment',
@@ -24,7 +26,6 @@ import { AppService } from '../../service/app.service';
   styleUrl: './shipment.component.scss',
   standalone: true,
   imports: [
-    RouterOutlet,
     CommonModule,
     ReactiveFormsModule,
     ShipmentHeaderAccordionComponent,
@@ -54,6 +55,10 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
   public form: FormGroup = this.formBuilder.group({
     shipments: this.formBuilder.array([]),
   });
+
+  get shipments() {
+    return this.form.get('shipments') as FormArray;
+  }
 
   public onTouched: Function = () => { };
 
@@ -86,14 +91,11 @@ export class ShipmentComponent implements ControlValueAccessor, OnDestroy {
     });
   }
 
-  get shipments() {
-    return this.form.get('shipments') as FormArray;
-  }
-
   //#endregion
 
   //#region Validation
 
+  //TODO: Usar essa validação
   private validateForm(): boolean {
 
     if (!this.validateFormControls()) return false;

@@ -10,10 +10,11 @@ import {
     ControlValueAccessor,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
+
+import { Subscription } from 'rxjs';
+
 import { ReleaseInputComponent } from './input/release-input.component';
 
 @Component({
@@ -26,8 +27,6 @@ import { ReleaseInputComponent } from './input/release-input.component';
         ReactiveFormsModule,
         CommonModule,
         MatInputModule,
-        MatFormField,
-        MatLabel,
         MatCheckbox,
         ReleaseInputComponent
     ],

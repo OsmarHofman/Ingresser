@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CdkAccordionModule } from '@angular/cdk/accordion';
 import {
     ControlValueAccessor,
     FormBuilder,
@@ -7,7 +6,10 @@ import {
     ReactiveFormsModule,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
+
 import { Subscription } from 'rxjs';
+
 import { ReleaseTabComponent } from './tab/release-tab.component';
 
 @Component({

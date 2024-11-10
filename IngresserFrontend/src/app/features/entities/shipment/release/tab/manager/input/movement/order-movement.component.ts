@@ -12,8 +12,9 @@ import {
 } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
+
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'order-movement',
@@ -44,46 +45,15 @@ export class OrderMovementComponent implements ControlValueAccessor, OnDestroy {
         this.addRow();
     }
 
-    //#region Table
-
-    public selectedRows: number[] = [];
-
-    get movements() {
-        return this.tableForm.get('Movements') as FormArray;
-    }
-
-    public addRow() {
-        this.movements.push(
-            this.formBuilder.group({
-                shipFrom: new FormControl(),
-                shipTo: new FormControl(),
-            })
-        );
-    }
-
-    public removeRow() {
-        this.selectedRows.sort((a, b) => b - a)
-            .forEach(rowIndex => {
-                this.movements.removeAt(rowIndex);
-            });
-
-        this.selectedRows = [];
-    }
-
-    public markRowAsSelected(selectedIndex: number) {
-        if (this.selectedRows.includes(selectedIndex))
-            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
-        else
-            this.selectedRows.push(selectedIndex);
-    }
-
-    //#endregion
-
     //#region Form
 
     public tableForm: FormGroup = this.formBuilder.group({
         Movements: this.formBuilder.array([]),
     });
+
+    get movements() {
+        return this.tableForm.get('Movements') as FormArray;
+    }
 
     public onTouched: Function = () => { };
 
@@ -117,4 +87,37 @@ export class OrderMovementComponent implements ControlValueAccessor, OnDestroy {
     }
 
     //#endregion
+
+
+    //#region Table
+
+    public selectedRows: number[] = [];
+
+    public addRow() {
+        this.movements.push(
+            this.formBuilder.group({
+                shipFrom: new FormControl(),
+                shipTo: new FormControl(),
+            })
+        );
+    }
+
+    public removeRow() {
+        this.selectedRows.sort((a, b) => b - a)
+            .forEach(rowIndex => {
+                this.movements.removeAt(rowIndex);
+            });
+
+        this.selectedRows = [];
+    }
+
+    public markRowAsSelected(selectedIndex: number) {
+        if (this.selectedRows.includes(selectedIndex))
+            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
+        else
+            this.selectedRows.push(selectedIndex);
+    }
+
+    //#endregion
+
 }

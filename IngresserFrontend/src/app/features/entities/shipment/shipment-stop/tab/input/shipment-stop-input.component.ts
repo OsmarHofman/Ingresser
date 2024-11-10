@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import {
     ControlValueAccessor,
@@ -11,10 +12,10 @@ import {
 } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
+
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'shipment-stop-input',
@@ -49,51 +50,15 @@ export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestr
         this.addRow();
     }
 
-    //#region Table
-
-    public selectedRows: number[] = [];
-
-    get shipmentStops() {
-        return this.shipmentStopForm.get('stops') as FormArray;
-    }
-
-    public addRow() {
-        const defaultStopType: string = this.shipmentStops.controls.length % 2 == 0 ? 'Coleta' : 'Entrega';
-
-        this.shipmentStops.push(
-
-            this.formBuilder.group({
-                stopSequence: new FormControl(this.shipmentStops.controls.length + 1),
-                locationDomainName: new FormControl(),
-                locationXid: new FormControl(),
-                stopType: new FormControl(defaultStopType),
-            })
-        );
-    }
-
-    public removeRow() {
-        this.selectedRows.sort((a, b) => b - a)
-            .forEach(rowIndex => {
-                this.shipmentStops.removeAt(rowIndex);
-            });
-
-        this.selectedRows = [];
-    }
-
-    public markRowAsSelected(selectedIndex: number) {
-        if (this.selectedRows.includes(selectedIndex))
-            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
-        else
-            this.selectedRows.push(selectedIndex);
-    }
-
-    //#endregion
-
     //#region Form
 
     public shipmentStopForm: FormGroup = this.formBuilder.group({
         stops: this.formBuilder.array([]),
     });
+
+    get shipmentStops() {
+        return this.shipmentStopForm.get('stops') as FormArray;
+    }
 
     public onTouched: Function = () => { };
 
@@ -127,4 +92,42 @@ export class ShipmentStopInputComponent implements ControlValueAccessor, OnDestr
     }
 
     //#endregion
+
+    
+    //#region Table
+
+    public selectedRows: number[] = [];
+
+    public addRow() {
+        const defaultStopType: string = this.shipmentStops.controls.length % 2 == 0 ? 'Coleta' : 'Entrega';
+
+        this.shipmentStops.push(
+
+            this.formBuilder.group({
+                stopSequence: new FormControl(this.shipmentStops.controls.length + 1),
+                locationDomainName: new FormControl(),
+                locationXid: new FormControl(),
+                stopType: new FormControl(defaultStopType),
+            })
+        );
+    }
+
+    public removeRow() {
+        this.selectedRows.sort((a, b) => b - a)
+            .forEach(rowIndex => {
+                this.shipmentStops.removeAt(rowIndex);
+            });
+
+        this.selectedRows = [];
+    }
+
+    public markRowAsSelected(selectedIndex: number) {
+        if (this.selectedRows.includes(selectedIndex))
+            delete this.selectedRows[this.selectedRows.indexOf(selectedIndex)];
+        else
+            this.selectedRows.push(selectedIndex);
+    }
+
+    //#endregion
+
 }
