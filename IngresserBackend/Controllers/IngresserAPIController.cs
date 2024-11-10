@@ -8,11 +8,11 @@ namespace IngresserBackend.Controllers
     [ApiController]
     [Route("sendXml")]
 
-    public class SoapMessageController : ControllerBase
+    public class IngresserAPIController : ControllerBase
     {
         private readonly ISoapCallService _soapCallService;
 
-        public SoapMessageController()
+        public IngresserAPIController()
         {
             _soapCallService = new SoapCallService();
         }
