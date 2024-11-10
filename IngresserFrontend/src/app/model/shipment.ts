@@ -1,7 +1,7 @@
 import { RefnumType } from "./enums/refnumType";
 import { CostType } from "./enums/costType";
 import { CreationSource } from "./enums/creation-source";
-import { ShipmentBaseTag } from "./xml-base-tags";
+import { ShipmentBaseTag } from "./xml-tags";
 
 export class ShipmentIndex {
     public sendSequenceIndex: number;

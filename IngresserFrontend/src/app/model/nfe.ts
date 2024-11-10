@@ -1,5 +1,5 @@
 import { CreationSource } from "./enums/creation-source";
-import { NFeBaseTag } from "./xml-base-tags";
+import { NFeBaseTag } from "./xml-tags";
 
 export enum ParticipantType {
     Emit,

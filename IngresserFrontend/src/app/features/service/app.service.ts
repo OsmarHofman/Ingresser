@@ -11,6 +11,7 @@ import { ValuesConfiguration } from "../../model/values-configuration";
 import { SendRequest } from "../../model/send-request";
 import { EntityType } from "../../model/entityType";
 import { Configs } from "../../model/configs";
+import { SoapTag } from "../../model/xml-tags";
 
 @Injectable()
 export class AppService {
@@ -39,83 +40,7 @@ export class AppService {
 
                     case EntityType.Shipment:
 
-                        const shipmentXml: string = Shipment.convertShipmentFormToXml(formValue[0]);
-
-                        const currentTime = new Date();
-
-                        const gLogDate: string = String(currentTime.getFullYear()) +
-                            String(currentTime.getMonth()).padStart(2, '0') +
-                            String(currentTime.getDate()).padStart(2, '0') +
-                            String(currentTime.getHours()).padStart(2, '0') +
-                            String(currentTime.getMinutes()).padStart(2, '0') +
-                            String(currentTime.getSeconds()).padStart(2, '0');
-
-                        let finalShipmentXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
-        <soapenv:Header/>
-        <soapenv:Body>
-            <Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
-                <otm:TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
-                    xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                    <otm:Version>20a</otm:Version>
-                    <otm:TransmissionCreateDt>
-                        <otm:GLogDate>${gLogDate}</otm:GLogDate>
-                        <otm:TZId>UTC</otm:TZId>
-                        <otm:TZOffset>+00:00</otm:TZOffset>
-                    </otm:TransmissionCreateDt>
-                    <otm:TransactionCount>1</otm:TransactionCount>
-                    <otm:SenderHostName>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderHostName>
-                    <otm:SenderSystemID>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderSystemID>
-                    <otm:SenderTransmissionNo>328969</otm:SenderTransmissionNo>
-                    <otm:ReferenceTransmissionNo>0</otm:ReferenceTransmissionNo>
-                    <otm:GLogXMLElementName>PlannedShipment</otm:GLogXMLElementName>
-                    <otm:NotifyInfo>
-                        <otm:ContactGid>
-                            <otm:Gid>
-                                <otm:DomainName>EMBDEV</otm:DomainName>
-                                <otm:Xid>TEST</otm:Xid>
-                            </otm:Gid>
-                        </otm:ContactGid>
-                        <otm:ExternalSystemGid>
-                            <otm:Gid>
-                                <otm:DomainName>EMBDEV</otm:DomainName>
-                                <otm:Xid>TEST</otm:Xid>
-                            </otm:Gid>
-                        </otm:ExternalSystemGid>
-                    </otm:NotifyInfo>
-                </otm:TransmissionHeader>
-                <TransmissionBody>
-                    <GLogXMLElement>
-                        <otm:TransactionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4" xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                        <otm:SenderTransactionId>70352</otm:SenderTransactionId>
-                        <otm:SendReason>
-                            <otm:Remark>
-                                <otm:RemarkSequence>1</otm:RemarkSequence>
-                                <otm:RemarkQualifierGid>
-                                    <otm:Gid>
-                                        <otm:Xid>QUERY TYPE</otm:Xid>
-                                    </otm:Gid>
-                                </otm:RemarkQualifierGid>
-                                <otm:RemarkText>SHIPMENT</otm:RemarkText>
-                            </otm:Remark>
-                            <otm:SendReasonGid>
-                                <otm:Gid>
-                                    <otm:Xid>SEND INTEGRATION</otm:Xid>
-                                </otm:Gid>
-                            </otm:SendReasonGid>
-                            <otm:ObjectType>SHIPMENT</otm:ObjectType>
-                        </otm:SendReason>
-                    </otm:TransactionHeader>
-                        <otm:PlannedShipment xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
-                            xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
-                            <otm:Shipment>
-                                [[Shipment]]
-                            </otm:Shipment>
-                        </otm:PlannedShipment>
-                    </GLogXMLElement>
-                </TransmissionBody>
-            </Transmission>
-        </soapenv:Body>
-    </soapenv:Envelope>`.replace('[[Shipment]]', shipmentXml);
+                        const finalShipmentXml: string = SoapTag.getShipmentXmlByForm(formValue[0]);
 
                         xmlsToSend.push(new SendRequest(finalShipmentXml, entityType, configs));
 

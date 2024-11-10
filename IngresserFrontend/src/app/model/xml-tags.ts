@@ -1,4 +1,5 @@
 import xmlFormat from 'xml-formatter';
+import { Shipment } from './shipment';
 
 export class ShipmentBaseTag {
     public static ShipmentHeader: string = xmlFormat(`<otm:ShipmentHeader><otm:ShipmentGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>EMBARQUE1</otm:Xid></otm:Gid></otm:ShipmentGid><otm:ShipmentRefnum><otm:ShipmentRefnumQualifierGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>CLL_IMPOSTO_INCLUSO</otm:Xid></otm:Gid></otm:ShipmentRefnumQualifierGid><otm:ShipmentRefnumValue>S</otm:ShipmentRefnumValue></otm:ShipmentRefnum><otm:ShipmentRefnum><otm:ShipmentRefnumQualifierGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>CLL_IMPOSTO_SOMADO</otm:Xid></otm:Gid></otm:ShipmentRefnumQualifierGid><otm:ShipmentRefnumValue>S</otm:ShipmentRefnumValue></otm:ShipmentRefnum><otm:InternalShipmentStatus><otm:StatusTypeGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>CLL_STATUS_EMISSAO</otm:Xid></otm:Gid></otm:StatusTypeGid><otm:StatusValueGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>PRE_EMISSAO_ENVIADA</otm:Xid></otm:Gid></otm:StatusValueGid></otm:InternalShipmentStatus><otm:InternalShipmentStatus><otm:StatusTypeGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>CLL_STATUS_VIAGEM</otm:Xid></otm:Gid></otm:StatusTypeGid><otm:StatusValueGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>PLANEJADO</otm:Xid></otm:Gid></otm:StatusValueGid></otm:InternalShipmentStatus><otm:ServiceProviderGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>CAR-12521</otm:Xid></otm:Gid></otm:ServiceProviderGid><otm:TotalPlannedCost><otm:FinancialAmount><otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode><otm:MonetaryAmount>100.00</otm:MonetaryAmount></otm:FinancialAmount></otm:TotalPlannedCost><otm:TotalActualCost><otm:FinancialAmount><otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode><otm:MonetaryAmount>100.00</otm:MonetaryAmount></otm:FinancialAmount></otm:TotalActualCost><otm:TotalWeightedCost><otm:FinancialAmount><otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode><otm:MonetaryAmount>100.00</otm:MonetaryAmount></otm:FinancialAmount></otm:TotalWeightedCost><otm:ShipmentCost><otm:ShipmentCostSeqno>167886</otm:ShipmentCostSeqno><otm:CostType>B</otm:CostType><otm:Cost><otm:FinancialAmount><otm:GlobalCurrencyCode>BRL</otm:GlobalCurrencyCode><otm:MonetaryAmount>100.00</otm:MonetaryAmount></otm:FinancialAmount></otm:Cost></otm:ShipmentCost><otm:TransportModeGid><otm:Gid><otm:Xid>TL</otm:Xid></otm:Gid></otm:TransportModeGid><otm:InvolvedParty><otm:TransactionCode>NP</otm:TransactionCode><otm:InvolvedPartyQualifierGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>CLL_TOMADOR</otm:Xid></otm:Gid></otm:InvolvedPartyQualifierGid><otm:InvolvedPartyLocationRef><otm:LocationRef><otm:LocationGid><otm:Gid><otm:DomainName>EMBDEV</otm:DomainName><otm:Xid>ORG-8027-30018</otm:Xid></otm:Gid></otm:LocationGid></otm:LocationRef></otm:InvolvedPartyLocationRef></otm:InvolvedParty></otm:ShipmentHeader>`,
@@ -50,4 +51,92 @@ export class NFeBaseTag {
     public static InfAdic: string = xmlFormat(`<infAdic><infCpl>IDOR|EMBDEV.ORDEM1|IDOR</infCpl></infAdic>`,
         { collapseContent: true }
     );
+}
+
+export class SoapTag {
+
+    public static shipmentBaseXml: string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+<soapenv:Header/>
+<soapenv:Body>
+<Transmission xmlns="http://xmlns.oracle.com/apps/otm/transmission/v6.4">
+<otm:TransmissionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
+    xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
+    <otm:Version>20a</otm:Version>
+    <otm:TransmissionCreateDt>
+        <otm:GLogDate>[[GLogDate]]</otm:GLogDate>
+        <otm:TZId>UTC</otm:TZId>
+        <otm:TZOffset>+00:00</otm:TZOffset>
+    </otm:TransmissionCreateDt>
+    <otm:TransactionCount>1</otm:TransactionCount>
+    <otm:SenderHostName>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderHostName>
+    <otm:SenderSystemID>https://otmgtm-test-a507789.otm.us2.oraclecloud.com:443</otm:SenderSystemID>
+    <otm:SenderTransmissionNo>328969</otm:SenderTransmissionNo>
+    <otm:ReferenceTransmissionNo>0</otm:ReferenceTransmissionNo>
+    <otm:GLogXMLElementName>PlannedShipment</otm:GLogXMLElementName>
+    <otm:NotifyInfo>
+        <otm:ContactGid>
+            <otm:Gid>
+                <otm:DomainName>EMBDEV</otm:DomainName>
+                <otm:Xid>TEST</otm:Xid>
+            </otm:Gid>
+        </otm:ContactGid>
+        <otm:ExternalSystemGid>
+            <otm:Gid>
+                <otm:DomainName>EMBDEV</otm:DomainName>
+                <otm:Xid>TEST</otm:Xid>
+            </otm:Gid>
+        </otm:ExternalSystemGid>
+    </otm:NotifyInfo>
+</otm:TransmissionHeader>
+<TransmissionBody>
+    <GLogXMLElement>
+        <otm:TransactionHeader xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4" xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
+        <otm:SenderTransactionId>70352</otm:SenderTransactionId>
+        <otm:SendReason>
+            <otm:Remark>
+                <otm:RemarkSequence>1</otm:RemarkSequence>
+                <otm:RemarkQualifierGid>
+                    <otm:Gid>
+                        <otm:Xid>QUERY TYPE</otm:Xid>
+                    </otm:Gid>
+                </otm:RemarkQualifierGid>
+                <otm:RemarkText>SHIPMENT</otm:RemarkText>
+            </otm:Remark>
+            <otm:SendReasonGid>
+                <otm:Gid>
+                    <otm:Xid>SEND INTEGRATION</otm:Xid>
+                </otm:Gid>
+            </otm:SendReasonGid>
+            <otm:ObjectType>SHIPMENT</otm:ObjectType>
+        </otm:SendReason>
+    </otm:TransactionHeader>
+        <otm:PlannedShipment xmlns:otm="http://xmlns.oracle.com/apps/otm/transmission/v6.4"
+            xmlns:gtm="http://xmlns.oracle.com/apps/gtm/transmission/v6.4">
+            <otm:Shipment>
+                [[Shipment]]
+            </otm:Shipment>
+        </otm:PlannedShipment>
+    </GLogXMLElement>
+</TransmissionBody>
+</Transmission>
+</soapenv:Body>
+</soapenv:Envelope>`;
+
+    public static getShipmentXmlByForm(form: any): string {
+
+        const shipmentXml: string = Shipment.convertShipmentFormToXml(form);
+
+        const currentTime = new Date();
+
+        const gLogDate: string = String(currentTime.getFullYear()) +
+            String(currentTime.getMonth()).padStart(2, '0') +
+            String(currentTime.getDate()).padStart(2, '0') +
+            String(currentTime.getHours()).padStart(2, '0') +
+            String(currentTime.getMinutes()).padStart(2, '0') +
+            String(currentTime.getSeconds()).padStart(2, '0');
+
+        let finalShipmentXml: string = this.shipmentBaseXml.replace('[[GLogDate]]', gLogDate).replace('[[Shipment]]', shipmentXml);
+
+        return finalShipmentXml;
+    }
 }
