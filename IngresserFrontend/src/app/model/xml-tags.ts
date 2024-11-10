@@ -209,7 +209,7 @@ export class SoapTag {
 </soapenv:Envelope>`;
 
     public static getNFeXmlByForm(configs: Configs, nfeXmlAndId: NFesAndId): string {
-        
+
         const finalNFeXml: string = this.nfeBaseXml.replace('[[EnterpriseId]]', configs.enterpriseId)
             .replace('[[Token]]', configs.token)
             .replace('[[NFeId]]', nfeXmlAndId.id)
