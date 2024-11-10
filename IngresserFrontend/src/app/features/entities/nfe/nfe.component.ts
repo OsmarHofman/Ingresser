@@ -1,7 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import {
     ControlValueAccessor,
     FormBuilder,
@@ -10,14 +8,17 @@ import {
     ReactiveFormsModule,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AppService } from '../../service/app.service';
+
 import { NFeParticipantAccordionComponent } from './participant/nfe-participant-accordion.component';
 import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
 import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
-import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
-import { Ide } from '../../../model/nfe';
 import { NFeOtherTagsAccordionComponent } from "./other-tags/nfe-other-tags-accordion.component";
+import { Ide } from '../../../model/nfe';
+import { AppService } from '../../service/app.service';
+import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
 
 @Component({
     selector: 'nfe',
@@ -58,6 +59,9 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
         nfes: this.formBuilder.array([]),
     });
 
+    get nfes() {
+        return this.form.get('nfes') as FormArray;
+    }
     public onTouched: Function = () => { };
 
     public onChangeSubs: Subscription[] = [];
@@ -89,18 +93,9 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
         });
     }
 
-    get nfes() {
-        return this.form.get('nfes') as FormArray;
-    }
-
     //#endregion
 
-    public addDefaultNFe() {
-        this.nfes.push(
-            this.formBuilder.group(this.appService.getNFeDefaultFormValues())
-        )
-    }
-
+    //#region Retirada
     public getRetiradaState(): string {
         if (this.hasRetirada)
             return "Remover";
@@ -112,6 +107,10 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
         this.hasRetirada = !this.hasRetirada;
     }
 
+    //#endregion
+
+    //#region Entrega
+
     public getEntregaState(): string {
         if (this.hasEntrega)
             return "Remover";
@@ -121,6 +120,14 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
 
     public changeEntregaState() {
         this.hasEntrega = !this.hasEntrega;
+    }
+
+    //#endregion
+
+    public addDefaultNFe() {
+        this.nfes.push(
+            this.formBuilder.group(this.appService.getNFeDefaultFormValues())
+        )
     }
 
     public exchangeParticipants() {
@@ -139,7 +146,7 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result !== undefined) {
-                console.log("Trocou");
+                //TODO: Implementar troca dos participantes
             }
         });
     }

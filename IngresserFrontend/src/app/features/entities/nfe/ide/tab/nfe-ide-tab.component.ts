@@ -1,9 +1,8 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     OnDestroy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import {
     ControlValueAccessor,
     FormBuilder,
@@ -11,7 +10,10 @@ import {
     ReactiveFormsModule,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+
 import { Subscription } from 'rxjs';
+
 import { NFeIdeInputComponent } from "./input/nfe-ide-input.component";
 
 @Component({
@@ -20,11 +22,11 @@ import { NFeIdeInputComponent } from "./input/nfe-ide-input.component";
     styleUrl: 'nfe-ide-tab.component.scss',
     standalone: true,
     imports: [
-    CommonModule,
-    MatTabsModule,
-    ReactiveFormsModule,
-    NFeIdeInputComponent
-],
+        CommonModule,
+        MatTabsModule,
+        ReactiveFormsModule,
+        NFeIdeInputComponent
+    ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
