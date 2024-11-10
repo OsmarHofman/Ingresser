@@ -16,7 +16,7 @@ import { NFeParticipantAccordionComponent } from './participant/nfe-participant-
 import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
 import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
 import { NFeOtherTagsAccordionComponent } from "./other-tags/nfe-other-tags-accordion.component";
-import { Ide } from '../../../model/nfe';
+import { Ide, NFe } from '../../../model/nfe';
 import { AppService } from '../../service/app.service';
 import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
 
@@ -126,7 +126,7 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
 
     public addDefaultNFe() {
         this.nfes.push(
-            this.formBuilder.group(this.appService.getNFeDefaultFormValues())
+            this.formBuilder.group(NFe.getNFeDefaultFormValues())
         )
     }
 

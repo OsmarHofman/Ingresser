@@ -1,4 +1,5 @@
 import { CreationSource } from "./enums/creation-source";
+import { NFeBaseTag } from "./xml-base-tags";
 
 export enum ParticipantType {
     Emit,
@@ -15,6 +16,86 @@ export class NFesAndId {
         this.nfeXml = nfeXml;
         this.id = id;
     }
+
+    public static convertNFeFormToXml(formNFe: any): NFesAndId {
+
+        const nfe: NFe = new NFe(formNFe, CreationSource.Form);
+
+        let nfeXml: string = '';
+
+        const nfeIdeTab = formNFe.ide.tab;
+
+        let nfeId: string = '';
+
+        if (nfeIdeTab.tabSelected === 0) {
+            nfeXml += nfe.convertIdeToXml();
+            const nfeNumber: string = nfe.ide.number.padStart(9, '0');
+
+            nfeId = `3520060766314000027055031${nfeNumber}1819146465`;
+        } else {
+
+            nfeXml += nfeIdeTab.xmlContent;
+
+            nfeId = NFe.generateNFeIdByIdeTag(nfeIdeTab.xmlContent);
+        }
+
+        nfeXml += "\n";
+
+        const nfeEmitTab = formNFe.emit.tab;
+
+        if (nfeEmitTab.tabSelected === 0) {
+            nfeXml += nfe.convertEmitToXml();
+        } else {
+            nfeXml += nfeEmitTab.xmlContent;
+        }
+
+        nfeXml += "\n";
+
+        const nfeDestTab = formNFe.dest.tab;
+
+        if (nfeDestTab.tabSelected === 0) {
+            nfeXml += nfe.convertDestToXml();
+        } else {
+            nfeXml += nfeDestTab.xmlContent;
+        }
+
+        nfeXml += "\n";
+
+        const nfeRetiradaTab = formNFe.retirada.tab;
+
+        if (nfeRetiradaTab.tabSelected === 0) {
+            nfeXml += nfe.convertRetiradaToXml();
+        } else {
+            nfeXml += nfeRetiradaTab.xmlContent;
+        }
+
+        nfeXml += "\n";
+
+        const nfeEntregaTab = formNFe.entrega.tab;
+
+        if (nfeEntregaTab.tabSelected === 0) {
+            nfeXml += nfe.convertEntregaToXml();
+        } else {
+            nfeXml += nfeEntregaTab.xmlContent;
+        }
+
+        nfeXml += "\n";
+
+        nfeXml += `${nfe.otherTags}\n`;
+
+        const nfeInfAdicTab = formNFe.infAdic.tab;
+
+        if (nfeInfAdicTab.tabSelected === 0) {
+            nfeXml += nfe.convertInfAdicToXml();
+        } else {
+            nfeXml += nfeInfAdicTab.xmlContent;
+        }
+
+        nfeXml += "\n";
+
+        return new NFesAndId(nfeXml, nfeId);
+    }
+
 }
 
 export class NFe {
@@ -169,6 +250,316 @@ export class NFe {
         );
 
         return `${cUF}${yearAndMonth}${emit}${mod}${serie}${nNF}${tpEmis}${cNF}${cDV}`;
+    }
+
+    public static addNFeFromEntity(nfe: NFe): any {
+        const ideXml = nfe.convertIdeToXml();
+        const emitXml = nfe.convertEmitToXml();
+        const destXml = nfe.convertDestToXml();
+
+        let retiradaXml = nfe.convertEmitToXml();
+
+        if (nfe.retirada)
+            retiradaXml = nfe.convertRetiradaToXml();
+
+        let entregaXml = nfe.convertDestToXml();
+
+        if (nfe.entrega)
+            entregaXml = nfe.convertEntregaToXml();
+
+        const infAdicXml = nfe.convertInfAdicToXml();
+
+        let newFormNfe: any = {
+            ide: {
+                tab: {
+                    inputContent: {
+                        number: nfe.ide.number
+                    },
+                    tabSelected: 0,
+                    xmlContent: ideXml
+                }
+            },
+            emit: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.emit.cnpj,
+                        name: nfe.emit.name,
+                        address: {
+                            ibgeCode: nfe.emit.address.ibgeCode,
+                            city: nfe.emit.address.city,
+                            uf: nfe.emit.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: emitXml
+                }
+            },
+            dest: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.dest.cnpj,
+                        name: nfe.dest.name,
+                        address: {
+                            ibgeCode: nfe.dest.address.ibgeCode,
+                            city: nfe.dest.address.city,
+                            uf: nfe.dest.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: destXml
+                }
+            },
+            retirada: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.retirada.cnpj,
+                        name: nfe.retirada.name,
+                        address: {
+                            ibgeCode: nfe.retirada.address.ibgeCode,
+                            city: nfe.retirada.address.city,
+                            uf: nfe.retirada.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: retiradaXml
+                }
+            },
+            entrega: {
+                tab: {
+                    inputContent: {
+                        cnpj: nfe.entrega.cnpj,
+                        name: nfe.entrega.name,
+                        address: {
+                            ibgeCode: nfe.entrega.address.ibgeCode,
+                            city: nfe.entrega.address.city,
+                            uf: nfe.entrega.address.uf,
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: entregaXml
+                }
+            },
+            otherTags: {
+                tab: {
+                    tabSelected: 0,
+                    xmlContent: nfe.otherTags
+                }
+            },
+            infAdic: {
+                tab: {
+                    inputContent: {
+                        idor: nfe.infAdic.idor
+                    },
+                    tabSelected: 0,
+                    xmlContent: infAdicXml
+                }
+            }
+        };
+
+        return newFormNfe;
+    }
+
+    public static getNFeDefaultFormValues(): any {
+        return {
+            ide: {
+                tab: {
+                    inputContent: {
+                        number: "123456"
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Ide
+                }
+            },
+            emit: {
+                tab: {
+                    inputContent: {
+                        cnpj: "96973902000183",
+                        name: "Emitente da NF-e",
+                        address: {
+                            ibgeCode: "3550308",
+                            city: "SAO PAULO",
+                            uf: "SP"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Emit
+                }
+            },
+            dest: {
+                tab: {
+                    inputContent: {
+                        cnpj: "05257045000160",
+                        name: "Destinatario da NF-e",
+                        address: {
+                            ibgeCode: "4209300",
+                            city: "LAGES",
+                            uf: "SC"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Dest
+                }
+            },
+            retirada: {
+                tab: {
+                    inputContent: {
+                        cnpj: "96973902000183",
+                        name: "Retirada da NF-e",
+                        address: {
+                            ibgeCode: "3550308",
+                            city: "SAO PAULO",
+                            uf: "SP"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Retirada
+                }
+            },
+            entrega: {
+                tab: {
+                    inputContent: {
+                        cnpj: "05257045000160",
+                        name: "Entrega da NF-e",
+                        address: {
+                            ibgeCode: "4209300",
+                            city: "LAGES",
+                            uf: "SC"
+                        }
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.Entrega
+                }
+            },
+            otherTags: {
+                tab: {
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.OtherTags
+                }
+            },
+            infAdic: {
+                tab: {
+                    inputContent: {
+                        idor: "EMBDEV.ORDEM1"
+                    },
+                    tabSelected: 0,
+                    xmlContent: NFeBaseTag.InfAdic
+                }
+            }
+        };
+    }
+
+    public static getNewNFeByExistent(existentNFe: any): any {
+
+        const ideTab = existentNFe.ide.tab;
+
+        const emitTab = existentNFe.emit.tab;
+
+        const emitInputContent = emitTab.inputContent;
+
+        const destTab = existentNFe.dest.tab;
+
+        const destInputContent = destTab.inputContent;
+
+        const retiradaTab = existentNFe.retirada.tab;
+
+        const retiradaInputContent = retiradaTab.inputContent;
+
+        const entregaTab = existentNFe.entrega.tab;
+
+        const entregaInputContent = entregaTab.inputContent;
+
+        const otherTab = existentNFe.otherTags.tab;
+
+        const infAdicTab = existentNFe.infAdic.tab;
+
+        let newFormNfe: any = {
+            ide: {
+                tab: {
+                    inputContent: {
+                        number: ideTab.inputContent.number
+                    },
+                    tabSelected: ideTab.tabSelected,
+                    xmlContent: ideTab.xmlContent
+                }
+            },
+            emit: {
+                tab: {
+                    inputContent: {
+                        cnpj: emitInputContent.cnpj,
+                        name: emitInputContent.name,
+                        address: {
+                            ibgeCode: emitInputContent.address.ibgeCode,
+                            city: emitInputContent.address.city,
+                            uf: emitInputContent.address.uf,
+                        }
+                    },
+                    tabSelected: emitTab.tabSelected,
+                    xmlContent: emitTab.xmlContent
+                }
+            },
+            dest: {
+                tab: {
+                    inputContent: {
+                        cnpj: destInputContent.cnpj,
+                        name: destInputContent.name,
+                        address: {
+                            ibgeCode: destInputContent.address.ibgeCode,
+                            city: destInputContent.address.city,
+                            uf: destInputContent.address.uf,
+                        }
+                    },
+                    tabSelected: destTab.tabSelected,
+                    xmlContent: destTab.xmlContent
+                }
+            },
+            retirada: {
+                tab: {
+                    inputContent: {
+                        cnpj: retiradaInputContent.cnpj,
+                        name: retiradaInputContent.name,
+                        address: {
+                            ibgeCode: retiradaInputContent.address.ibgeCode,
+                            city: retiradaInputContent.address.city,
+                            uf: retiradaInputContent.address.uf,
+                        }
+                    },
+                    tabSelected: retiradaTab.tabSelected,
+                    xmlContent: retiradaTab.xmlContent
+                }
+            },
+            entrega: {
+                tab: {
+                    inputContent: {
+                        cnpj: entregaInputContent.cnpj,
+                        name: entregaInputContent.name,
+                        address: {
+                            ibgeCode: entregaInputContent.address.ibgeCode,
+                            city: entregaInputContent.address.city,
+                            uf: entregaInputContent.address.uf,
+                        }
+                    },
+                    tabSelected: entregaTab.tabSelected,
+                    xmlContent: entregaTab.xmlContent
+                }
+            },
+            otherTags: {
+                tab: {
+                    tabSelected: 0,
+                    xmlContent: otherTab.xmlContent
+                }
+            },
+            infAdic: {
+                tab: {
+                    inputContent: {
+                        idor: infAdicTab.inputContent.idor
+                    },
+                    tabSelected: infAdicTab.tabSelected,
+                    xmlContent: infAdicTab.xmlContent
+                }
+            }
+        };
+
+        return newFormNfe;
     }
 }
 

@@ -322,7 +322,7 @@ export class AppComponent {
     const shipmentForm = this.#shipmentComponentRef?.instance.shipments!;
 
     shipmentForm.push(
-      this.formBuilder.group(this.appService.getShipmentDefaultFormValues())
+      this.formBuilder.group(Shipment.getShipmentDefaultFormValues())
     );
 
     this.entities.push(
@@ -337,7 +337,7 @@ export class AppComponent {
     const shipmentForm = this.#shipmentComponentRef?.instance.shipments!;
 
     shipmentForm.push(
-      this.formBuilder.group(this.appService.addShipmentFromEntity(shipment))
+      this.formBuilder.group(Shipment.getShipmentFromEntity(shipment))
     );
 
     this.entities.push(
@@ -355,7 +355,7 @@ export class AppComponent {
     const shipmentToBeDuplicated = this.entities.value[index][0];
 
     shipmentForm.push(
-      this.formBuilder.group(this.appService.getNewShipmentByExistent(shipmentToBeDuplicated))
+      this.formBuilder.group(Shipment.getNewShipmentByExistent(shipmentToBeDuplicated))
     );
 
     this.entities.push(
@@ -371,7 +371,7 @@ export class AppComponent {
     const nfeForm = this.#nfeComponentRef?.instance.nfes!;
 
     nfeForm.push(
-      this.formBuilder.group(this.appService.getNFeDefaultFormValues())
+      this.formBuilder.group(NFe.getNFeDefaultFormValues())
     );
 
     this.entities.push(
@@ -385,7 +385,7 @@ export class AppComponent {
     const nfeForm = this.#nfeComponentRef?.instance.nfes!;
 
     nfeForm.push(
-      this.formBuilder.group(this.appService.addNFeFromEntity(nfe))
+      this.formBuilder.group(NFe.addNFeFromEntity(nfe))
     );
 
     if (nfe.emit.cnpj !== nfe.retirada.cnpj) {
@@ -411,7 +411,7 @@ export class AppComponent {
     const nfeToBeDuplicated = this.entities.value[index][0];
 
     nfeForm.push(
-      this.formBuilder.group(this.appService.getNewNFeByExistent(nfeToBeDuplicated))
+      this.formBuilder.group(NFe.getNewNFeByExistent(nfeToBeDuplicated))
     );
 
     this.entities.push(

@@ -1,3 +1,4 @@
 {
-    "timeoutBetweenEachCall": 30
+    "timeoutBetweenEachCall": 30,
+    "backendUrl": "http://localhost:5181/sendXml"
 }
