@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
+import { NFeParticipantType, NFeParticipantTypeLabel } from '../../../model/nfe';
+
 @Component({
     selector: 'exchange-participants-dialog',
     templateUrl: 'exchange-participants-dialog.component.html',
@@ -30,11 +32,15 @@ import { MatButtonModule } from '@angular/material/button';
 export class ExchangeParticipantsDialog {
 
     readonly dialogRef = inject(MatDialogRef<ExchangeParticipantsDialog>);
-    readonly participants = inject<string[]>(MAT_DIALOG_DATA);
+    readonly participants = inject<NFeParticipantType[]>(MAT_DIALOG_DATA);
 
-    public firstParticipantToExchange: string = this.participants[0];
-    public secondParticipantToExchange: string = this.participants[1];
+    public firstParticipantToExchange: NFeParticipantType;
+    public secondParticipantToExchange: NFeParticipantType;
 
+    constructor() {
+        this.firstParticipantToExchange = this.participants[0];
+        this.secondParticipantToExchange = this.participants[1];
+    }
 
     public onNoClick(): void {
         this.dialogRef.close();
@@ -42,5 +48,9 @@ export class ExchangeParticipantsDialog {
 
     public returnParticipantsToExchange(): void {
         this.dialogRef.close([this.firstParticipantToExchange, this.secondParticipantToExchange]);
+    }
+
+    public getParticipantLabel(participantType: NFeParticipantType) {
+        return NFeParticipantTypeLabel.get(participantType);
     }
 }

@@ -1,12 +1,26 @@
 import { CreationSource } from "./enums/creation-source";
 import { NFeBaseTag } from "./xml-tags";
 
-export enum ParticipantType {
+export enum NFeParticipantType {
     Emit,
     Dest,
     Retirada,
     Entrega
 }
+
+export const NFeParticipantTypeLabel = new Map<number, string>([
+    [NFeParticipantType.Emit, 'Emitente'],
+    [NFeParticipantType.Dest, 'Destinatário'],
+    [NFeParticipantType.Retirada, 'Retirada'],
+    [NFeParticipantType.Entrega, 'Entrega'],
+])
+
+export const NFeParticipantTypeFormName = new Map<number, string>([
+    [NFeParticipantType.Emit, 'emit'],
+    [NFeParticipantType.Dest, 'dest'],
+    [NFeParticipantType.Retirada, 'retirada'],
+    [NFeParticipantType.Entrega, 'entrega'],
+])
 
 export class NFesAndId {
     public nfeXml: string;
@@ -146,10 +160,10 @@ export class NFe {
         }
 
         this.ide = new Ide(nfeIde, source);
-        this.emit = new Participant(nfeEmit, source, ParticipantType.Emit);
-        this.dest = new Participant(nfeDest, source, ParticipantType.Dest);
-        this.retirada = new Participant(nfeRetirada, source, ParticipantType.Retirada);
-        this.entrega = new Participant(nfeEntrega, source, ParticipantType.Entrega);
+        this.emit = new Participant(nfeEmit, source, NFeParticipantType.Emit);
+        this.dest = new Participant(nfeDest, source, NFeParticipantType.Dest);
+        this.retirada = new Participant(nfeRetirada, source, NFeParticipantType.Retirada);
+        this.entrega = new Participant(nfeEntrega, source, NFeParticipantType.Entrega);
         this.otherTags = otherTags;
         this.infAdic = new InfAdic(infAdic, source);
     }
@@ -626,9 +640,9 @@ export class Participant {
     public cnpj: string = '96973902000183';
     public name: string = 'Emitente da NF-e';
     public address: Address;
-    public type: ParticipantType = ParticipantType.Emit;
+    public type: NFeParticipantType = NFeParticipantType.Emit;
 
-    constructor(content: any, source: CreationSource, participantType: ParticipantType) {
+    constructor(content: any, source: CreationSource, participantType: NFeParticipantType) {
 
         this.type = participantType;
 
@@ -665,7 +679,7 @@ export class Participant {
         let xml = ``;
 
         switch (this.type) {
-            case ParticipantType.Emit:
+            case NFeParticipantType.Emit:
                 xml += `<emit>
                 <CNPJ>[[CNPJ]]</CNPJ>
 				<xNome>[[Name]]</xNome>
@@ -688,7 +702,7 @@ export class Participant {
 
                 break;
 
-            case ParticipantType.Dest:
+            case NFeParticipantType.Dest:
                 xml += `<dest>
                 <CNPJ>[[CNPJ]]</CNPJ>
 				<xNome>[[Name]]</xNome>
@@ -710,7 +724,7 @@ export class Participant {
 
                 break;
 
-            case ParticipantType.Retirada:
+            case NFeParticipantType.Retirada:
                 xml += `<retirada>
 				<CNPJ>[[CNPJ]]</CNPJ>
 				<xNome>[[Name]]</xNome>
@@ -729,7 +743,7 @@ export class Participant {
 
                 break;
 
-            case ParticipantType.Entrega:
+            case NFeParticipantType.Entrega:
                 xml += `<entrega>
 				<CNPJ>[[CNPJ]]</CNPJ>
 				<xNome>[[Name]]</xNome>

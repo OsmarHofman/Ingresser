@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {
     ControlValueAccessor,
     FormBuilder,
-    FormArray,
     FormGroup,
     ReactiveFormsModule,
     NG_VALUE_ACCESSOR,
@@ -16,7 +15,7 @@ import { NFeParticipantAccordionComponent } from './participant/nfe-participant-
 import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
 import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
 import { NFeOtherTagsAccordionComponent } from "./other-tags/nfe-other-tags-accordion.component";
-import { Ide, NFe } from '../../../model/nfe';
+import { Ide, NFe, NFeParticipantType, NFeParticipantTypeFormName } from '../../../model/nfe';
 import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
 
 @Component({
@@ -146,13 +145,13 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
     }
 
     public exchangeParticipants() {
-        let participants: string[] = ['Emitente', 'Destinatário'];
+        let participants: NFeParticipantType[] = [NFeParticipantType.Emit, NFeParticipantType.Dest];
 
         if (this.hasRetirada)
-            participants.push('Retirada');
+            participants.push(NFeParticipantType.Retirada);
 
         if (this.hasEntrega)
-            participants.push('Entrega');
+            participants.push(NFeParticipantType.Entrega);
 
         const dialogRef = this.dialog.open(ExchangeParticipantsDialog, {
             data: participants,
@@ -166,34 +165,14 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
         });
     }
 
+    private exchangeTwoParticipants(participantOneName: NFeParticipantType, participantTwoName: NFeParticipantType): void {
 
-    private exchangeTwoParticipants(participantOneName: string, participantTwoName: string): void {
+        const participantOne: string = NFeParticipantTypeFormName.get(participantOneName)!;
+        const participantTwo: string = NFeParticipantTypeFormName.get(participantTwoName)!;
 
-        const participantOne: any = this.getParticipantByName(participantOneName);
-        const participantTwo: any = this.getParticipantByName(participantTwoName);
-
-        const participantOneInput: any = participantOne.inputContent;
-        participantOne.inputContent = participantTwo.inputContent;
-        participantTwo.inputContent = participantOneInput;
-    }
-
-    private getParticipantByName(participantOneName: string): any {
-        // switch (participantOneName) {
-        //     case 'Emitente':
-        //         return this.nfes.value[0].emit.tab;
-
-        //     case 'Destinatário':
-        //         return this.nfes.value[0].dest.tab;
-
-        //     case 'Retirada':
-        //         return this.nfes.value[0].retirada.tab;
-
-        //     case 'Entrega':
-        //         return this.nfes.value[0].entrega.tab;
-
-        //     default:
-        //         break;
-        // }
+        const participantOneFormControl: any = this.form.controls[participantOne].value;
+        this.form.controls[participantOne].setValue(this.form.controls[participantTwo].value);
+        this.form.controls[participantTwo].setValue(participantOneFormControl);
     }
 
 }

@@ -3,9 +3,9 @@
     <div class="row">
         <mat-form-field class="participant-select col-md-10">
             <mat-label>1º Participante</mat-label>
-            <mat-select>
-                @for (participant of participants; track firstParticipantToExchange) {
-                <mat-option [value]="firstParticipantToExchange">{{participant}}</mat-option>
+            <mat-select [(ngModel)]="firstParticipantToExchange">
+                @for (participant of participants; track participant) {
+                <mat-option [value]="participant">{{getParticipantLabel(participant)}}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
@@ -14,9 +14,9 @@
     <div class="row">
         <mat-form-field class="participant-select col-md-10">
             <mat-label>2º Participante</mat-label>
-            <mat-select>
-                @for (participant of participants; track secondParticipantToExchange) {
-                <mat-option [value]="secondParticipantToExchange">{{participant}}</mat-option>
+            <mat-select [(ngModel)]="secondParticipantToExchange">
+                @for (participant of participants; track participant) {
+                <mat-option [value]="participant">{{getParticipantLabel(participant)}}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
