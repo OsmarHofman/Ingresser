@@ -57,7 +57,7 @@ export class AppService {
 
                     case EntityType.NFe:
 
-                        const nFeXmlAndId: NFesAndId = NFesAndId.convertNFeFormToXml(formValue[0]);
+                        const nFeXmlAndId: NFesAndId = NFesAndId.convertNFeFormToXml(formValue);
 
                         const finalNFeXml: string = SoapTag.getNFeXmlByForm(configs, nFeXmlAndId);
 

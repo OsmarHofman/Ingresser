@@ -17,7 +17,6 @@ import { NFeIdeAccordionComponent } from "./ide/nfe-ide-accordion.component";
 import { NFeInfAdicAccordionComponent } from "./infAdic/nfe-infAdic-accordion.component";
 import { NFeOtherTagsAccordionComponent } from "./other-tags/nfe-other-tags-accordion.component";
 import { Ide, NFe } from '../../../model/nfe';
-import { AppService } from '../../service/app.service';
 import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange-participants/exchange-participants-dialog.component';
 
 @Component({
@@ -40,7 +39,6 @@ import { ExchangeParticipantsDialog } from '../../../components/dialogs/exchange
             multi: true,
             useExisting: NFeComponent
         },
-        AppService,
     ]
 })
 
@@ -50,18 +48,20 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
     public hasEntrega: boolean = false;
 
     constructor(private formBuilder: FormBuilder,
-        private appService: AppService,
         private dialog: MatDialog) { }
 
     //#region Form
 
     public form: FormGroup = this.formBuilder.group({
-        nfes: this.formBuilder.array([]),
+        ide: [''],
+        emit: [''],
+        dest: [''],
+        retirada: [''],
+        entrega: [''],
+        otherTags: [''],
+        infAdic: ['']
     });
 
-    get nfes() {
-        return this.form.get('nfes') as FormArray;
-    }
     public onTouched: Function = () => { };
 
     public onChangeSubs: Subscription[] = [];
@@ -125,9 +125,24 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
     //#endregion
 
     public addDefaultNFe() {
-        this.nfes.push(
-            this.formBuilder.group(NFe.getNFeDefaultFormValues())
-        )
+        this.form.setValue(NFe.getNFeDefaultFormValues());
+    }
+
+    public getNFeNumber(): string {
+        const ide: any = this.form.controls['ide'].value.tab;
+
+        let nfeNumber = '';
+
+        if (ide) {
+
+            if (ide.tabSelected === 0) {
+                nfeNumber = ide.inputContent.number;
+            } else {
+                nfeNumber = Ide.getNFeNumberFromXml(ide.xmlContent);
+            }
+        }
+
+        return nfeNumber;
     }
 
     public exchangeParticipants() {
@@ -146,25 +161,39 @@ export class NFeComponent implements ControlValueAccessor, OnDestroy {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result !== undefined) {
-                //TODO: Implementar troca dos participantes
+                this.exchangeTwoParticipants(result[0], result[1])
             }
         });
     }
 
-    public getNFeNumberByIndex(index: number): string {
-        const nfe: any = this.form.controls['nfes'].value[index].ide.tab;
 
-        let nfeNumber = '';
+    private exchangeTwoParticipants(participantOneName: string, participantTwoName: string): void {
 
-        if (nfe) {
+        const participantOne: any = this.getParticipantByName(participantOneName);
+        const participantTwo: any = this.getParticipantByName(participantTwoName);
 
-            if (nfe.tabSelected === 0) {
-                nfeNumber = nfe.inputContent.number;
-            } else {
-                nfeNumber = Ide.getNFeNumberFromXml(nfe.xmlContent);
-            }
-        }
-
-        return nfeNumber;
+        const participantOneInput: any = participantOne.inputContent;
+        participantOne.inputContent = participantTwo.inputContent;
+        participantTwo.inputContent = participantOneInput;
     }
+
+    private getParticipantByName(participantOneName: string): any {
+        // switch (participantOneName) {
+        //     case 'Emitente':
+        //         return this.nfes.value[0].emit.tab;
+
+        //     case 'Destinatário':
+        //         return this.nfes.value[0].dest.tab;
+
+        //     case 'Retirada':
+        //         return this.nfes.value[0].retirada.tab;
+
+        //     case 'Entrega':
+        //         return this.nfes.value[0].entrega.tab;
+
+        //     default:
+        //         break;
+        // }
+    }
+
 }

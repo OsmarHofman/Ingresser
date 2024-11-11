@@ -140,11 +140,9 @@ export class AppComponent {
   public addDefaultNFeComponent() {
     this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
 
-    const nfeForm = this.#nfeComponentRef?.instance.nfes!;
+    const nfeForm = this.#nfeComponentRef?.instance.form!;
 
-    nfeForm.push(
-      this.formBuilder.group(NFe.getNFeDefaultFormValues())
-    );
+    nfeForm.setValue(NFe.getNFeDefaultFormValues());
 
     this.entities.push(
       nfeForm
@@ -219,11 +217,9 @@ export class AppComponent {
   public addNFeComponent(nfe: NFe) {
     this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
 
-    const nfeForm = this.#nfeComponentRef?.instance.nfes!;
+    const nfeForm = this.#nfeComponentRef?.instance.form!;
 
-    nfeForm.push(
-      this.formBuilder.group(NFe.addNFeFromEntity(nfe))
-    );
+    nfeForm.setValue(NFe.addNFeFromEntity(nfe));
 
     if (nfe.emit.cnpj !== nfe.retirada.cnpj) {
       this.#nfeComponentRef?.instance.changeRetiradaState();
@@ -319,13 +315,11 @@ export class AppComponent {
 
     this.#nfeComponentRef = this.vcr()?.createComponent(NFeComponent);
 
-    const nfeForm = this.#nfeComponentRef?.instance.nfes!;
+    const nfeForm = this.#nfeComponentRef?.instance.form!;
 
-    const nfeToBeDuplicated = this.entities.value[index][0];
+    const nfeToBeDuplicated = this.entities.value[index];
 
-    nfeForm.push(
-      this.formBuilder.group(NFe.getNewNFeByExistent(nfeToBeDuplicated))
-    );
+    nfeForm.setValue(NFe.getNewNFeByExistent(nfeToBeDuplicated));
 
     this.entities.push(
       nfeForm
