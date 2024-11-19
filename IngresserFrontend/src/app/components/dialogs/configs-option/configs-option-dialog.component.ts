@@ -32,10 +32,6 @@ export class ConfigsOptionDialog {
     readonly dialogRef = inject(MatDialogRef<ConfigsOptionDialog>);
     readonly configs = inject<Configs>(MAT_DIALOG_DATA);
 
-    public onNoClick(): void {
-        this.dialogRef.close();
-    }
-
     public returnConfigurations(): void {
         this.dialogRef.close(this.configs);
     }
