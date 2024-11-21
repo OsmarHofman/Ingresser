@@ -6,8 +6,7 @@ using Newtonsoft.Json;
 namespace IngresserBackend.Controllers
 {
     [ApiController]
-    [Route("sendXml")]
-
+    [Route("api")]
     public class IngresserAPIController : ControllerBase
     {
         private readonly ISoapCallService _soapCallService;
@@ -17,7 +16,31 @@ namespace IngresserBackend.Controllers
             _soapCallService = new SoapCallService();
         }
 
-        [HttpPost(Name = "sendXml")]
+        /// <summary>
+        /// Faz o envio de um xml ao frete, considerando as configurações do ambiente
+        /// </summary>
+        /// <param name="soapRequest">Requisição contendo o xml, o tipo do xml e as configurações do ambiente</param>
+        /// <returns>Se conseguiu ou não enviar o xml</returns>
+        /// <exception cref="BadHttpRequestException"></exception>
+        /// <remarks>
+        /// Requisição de exemplo:
+        ///
+        ///     POST /sendXml
+        ///     {
+        ///        "xml": "<xmlDoEmbarque></xmlDoEmbarque>",
+        ///        "entityType": 0,
+        ///        "configs": {
+        ///           "port": 1058,
+        ///           "enterpriseId": "dfd558ac-2424-4983-aa0a-326deb5b72c6",
+        ///           "token": "3f87a287-bcef-4fa0-83b7-792d6676c20c"
+        ///        }
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="512">Algum erro no meio do processamento da API</response>
+        [HttpPost, Route("sendXml")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(512)]
         public ActionResult SendXml([FromBody] SoapRequest soapRequest)
         {
             try
