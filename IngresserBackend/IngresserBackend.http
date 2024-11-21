@@ -1,6 +1,0 @@
-@IngresserBackend_HostAddress = http://localhost:5181
-
-GET {{IngresserBackend_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
