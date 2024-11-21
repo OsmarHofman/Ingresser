@@ -43,6 +43,8 @@ testem.log
 **/[Dd]ebugPublic/
 */IngresserBackend/[Rr]elease/
 */IngresserBackend/[Rr]eleases/
+IngresserBackend/IngresserBackend.csproj.user
+IngresserBackend/Properties/PublishProfiles
 **/[Xx]64/
 **/[Xx]86/
 **/[Bb]uild/
@@ -52,6 +54,8 @@ testem.log
 **/[Bb]in/[Dd]ebug/
 **/*.pdb
 
+
 # System files
 .DS_Store
 Thumbs.db
+
