@@ -23,12 +23,12 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    options.RoutePrefix = "api";
-
-    var swaggerEndpoint = app.Environment.IsDevelopment() ? "/swagger/v1/swagger.json" :
-    "./swagger/v1/swagger.json";
+    var swaggerEndpoint = app.Environment.IsDevelopment()
+        ? "/swagger/v1/swagger.json"
+        : "./swagger/v1/swagger.json";
 
     options.SwaggerEndpoint(swaggerEndpoint, "v1");
+    options.RoutePrefix = string.Empty;
 });
 
 app.UseHttpsRedirection();

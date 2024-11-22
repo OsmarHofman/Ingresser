@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace IngresserBackend.Controllers
 {
     [ApiController]
-    [Route("api")]
+    
     public class IngresserAPIController : ControllerBase
     {
         private readonly ISoapCallService _soapCallService;

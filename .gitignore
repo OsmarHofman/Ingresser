@@ -43,8 +43,8 @@ testem.log
 **/[Dd]ebugPublic/
 */IngresserBackend/[Rr]elease/
 */IngresserBackend/[Rr]eleases/
-IngresserBackend/IngresserBackend.csproj.user
-IngresserBackend/Properties/PublishProfiles
+/IngresserBackend/IngresserBackend.csproj.user
+/IngresserBackend/Properties/PublishProfiles
 **/[Xx]64/
 **/[Xx]86/
 **/[Bb]uild/
