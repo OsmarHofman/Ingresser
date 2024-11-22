@@ -11,6 +11,7 @@ import { SendRequest } from "../../model/send-request";
 import { EntityType } from "../../model/entityType";
 import { Configs } from "../../model/configs";
 import { SoapTag } from "../../model/xml-tags";
+import { environment } from "../../../environments/environment";
 
 @Injectable()
 export class AppService {
@@ -80,7 +81,7 @@ export class AppService {
 
     private sendXml(sendRequest: SendRequest): void {
 
-        this.http.post(this.configuration.backendUrl, sendRequest)
+        this.http.post(environment.apiUrl, sendRequest)
             .pipe(
                 catchError((httpErrorResponse: HttpErrorResponse) => {
                     alert(`Erro na requisição:\nURL: ${httpErrorResponse.url}\nStatus: ${httpErrorResponse.status} (${httpErrorResponse.error.title})\nErro: ${httpErrorResponse.error.detail}`);
