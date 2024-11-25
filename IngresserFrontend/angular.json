@@ -38,6 +38,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "src/client.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "initial",
