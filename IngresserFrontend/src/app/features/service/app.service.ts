@@ -32,7 +32,7 @@ export class AppService {
         });
     }
 
-    public sendXmlsToWS(form: FormGroup, entitiesTypes: EntityType[], configs: Configs): void {
+    public async sendXmlsToWS(form: FormGroup, entitiesTypes: EntityType[], configs: Configs): Promise<void> {
 
         if (!this.configuration) return;
 
@@ -72,14 +72,15 @@ export class AppService {
             }
         }
 
-        xmlsToSend.forEach(async (sendRequest: SendRequest) => {
-            this.sendXml(sendRequest);
+        for (const [index, sendRequest] of xmlsToSend.entries()) {
+            await this.sendXml(sendRequest);
 
-            await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
-        })
+            if (index != xmlsToSend.length - 1)
+                await this.sleep(this.configuration.timeoutBetweenEachCall * 1000);
+        }
     }
 
-    private sendXml(sendRequest: SendRequest): void {
+    private async sendXml(sendRequest: SendRequest): Promise<void> {
 
         this.http.post(environment.apiUrl, sendRequest)
             .pipe(
@@ -87,8 +88,7 @@ export class AppService {
                     alert(`Erro na requisição:\nURL: ${httpErrorResponse.url}\nStatus: ${httpErrorResponse.status} (${httpErrorResponse.error.title})\nErro: ${httpErrorResponse.error.detail}`);
                     return throwError(() => httpErrorResponse.error.detail);
                 })
-            )
-            .subscribe((response: Object) => {
+            ).subscribe((response: Object) => {
                 if (response) {
                     const result: ResultMessage = response as ResultMessage;
 

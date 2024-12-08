@@ -80,7 +80,7 @@ export class DownloadOptionDialog {
 
                 case EntityType.NFe:
 
-                    const nfe: NFe = new NFe(entityToDownload[0], CreationSource.Form);
+                    const nfe: NFe = new NFe(entityToDownload, CreationSource.Form);
 
                     jsonToBeDownloaded += JSON.stringify({ nfe: nfe });
 
